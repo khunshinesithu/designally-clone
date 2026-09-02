@@ -16,6 +16,7 @@
  */
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import type { DsgCaseStudy } from "@/types/designally";
@@ -174,6 +175,20 @@ export function CaseStudySection({ className }: CaseStudySectionProps) {
           {CASE_STUDIES.map((study) => (
             <CaseStudyCard key={study.href} study={study} />
           ))}
+        </div>
+
+        {/*
+          "View All Projects" — measured on the live site as a 103.203px block
+          below the grid: 48px of top padding above a centred outline pill
+          (246.391 × 55.203, padding 16px 56px, 2px orange border, radius 200px).
+        */}
+        <div className="pt-[48px] text-center">
+          <Link
+            href="/works/"
+            className="inline-block rounded-[200px] border-2 border-dsg-orange px-[56px] py-[16px] text-center text-[16px] font-medium leading-[19.2px] text-dsg-orange transition-colors duration-300 hover:bg-dsg-orange hover:text-white focus-visible:bg-dsg-orange focus-visible:text-white"
+          >
+            View All Projects
+          </Link>
         </div>
       </div>
     </section>

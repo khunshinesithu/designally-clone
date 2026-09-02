@@ -146,8 +146,8 @@ export function WorksGallery({ className }: WorksGalleryProps) {
       <div
         className={cn(
           "flex flex-col items-center justify-between",
-          "gap-[60px] px-[5%] py-[80px]",
-          "tab:gap-[90px] tab:px-[6%] tab:py-[120px]",
+          "gap-[60px] px-[8.1%] py-[80px]",
+          "tab:gap-[90px] tab:px-[6.2%] tab:py-[120px]",
           "desk:gap-[120px] desk:px-[12.5%] desk:py-[160px]",
         )}
       >
