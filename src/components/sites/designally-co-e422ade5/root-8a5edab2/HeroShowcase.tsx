@@ -118,7 +118,7 @@ export function HeroShowcase() {
                 aria-hidden={slideIndex !== index}
               >
                 <div className="flex flex-col gap-[40px]">
-                  <div className="aspect-[1069/702] w-full overflow-hidden rounded-[48px] transition-opacity duration-1000 desk:aspect-auto desk:h-[702px]">
+                  <div className="aspect-[327/549] w-full overflow-hidden rounded-[16px] transition-opacity duration-1000 tab:aspect-[1069/702] tab:rounded-[32px] desk:aspect-auto desk:h-[702px] desk:rounded-[48px]">
                     <video
                       className="h-full w-full object-cover"
                       src={slide.videoSrc}
@@ -133,7 +133,7 @@ export function HeroShowcase() {
                   </div>
 
                   <div className="flex flex-col gap-[8px] desk:h-[41.602px] desk:flex-row desk:items-start desk:justify-between desk:gap-0">
-                    <h1 className="font-serif text-[32px] font-medium leading-[41.6px] text-dsg-ink-strong">
+                    <h1 className="font-serif text-[28px] font-medium leading-[36.4px] text-dsg-ink-strong desk:text-[32px] desk:leading-[41.6px]">
                       {slide.headline}
                     </h1>
 

@@ -60,7 +60,7 @@ export function SiteHeader({ className }: SiteHeaderProps) {
         className,
       )}
     >
-      <div className="dsg-container flex flex-row py-[40px]">
+      <div className="dsg-container flex flex-row py-0 tab:py-[24px] desk:py-[40px]">
         {/* Logo — 25% column, content flush left, vertically centred. */}
         <div className="flex h-[51.203px] w-auto shrink-0 flex-col items-start justify-center desk:w-1/4">
           <a

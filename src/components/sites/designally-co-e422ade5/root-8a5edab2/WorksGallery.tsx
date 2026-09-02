@@ -146,7 +146,7 @@ export function WorksGallery({ className }: WorksGalleryProps) {
       <div
         className={cn(
           "flex flex-col items-center",
-          "gap-[24px] px-[8.1%] py-[80px]",
+          "gap-[24px] px-[8.1%] py-0",
           "tab:gap-[16px] tab:px-[6.2%] tab:py-[120px]",
           // The live inner has only two children - the heading block and the
           // gallery block - and they sit flush: heading block ends at y=6148,
@@ -166,7 +166,7 @@ export function WorksGallery({ className }: WorksGalleryProps) {
             className={cn(
               "flex flex-row flex-wrap justify-center gap-x-[16px]",
               "font-serif font-medium text-dsg-ink-strong",
-              "text-[40px] leading-[44px]",
+              "text-[48px] leading-[52px]",
               "tab:text-[56px] tab:leading-[60px]",
               "desk:text-[72px] desk:leading-[72px]",
             )}
