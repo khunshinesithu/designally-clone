@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { useId, useState } from "react";
 
+import { ArrowUpRightIcon } from "@/components/sites/designally-co-e422ade5/shared/icons";
 import { cn } from "@/lib/utils";
 
 /**
@@ -40,12 +42,20 @@ function PageContainer({
 
 type IconProps = React.SVGProps<SVGSVGElement>;
 
+/** Artwork saved verbatim from the live DOM. */
+const SVG_BASE = "/sites/designally-co-e422ade5/contact-us-ae5848da/svg";
+const IMAGE_BASE = "/sites/designally-co-e422ade5/contact-us-ae5848da/images";
+
 /*
- * The five decorative SVGs on this page (three contact glyphs, the "say hello"
- * arrow, and two Elementor icon widgets) are drawn from Font Awesome / custom
- * Elementor icon sets whose path data the extraction did not capture — only the
- * rendered boxes and viewBoxes were measured. The marks below are redraws at the
- * measured sizes, not verbatim copies.
+ * The artwork under `SVG_BASE` is multi-path, with fills baked into the files, so
+ * every mark below is referenced as a plain `<img>` — never inlined or recoloured.
+ * (`next/image` will not optimise an SVG without `dangerouslyAllowSVG`, which is
+ * why these are plain `<img>` rather than `<Image>`; the QR bitmap does use
+ * `next/image`.)
+ *
+ * The two exceptions are the phone and envelope glyphs: no inline SVG source for
+ * those was recoverable from the live page, so they stay as redraws at the
+ * measured boxes — they are the only invented artwork left on this page.
  */
 
 /** Phone handset — measured box 28 x 34, next to `+66 65 005 5993`. */
@@ -110,53 +120,6 @@ function MailIcon({ className, ...props }: IconProps) {
   );
 }
 
-/** LINE speech bubble — measured box 22.53 x 28, next to `@designally`. */
-function LineIcon({ className, ...props }: IconProps) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      className={className}
-      aria-hidden="true"
-      {...props}
-    >
-      <path d="M12 2C6.201 2 1.5 5.79 1.5 10.465c0 4.19 3.728 7.699 8.764 8.364.341.073.806.225.923.516.106.264.069.677.034.944l-.148.888c-.045.263-.209 1.029.902.561 1.111-.468 5.994-3.529 8.178-6.043h-.001C21.66 14.04 22.5 12.36 22.5 10.465 22.5 5.79 17.799 2 12 2Z" />
-    </svg>
-  );
-}
-
-/**
- * Hand-drawn arrow beside "Don't be shy, say hello!".
- * Measured: `viewBox="0 0 80 124"`, rendered 90 x 140, `color: rgb(255, 255, 255)`.
- */
-function HelloArrow({ className, ...props }: IconProps) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 80 124"
-      fill="none"
-      className={className}
-      aria-hidden="true"
-      {...props}
-    >
-      <path
-        d="M64 8c9 26 8 51-4 71-9 15-22 25-38 32"
-        stroke="currentColor"
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M22 111h20M22 111l6-19"
-        stroke="currentColor"
-        strokeWidth="6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 interface ContactChannel {
   /** Poppins 18 / 400 / lh 23.4, rgb(114, 120, 164). */
   label: string;
@@ -165,9 +128,8 @@ interface ContactChannel {
   href: string;
   /** External links open in a new tab, as on the live site. */
   external?: boolean;
-  icon: (props: IconProps) => React.JSX.Element;
-  /** Measured icon box inside the 28 x 34 slot. */
-  iconClassName: string;
+  /** Rendered at the measured icon box inside the 28 x 34 slot. */
+  icon: React.ReactNode;
 }
 
 const CONTACT_CHANNELS: readonly ContactChannel[] = [
@@ -175,23 +137,31 @@ const CONTACT_CHANNELS: readonly ContactChannel[] = [
     label: "TALK WITH US",
     value: "+66 65 005 5993",
     href: "tel:0650055993",
-    icon: PhoneIcon,
-    iconClassName: "h-[34px] w-[28px]",
+    icon: <PhoneIcon className="h-[34px] w-[28px]" />,
   },
   {
     label: "DROP US A LINE",
     value: "clients@designally.co",
     href: "mailto:clients@designally.co",
-    icon: MailIcon,
-    iconClassName: "h-[28px] w-[28px]",
+    icon: <MailIcon className="h-[28px] w-[28px]" />,
   },
   {
     label: "ADD LINE",
     value: "@designally",
     href: "https://line.me/ti/p/%40designally",
     external: true,
-    icon: LineIcon,
-    iconClassName: "h-[28px] w-[23px]",
+    // LINE mark, verbatim from the live DOM: viewBox "0 0 24 24", rendered 28 x 28.
+    icon: (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={`${SVG_BASE}/line-icon.svg`}
+        alt=""
+        width={28}
+        height={28}
+        aria-hidden="true"
+        className="block h-[28px] w-[28px]"
+      />
+    ),
   },
 ];
 
@@ -212,7 +182,6 @@ function ContactHero() {
         {/* Contact row: space-between at desktop, stacked below 768px. */}
         <div className="flex flex-col gap-10 tab:flex-row tab:flex-wrap tab:items-center tab:justify-between tab:gap-x-8">
           {CONTACT_CHANNELS.map((channel) => {
-            const Icon = channel.icon;
             return (
               <div key={channel.label} className="flex flex-col items-start gap-2">
                 <h2 className="font-sans text-[18px] leading-[23.4px] font-normal text-[rgb(114,120,164)]">
@@ -220,7 +189,7 @@ function ContactHero() {
                 </h2>
                 <div className="flex items-center gap-2">
                   <span className="flex h-[34px] w-[28px] shrink-0 items-center justify-center text-dsg-ink-strong">
-                    <Icon className={channel.iconClassName} />
+                    {channel.icon}
                   </span>
                   <a
                     href={channel.href}
@@ -236,13 +205,15 @@ function ContactHero() {
             );
           })}
 
-          {/*
-            The live row ends with a 125 x 125 QR code
-            (`wp-content/uploads/2023/11/qr-code-3-1024x1024.png`, hidden on tablet
-            and mobile). That bitmap was not captured into `public/`, so the slot is
-            reserved empty to keep the measured `space-between` geometry.
-          */}
-          <div aria-hidden="true" className="hidden h-[125px] w-[125px] desk:block" />
+          {/* LINE QR code — 800 x 800 source rendered at 125 x 125, desktop only. */}
+          <Image
+            src={`${IMAGE_BASE}/qr-code-3-1024x1024.png`}
+            alt=""
+            width={800}
+            height={800}
+            aria-hidden="true"
+            className="hidden h-[125px] w-[125px] desk:block"
+          />
         </div>
       </PageContainer>
     </section>
@@ -265,12 +236,21 @@ function ContactHello() {
           {"Don’t be shy,\nsay hello!"}
         </p>
         {/*
-          On the live page this arrow is pulled 98px below the band
-          (`margin: 0 64px -98px 0`). It is kept inside the band here so the white
+          Hand-drawn arrow, verbatim from the live DOM: viewBox "0 0 80 124",
+          rendered 90 x 140. On the live page it is pulled 98px below the band
+          (`margin: 0 64px -98px 0`); it is kept inside the band here so the white
           mark stays on the orange ground rather than bleeding onto the white
           section below.
         */}
-        <HelloArrow className="h-[140px] w-[90px] text-white desk:mr-16" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`${SVG_BASE}/say-hello-arrow.svg`}
+          alt=""
+          width={80}
+          height={124}
+          aria-hidden="true"
+          className="block h-[140px] w-[90px] max-w-none desk:mr-16"
+        />
       </PageContainer>
     </section>
   );
@@ -400,7 +380,24 @@ function ContactForm() {
         {/* Heading row: flex, gap 16px, padding-bottom 40px. */}
         <h2 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] font-medium desk:text-[64px] desk:leading-[64px]">
           <span className="text-dsg-ink-strong">Which services are you</span>
-          <span className="text-dsg-ink">interested in?</span>
+          {/*
+            Elementor headline highlight: the stroke SVG (viewBox "0 0 500 150",
+            `preserveAspectRatio="none"`, rendered 460 x 103) is drawn around the
+            words rather than behind them, so the span stays in the flow and the
+            mark is overlaid.
+          */}
+          <span className="relative inline-block text-dsg-ink">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${SVG_BASE}/heading-highlight.svg`}
+              alt=""
+              width={500}
+              height={150}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-1/2 hidden h-[103px] w-[460px] max-w-none -translate-x-1/2 -translate-y-1/2 desk:block"
+            />
+            <span className="relative">interested in?</span>
+          </span>
         </h2>
 
         {isSent ? (
@@ -622,14 +619,33 @@ function ContactForm() {
               <div className="flex justify-start desk:justify-end">
                 <button
                   type="submit"
-                  className="h-[60px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
+                  className="flex h-[60px] items-center gap-[10px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
                 >
+                  {/* Same ↗ mark the shared components use, painted white here. */}
+                  <ArrowUpRightIcon className="h-[28px] w-[28px] shrink-0 desk:h-[40px] desk:w-[40px]" />
                   Send inquiry
                 </button>
               </div>
             </div>
           </form>
         )}
+
+        {/*
+          Decorative mark under the form (live widget `7c88910`): viewBox
+          "0 0 124 69", rendered 115 x 64, pulled up 40px and offset 80px right of
+          centre by the widget's `margin: -40px -160px 0 0`.
+        */}
+        <div className="mt-[-40px] flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${SVG_BASE}/form-mark.svg`}
+            alt=""
+            width={124}
+            height={69}
+            aria-hidden="true"
+            className="block h-[64px] w-[115px] max-w-none desk:translate-x-[80px]"
+          />
+        </div>
       </PageContainer>
     </section>
   );
@@ -664,9 +680,38 @@ function ContactSupport() {
   return (
     <section className={cn("flex w-full flex-col", SECTION_PADDING)}>
       <PageContainer className="flex flex-col items-center gap-6 py-[80px] text-center desk:py-[120px]">
+        {/*
+          Both marks are absolutely positioned on the live page, so they overlay the
+          heading without shifting its centring: the left one (viewBox "0 0 68 53",
+          62 x 48) sits 68px left of line 1 and 8px above it; the right one
+          (viewBox "0 0 67 73", 73 x 77) sits just right of line 2, raised 26px.
+          Desktop only — below `desk` they would collide with the wrapping text.
+        */}
         <h2 className="flex flex-col gap-2 font-sans text-[28px] leading-[1.15] font-medium text-dsg-ink-strong desk:text-[40px] desk:leading-[40px]">
-          <span>If you need some help</span>
-          <span>contact our customer support</span>
+          <span className="relative">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${SVG_BASE}/support-mark-left.svg`}
+              alt=""
+              width={68}
+              height={53}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-[-8px] right-[calc(100%+68px)] hidden h-[48px] w-[62px] max-w-none desk:block"
+            />
+            If you need some help
+          </span>
+          <span className="relative">
+            contact our customer support
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${SVG_BASE}/support-mark-right.svg`}
+              alt=""
+              width={67}
+              height={73}
+              aria-hidden="true"
+              className="pointer-events-none absolute top-[-26px] left-[calc(100%+5px)] hidden h-[77px] w-[73px] max-w-none desk:block"
+            />
+          </span>
         </h2>
         <p className="w-full max-w-[600px] font-sans text-[16px] leading-[24px] font-normal text-dsg-ink-strong">
           For website support or assistance with existing projects, please submit a
