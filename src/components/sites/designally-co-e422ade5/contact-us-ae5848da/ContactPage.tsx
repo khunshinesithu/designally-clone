@@ -597,8 +597,10 @@ function ContactForm() {
               Field 7 (acceptance, required) + field 8 (submit). On the live page the
               button is pulled up 100px so it sits alongside the acceptance block; at
               desktop that reads as bottom-aligned, which is what is reproduced here.
+              The submit widget is its own full-width group there — a 1px box with a
+              24px bottom margin — so that 25px is carried here as padding instead.
             */}
-            <div className="flex flex-col gap-8 desk:flex-row desk:items-end desk:justify-between">
+            <div className="flex flex-col gap-8 desk:flex-row desk:items-end desk:justify-between desk:pb-[25px]">
               <div className="flex max-w-[588px] flex-col gap-1 desk:min-h-[109px]">
                 <label className="flex items-start gap-3" htmlFor={`${formId}-acceptance`}>
                   <input
