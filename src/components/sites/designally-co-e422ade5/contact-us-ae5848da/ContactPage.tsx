@@ -1,0 +1,700 @@
+"use client";
+
+import { useId, useState } from "react";
+
+import { cn } from "@/lib/utils";
+
+/**
+ * designally.co — /contact-us/ page body (site key designally-co-e422ade5,
+ * page key contact-us-ae5848da).
+ *
+ * The five page-specific sections live in this one file; none of them is reused
+ * anywhere else on the site. Everything below is measured from the live page at
+ * 1440x900 — see
+ * docs/research/designally-co-e422ade5/contact-us-ae5848da/extract-contact.json
+ * and .../components/contact-page.spec.md.
+ *
+ * Container note: this page does NOT use the homepage's fluid 75% `.dsg-container`.
+ * Every section's inner is a fixed `max-width: 1200px`, centred — reproduced here by
+ * the local `PageContainer`, with the horizontal gutter carried on the section.
+ *
+ * Only the desktop breakpoint (1440) was measured. Type scales below `desk`
+ * (1025px) follow the spec's guidance and are flagged in the build report.
+ */
+
+/** Section gutter. Above ~1280px the 1200px cap wins, so the desktop metrics hold. */
+const SECTION_PADDING = "px-5 tab:px-10";
+
+/** Live inner box: `max-width: 1200px`, centred (`margin: 0 112.5px` at 1425px). */
+function PageContainer({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={cn("mx-auto w-full max-w-[1200px]", className)}>{children}</div>
+  );
+}
+
+type IconProps = React.SVGProps<SVGSVGElement>;
+
+/*
+ * The five decorative SVGs on this page (three contact glyphs, the "say hello"
+ * arrow, and two Elementor icon widgets) are drawn from Font Awesome / custom
+ * Elementor icon sets whose path data the extraction did not capture — only the
+ * rendered boxes and viewBoxes were measured. The marks below are redraws at the
+ * measured sizes, not verbatim copies.
+ */
+
+/** Phone handset — measured box 28 x 34, next to `+66 65 005 5993`. */
+function PhoneIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 28 34"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+      {...props}
+    >
+      <rect
+        x="4.1"
+        y="1.1"
+        width="19.8"
+        height="31.8"
+        rx="3.4"
+        stroke="currentColor"
+        strokeWidth="2.2"
+      />
+      <path
+        d="M11.4 5.6h5.2"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
+      <circle cx="14" cy="28" r="1.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+/** Envelope — measured box 28 x 28, next to `clients@designally.co`. */
+function MailIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 28 28"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+      {...props}
+    >
+      <rect
+        x="1.6"
+        y="5.1"
+        width="24.8"
+        height="17.8"
+        rx="2.6"
+        stroke="currentColor"
+        strokeWidth="2.2"
+      />
+      <path
+        d="M2.8 7.2 14 15.4 25.2 7.2"
+        stroke="currentColor"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** LINE speech bubble — measured box 22.53 x 28, next to `@designally`. */
+function LineIcon({ className, ...props }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M12 2C6.201 2 1.5 5.79 1.5 10.465c0 4.19 3.728 7.699 8.764 8.364.341.073.806.225.923.516.106.264.069.677.034.944l-.148.888c-.045.263-.209 1.029.902.561 1.111-.468 5.994-3.529 8.178-6.043h-.001C21.66 14.04 22.5 12.36 22.5 10.465 22.5 5.79 17.799 2 12 2Z" />
+    </svg>
+  );
+}
+
+/**
+ * Hand-drawn arrow beside "Don't be shy, say hello!".
+ * Measured: `viewBox="0 0 80 124"`, rendered 90 x 140, `color: rgb(255, 255, 255)`.
+ */
+function HelloArrow({ className, ...props }: IconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 80 124"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+      {...props}
+    >
+      <path
+        d="M64 8c9 26 8 51-4 71-9 15-22 25-38 32"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M22 111h20M22 111l6-19"
+        stroke="currentColor"
+        strokeWidth="6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+interface ContactChannel {
+  /** Poppins 18 / 400 / lh 23.4, rgb(114, 120, 164). */
+  label: string;
+  /** Poppins 28 / 500, rgb(33, 33, 33). */
+  value: string;
+  href: string;
+  /** External links open in a new tab, as on the live site. */
+  external?: boolean;
+  icon: (props: IconProps) => React.JSX.Element;
+  /** Measured icon box inside the 28 x 34 slot. */
+  iconClassName: string;
+}
+
+const CONTACT_CHANNELS: readonly ContactChannel[] = [
+  {
+    label: "TALK WITH US",
+    value: "+66 65 005 5993",
+    href: "tel:0650055993",
+    icon: PhoneIcon,
+    iconClassName: "h-[34px] w-[28px]",
+  },
+  {
+    label: "DROP US A LINE",
+    value: "clients@designally.co",
+    href: "mailto:clients@designally.co",
+    icon: MailIcon,
+    iconClassName: "h-[28px] w-[28px]",
+  },
+  {
+    label: "ADD LINE",
+    value: "@designally",
+    href: "https://line.me/ti/p/%40designally",
+    external: true,
+    icon: LineIcon,
+    iconClassName: "h-[28px] w-[23px]",
+  },
+];
+
+/**
+ * 1. Hero + contact details — live section `7fa1ce5`, 1425 x 449.
+ * Inner: max-width 1200, `padding: 80px 0 120px`.
+ */
+function ContactHero() {
+  return (
+    <section className={cn("flex w-full flex-col", SECTION_PADDING)}>
+      <PageContainer className="flex flex-col pt-[60px] pb-[80px] desk:pt-[80px] desk:pb-[120px]">
+        {/* Headline row: flex, gap 16px, padding-bottom 60px, height 124. */}
+        <h1 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] desk:pb-[60px] desk:text-[64px] desk:leading-[64px]">
+          <span className="font-medium text-dsg-ink-strong">Have a project in Mind?</span>
+          <span className="font-semibold text-dsg-orange">Let’s talk.</span>
+        </h1>
+
+        {/* Contact row: space-between at desktop, stacked below 768px. */}
+        <div className="flex flex-col gap-10 tab:flex-row tab:flex-wrap tab:items-center tab:justify-between tab:gap-x-8">
+          {CONTACT_CHANNELS.map((channel) => {
+            const Icon = channel.icon;
+            return (
+              <div key={channel.label} className="flex flex-col items-start gap-2">
+                <h2 className="font-sans text-[18px] leading-[23.4px] font-normal text-[rgb(114,120,164)]">
+                  {channel.label}
+                </h2>
+                <div className="flex items-center gap-2">
+                  <span className="flex h-[34px] w-[28px] shrink-0 items-center justify-center text-dsg-ink-strong">
+                    <Icon className={channel.iconClassName} />
+                  </span>
+                  <a
+                    href={channel.href}
+                    {...(channel.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="font-sans text-[22px] leading-[1.3] font-medium text-dsg-ink-strong transition-colors hover:text-dsg-orange desk:text-[28px]"
+                  >
+                    {channel.value}
+                  </a>
+                </div>
+              </div>
+            );
+          })}
+
+          {/*
+            The live row ends with a 125 x 125 QR code
+            (`wp-content/uploads/2023/11/qr-code-3-1024x1024.png`, hidden on tablet
+            and mobile). That bitmap was not captured into `public/`, so the slot is
+            reserved empty to keep the measured `space-between` geometry.
+          */}
+          <div aria-hidden="true" className="hidden h-[125px] w-[125px] desk:block" />
+        </div>
+      </PageContainer>
+    </section>
+  );
+}
+
+/**
+ * 2. "Don't be shy" band — live section `463aaa2`, 1425 x 414, `padding: 0 10px`.
+ *
+ * The extraction captured no background for this section, but its only text is
+ * `rgb(255, 255, 255)` — so per the spec it is painted brand orange here. The
+ * headline block carries an Elementor `e-transform`: its 180 x 80 box paints into a
+ * 197 x 146 rect, which solves to a ~24deg rotation (direction assumed).
+ */
+function ContactHello() {
+  return (
+    <section className="w-full bg-dsg-orange px-[10px]">
+      <PageContainer className="flex min-h-[320px] flex-col items-center justify-end gap-5 py-[10px] desk:min-h-[414px] desk:items-end">
+        <p className="-rotate-[24deg] text-center font-[family-name:var(--font-hand)] text-[40px] leading-[40px] font-bold whitespace-pre-line text-white">
+          {"Don’t be shy,\nsay hello!"}
+        </p>
+        {/*
+          On the live page this arrow is pulled 98px below the band
+          (`margin: 0 64px -98px 0`). It is kept inside the band here so the white
+          mark stays on the orange ground rather than bleeding onto the white
+          section below.
+        */}
+        <HelloArrow className="h-[140px] w-[90px] text-white desk:mr-16" />
+      </PageContainer>
+    </section>
+  );
+}
+
+/** The six "Interested in" checkboxes, in the live order. */
+const SERVICE_OPTIONS: readonly string[] = [
+  "Brand Identity",
+  "Website Design + Dev",
+  "Brand Guideline",
+  "Brand Strategy",
+  "Design Support",
+  "Other",
+];
+
+/** Full acceptance copy, verbatim from the extraction (two lines). */
+const ACCEPTANCE_TEXT = [
+  "I agree to the DESIGNALLY agreement and customer Privacy Policy",
+  "I also agree to be contacted at the number provided with more information or offers about DESIGNALLY services.",
+];
+
+interface ContactFormValues {
+  services: string[];
+  fullname: string;
+  companyName: string;
+  briefly: string;
+  email: string;
+  phone: string;
+  acceptance: boolean;
+}
+
+const EMPTY_FORM: ContactFormValues = {
+  services: [],
+  fullname: "",
+  companyName: "",
+  briefly: "",
+  email: "",
+  phone: "",
+  acceptance: false,
+};
+
+type ContactFormErrors = Partial<Record<keyof ContactFormValues, string>>;
+
+/** Poppins 32 / 400 / lh 48, rgb(33, 33, 33) — the mad-libs sentence runs. */
+const SENTENCE_RUN =
+  "font-sans text-[22px] leading-[34px] font-normal text-dsg-ink-strong tab:text-[26px] tab:leading-[40px] desk:text-[32px] desk:leading-[48px]";
+
+/**
+ * Measured input: Poppins 16px, `rgb(33, 33, 33)`, white ground,
+ * `border-bottom: 1px solid rgb(33, 33, 33)`, `padding: 8px 0`, height 41.
+ */
+const FIELD_INPUT =
+  "h-[41px] w-full border-b bg-white px-0 py-2 font-sans text-[16px] leading-[24px] text-dsg-ink-strong outline-none transition-colors placeholder:text-dsg-ink-strong/50 focus:border-dsg-orange";
+
+/**
+ * 3. Inquiry form — live section `e259632`, 1425 x 913, inner `padding: 160px 0`.
+ *
+ * IMPORTANT — THIS FORM DOES NOT SUBMIT ANYWHERE.
+ * This is a static clone with no backend: there is no action, no endpoint, no
+ * mail transport and no third-party service. `handleSubmit` calls
+ * `event.preventDefault()`, validates in the browser and swaps in an inline
+ * success state. Nothing leaves the page and nobody receives the message — do not
+ * assume otherwise, and wire a real handler before using this in production.
+ *
+ * The live DOM renders this form three times (Elementor desktop / tablet / mobile
+ * variants, 48 inputs in total). This is the single responsive equivalent, with
+ * the 16 real fields.
+ */
+function ContactForm() {
+  const formId = useId();
+  const [values, setValues] = useState<ContactFormValues>(EMPTY_FORM);
+  const [errors, setErrors] = useState<ContactFormErrors>({});
+  const [isSent, setIsSent] = useState(false);
+
+  const toggleService = (option: string) => {
+    setValues((current) => ({
+      ...current,
+      services: current.services.includes(option)
+        ? current.services.filter((entry) => entry !== option)
+        : [...current.services, option],
+    }));
+  };
+
+  const setField = (
+    field: "fullname" | "companyName" | "briefly" | "email" | "phone",
+    value: string,
+  ) => {
+    setValues((current) => ({ ...current, [field]: value }));
+    setErrors((current) => ({ ...current, [field]: undefined }));
+  };
+
+  const validate = (candidate: ContactFormValues): ContactFormErrors => {
+    const next: ContactFormErrors = {};
+    if (!candidate.fullname.trim()) next.fullname = "Please enter your name.";
+    if (!candidate.companyName.trim())
+      next.companyName = "Please enter your company name.";
+    if (!candidate.briefly.trim())
+      next.briefly = "Please tell us a little about the project.";
+    if (!candidate.email.trim()) {
+      next.email = "Please enter your email.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(candidate.email.trim())) {
+      next.email = "Please enter a valid email address.";
+    }
+    if (!candidate.acceptance)
+      next.acceptance = "Please accept the agreement to continue.";
+    return next;
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    // No network call is made here, by design — see the block comment above.
+    event.preventDefault();
+    const nextErrors = validate(values);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+    setIsSent(true);
+  };
+
+  const resetForm = () => {
+    setValues(EMPTY_FORM);
+    setErrors({});
+    setIsSent(false);
+  };
+
+  return (
+    <section className={cn("flex w-full flex-col", SECTION_PADDING)}>
+      <PageContainer className="flex flex-col py-[80px] desk:py-[160px]">
+        {/* Heading row: flex, gap 16px, padding-bottom 40px. */}
+        <h2 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] font-medium desk:text-[64px] desk:leading-[64px]">
+          <span className="text-dsg-ink-strong">Which services are you</span>
+          <span className="text-dsg-ink">interested in?</span>
+        </h2>
+
+        {isSent ? (
+          <div
+            role="status"
+            className="flex flex-col items-start gap-4 border-b border-dsg-ink-strong pb-10"
+          >
+            <p className={SENTENCE_RUN}>
+              Thanks{values.fullname.trim() ? `, ${values.fullname.trim()}` : ""} — your
+              inquiry is noted.
+            </p>
+            <p className="font-sans text-[16px] leading-[24px] text-dsg-ink">
+              This is a clone of designally.co with no backend, so nothing was sent
+              anywhere. On the live site the team replies within one business day.
+            </p>
+            <button
+              type="button"
+              onClick={resetForm}
+              className="rounded-[200px] border border-dsg-orange px-8 py-4 font-sans text-[16px] leading-[19.2px] font-medium text-dsg-orange transition-colors hover:bg-dsg-orange hover:text-white"
+            >
+              Write another
+            </button>
+          </div>
+        ) : (
+          <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-6">
+            {/* Field 1 — "Interested in" checkbox group, six inline options. */}
+            <fieldset className="flex flex-col gap-3">
+              <legend className="sr-only">Interested in</legend>
+              <div className="flex flex-wrap items-center gap-3">
+                {SERVICE_OPTIONS.map((option) => {
+                  const isChecked = values.services.includes(option);
+                  return (
+                    <label
+                      key={option}
+                      className={cn(
+                        "cursor-pointer rounded-[500px] border px-5 py-2 font-sans text-[16px] leading-[24px] transition-colors",
+                        isChecked
+                          ? "border-dsg-orange bg-dsg-orange text-white"
+                          : "border-dsg-ink-strong/30 text-dsg-ink-strong hover:border-dsg-ink-strong",
+                      )}
+                    >
+                      <input
+                        type="checkbox"
+                        name="services"
+                        value={option}
+                        checked={isChecked}
+                        onChange={() => toggleService(option)}
+                        className="sr-only"
+                      />
+                      {option}
+                    </label>
+                  );
+                })}
+              </div>
+            </fieldset>
+
+            {/* Fields 2 + 3 — "My name's [ ] from [ ]". */}
+            <div className="flex flex-col gap-x-6 gap-y-4 tab:flex-row tab:flex-wrap tab:items-center">
+              <span className={SENTENCE_RUN}>My name’s</span>
+              <div className="flex min-w-[220px] shrink grow basis-[466px] flex-col gap-1">
+                <label htmlFor={`${formId}-fullname`} className="sr-only">
+                  Input name
+                </label>
+                <input
+                  id={`${formId}-fullname`}
+                  name="fullname"
+                  type="text"
+                  required
+                  placeholder="Enter your name"
+                  value={values.fullname}
+                  onChange={(event) => setField("fullname", event.target.value)}
+                  aria-invalid={Boolean(errors.fullname)}
+                  className={cn(
+                    FIELD_INPUT,
+                    errors.fullname ? "border-dsg-orange" : "border-dsg-ink-strong",
+                  )}
+                />
+                {errors.fullname ? (
+                  <span className="font-sans text-[13px] text-dsg-orange">
+                    {errors.fullname}
+                  </span>
+                ) : null}
+              </div>
+              <span className={SENTENCE_RUN}>from</span>
+              <div className="flex min-w-[220px] shrink grow basis-[411px] flex-col gap-1">
+                <label htmlFor={`${formId}-company`} className="sr-only">
+                  Company name
+                </label>
+                <input
+                  id={`${formId}-company`}
+                  name="company_name"
+                  type="text"
+                  required
+                  placeholder="Enter your company name"
+                  value={values.companyName}
+                  onChange={(event) => setField("companyName", event.target.value)}
+                  aria-invalid={Boolean(errors.companyName)}
+                  className={cn(
+                    FIELD_INPUT,
+                    errors.companyName ? "border-dsg-orange" : "border-dsg-ink-strong",
+                  )}
+                />
+                {errors.companyName ? (
+                  <span className="font-sans text-[13px] text-dsg-orange">
+                    {errors.companyName}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+
+            {/* Field 4 — "I'd like to discuss about [ ]". */}
+            <div className="flex flex-col gap-x-6 gap-y-4 tab:flex-row tab:flex-wrap tab:items-center">
+              <span className={SENTENCE_RUN}>I’d like to discuss about</span>
+              <div className="flex min-w-[220px] shrink grow basis-[803px] flex-col gap-1">
+                <label htmlFor={`${formId}-briefly`} className="sr-only">
+                  Briefly
+                </label>
+                <input
+                  id={`${formId}-briefly`}
+                  name="briefly"
+                  type="text"
+                  required
+                  placeholder="Briefly describe your project or idea."
+                  value={values.briefly}
+                  onChange={(event) => setField("briefly", event.target.value)}
+                  aria-invalid={Boolean(errors.briefly)}
+                  className={cn(
+                    FIELD_INPUT,
+                    errors.briefly ? "border-dsg-orange" : "border-dsg-ink-strong",
+                  )}
+                />
+                {errors.briefly ? (
+                  <span className="font-sans text-[13px] text-dsg-orange">
+                    {errors.briefly}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+
+            {/* Fields 5 + 6 — "Feel free to contact me at [ ] or [ ]". */}
+            <div className="flex flex-col gap-x-6 gap-y-4 tab:flex-row tab:flex-wrap tab:items-center">
+              <span className={SENTENCE_RUN}>Feel free to contact me at</span>
+              <div className="flex min-w-[220px] shrink grow basis-[341px] flex-col gap-1">
+                <label htmlFor={`${formId}-email`} className="sr-only">
+                  Email
+                </label>
+                <input
+                  id={`${formId}-email`}
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="Enter your email"
+                  value={values.email}
+                  onChange={(event) => setField("email", event.target.value)}
+                  aria-invalid={Boolean(errors.email)}
+                  className={cn(
+                    FIELD_INPUT,
+                    errors.email ? "border-dsg-orange" : "border-dsg-ink-strong",
+                  )}
+                />
+                {errors.email ? (
+                  <span className="font-sans text-[13px] text-dsg-orange">
+                    {errors.email}
+                  </span>
+                ) : null}
+              </div>
+              <span className={SENTENCE_RUN}>or</span>
+              <div className="flex min-w-[220px] shrink grow basis-[341px] flex-col gap-1">
+                <label htmlFor={`${formId}-phone`} className="sr-only">
+                  Phone
+                </label>
+                <input
+                  id={`${formId}-phone`}
+                  name="phone"
+                  type="tel"
+                  placeholder="Enter your phone no."
+                  value={values.phone}
+                  onChange={(event) => setField("phone", event.target.value)}
+                  className={cn(FIELD_INPUT, "border-dsg-ink-strong")}
+                />
+              </div>
+            </div>
+
+            {/*
+              Field 7 (acceptance, required) + field 8 (submit). On the live page the
+              button is pulled up 100px so it sits alongside the acceptance block; at
+              desktop that reads as bottom-aligned, which is what is reproduced here.
+            */}
+            <div className="flex flex-col gap-8 desk:flex-row desk:items-end desk:justify-between">
+              <div className="flex max-w-[588px] flex-col gap-1">
+                <label className="flex items-start gap-3" htmlFor={`${formId}-acceptance`}>
+                  <input
+                    id={`${formId}-acceptance`}
+                    name="acceptance"
+                    type="checkbox"
+                    required
+                    checked={values.acceptance}
+                    onChange={(event) => {
+                      const { checked } = event.target;
+                      setValues((current) => ({ ...current, acceptance: checked }));
+                      setErrors((current) => ({ ...current, acceptance: undefined }));
+                    }}
+                    aria-invalid={Boolean(errors.acceptance)}
+                    className="mt-[6px] h-[13px] w-[13px] shrink-0 accent-dsg-orange"
+                  />
+                  <span className="font-sans text-[16px] leading-[24px] text-dsg-ink-strong">
+                    {ACCEPTANCE_TEXT[0]}
+                    <br />
+                    {ACCEPTANCE_TEXT[1]}
+                  </span>
+                </label>
+                {errors.acceptance ? (
+                  <span className="font-sans text-[13px] text-dsg-orange">
+                    {errors.acceptance}
+                  </span>
+                ) : null}
+              </div>
+
+              <div className="flex justify-start desk:justify-end">
+                <button
+                  type="submit"
+                  className="h-[60px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
+                >
+                  Send inquiry
+                </button>
+              </div>
+            </div>
+          </form>
+        )}
+      </PageContainer>
+    </section>
+  );
+}
+
+/** Exact embed URL from the live iframe — a keyless Google Maps embed. */
+const MAP_SRC = "https://maps.google.com/maps?q=Designally&t=m&z=15&output=embed&iwloc=near";
+
+/** 4. Google map — live section `5eae665`, full-bleed iframe 1425 x 500. */
+function ContactMap() {
+  return (
+    <section className="w-full">
+      <iframe
+        src={MAP_SRC}
+        title="DESIGNALLY on Google Maps"
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        className="block h-[320px] w-full border-0 desk:h-[500px]"
+      />
+    </section>
+  );
+}
+
+/** Support ticket form — external, so it keeps its absolute URL. */
+const TICKET_URL = "https://forms.clickup.com/3819042/f/3mhh2-27922/WC7V6SY2IUXE41Y9AF";
+
+/**
+ * 5. Customer support — live section `d1348f0`, 1425 x 501.
+ * Inner: centred column, `gap: 24px`, `padding: 120px 0`.
+ */
+function ContactSupport() {
+  return (
+    <section className={cn("flex w-full flex-col", SECTION_PADDING)}>
+      <PageContainer className="flex flex-col items-center gap-6 py-[80px] text-center desk:py-[120px]">
+        <h2 className="flex flex-col gap-2 font-sans text-[28px] leading-[1.15] font-medium text-dsg-ink-strong desk:text-[40px] desk:leading-[40px]">
+          <span>If you need some help</span>
+          <span>contact our customer support</span>
+        </h2>
+        <p className="w-full max-w-[600px] font-sans text-[16px] leading-[24px] font-normal text-dsg-ink-strong">
+          For website support or assistance with existing projects, please submit a
+          ticket. This will help us gather the necessary information to assist you
+          promptly.
+        </p>
+        <a
+          href={TICKET_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block rounded-[200px] border border-dsg-orange px-8 py-4 font-sans text-[16px] leading-[19.2px] font-medium text-dsg-orange transition-colors hover:bg-dsg-orange hover:text-white"
+        >
+          Send us a ticket
+        </a>
+      </PageContainer>
+    </section>
+  );
+}
+
+/** The five page-specific sections of /contact-us/, in live order. */
+export function ContactPage() {
+  return (
+    <>
+      <ContactHero />
+      <ContactHello />
+      <ContactForm />
+      <ContactMap />
+      <ContactSupport />
+    </>
+  );
+}
