@@ -1,0 +1,120 @@
+import type { DsgNavItem } from "@/types/designally";
+import { cn } from "@/lib/utils";
+
+/**
+ * designally.co — in-flow page header (Elementor `.elementor-element-12a5b5d`,
+ * "header-1"). Static server component: the only behaviour is CSS hover.
+ *
+ * It is NOT sticky — it scrolls away with the page. The live DOM carries
+ * `margin-top: -146px` purely to cancel the spacer Elementor injects for its
+ * separate floating sticky header; this clone renders that floating header as a
+ * pure overlay with no spacer, so the margin here is 0.
+ *
+ * Layout at >= 1025px (measured at a 1425px content width):
+ *   .dsg-container (1068.75px) = logo 25% (267.188) + nav 50% (534.375) + contact 25% (267.188)
+ * Each block is `flex-direction: column; justify-content: center`, so the block
+ * cross-axis alignment is what positions the content horizontally:
+ * logo `flex-start` (flush left), nav `center`, contact `flex-end` (flush right).
+ */
+
+const WORDMARK_SRC = "/sites/designally-co-e422ade5/shared/svg/designally-wordmark.svg";
+
+/** Rendered wordmark box: 214.398 x 20 out of the source viewBox "0 0 536 50". */
+const WORDMARK_WIDTH = "214.398px";
+
+const NAV_ITEMS: readonly DsgNavItem[] = [
+  { label: "SERVICES", href: "https://designally.co/services/" },
+  { label: "WORKS", href: "https://designally.co/works/" },
+  { label: "ABOUT", href: "https://designally.co/about/" },
+  { label: "THOUGHTS", href: "https://designally.co/thoughts/" },
+];
+
+const CONTACT_ITEM: DsgNavItem = { label: "CONTACT US", href: "/contact-us/" };
+
+/**
+ * The extracted wordmark asset carries no `fill` attribute — on the live site the
+ * colour comes from CSS (`fill: rgb(245, 99, 65)`) applied to the inlined SVG. An
+ * `<img>` cannot be styled from the host document, so the mark is painted as a
+ * brand-orange fill masked by the very same external SVG file. Same asset, same
+ * measured colour, no inlined path data.
+ */
+const WORDMARK_MASK: React.CSSProperties = {
+  maskImage: `url("${WORDMARK_SRC}")`,
+  WebkitMaskImage: `url("${WORDMARK_SRC}")`,
+  maskRepeat: "no-repeat",
+  WebkitMaskRepeat: "no-repeat",
+  maskSize: "100% 100%",
+  WebkitMaskSize: "100% 100%",
+};
+
+export interface SiteHeaderProps {
+  className?: string;
+}
+
+export function SiteHeader({ className }: SiteHeaderProps) {
+  return (
+    <header
+      className={cn(
+        "relative z-[999] flex w-full flex-col bg-transparent",
+        "[transition:background_0.3s,border_0.3s,box-shadow_0.3s,transform_0.4s]",
+        className,
+      )}
+    >
+      <div className="dsg-container flex flex-row py-[40px]">
+        {/* Logo — 25% column, content flush left, vertically centred. */}
+        <div className="flex h-[51.203px] w-auto shrink-0 flex-col items-start justify-center desk:w-1/4">
+          <a
+            href="https://designally.co"
+            aria-label="DESIGNALLY"
+            className="inline-block h-[20px] w-[214.398px] transition-all duration-300"
+          >
+            <span
+              aria-hidden="true"
+              className="block h-[20px] bg-dsg-orange"
+              style={{ ...WORDMARK_MASK, width: WORDMARK_WIDTH }}
+            />
+          </a>
+        </div>
+
+        {/* Primary nav — 50% column. Hidden below 1025px (tablet + mobile). */}
+        <nav
+          aria-label="Primary"
+          className="hidden h-[51.203px] w-1/2 flex-col items-center justify-center desk:flex"
+        >
+          <ul className="flex h-[51.203px] justify-between">
+            {NAV_ITEMS.map((item) => (
+              <li key={item.href} className="mx-[20px] flex">
+                <a
+                  href={item.href}
+                  className={cn(
+                    "flex items-center py-[16px] font-sans text-[16px] font-medium",
+                    "uppercase leading-[19.2px] text-dsg-ink-strong",
+                    "transition-colors duration-[400ms] hover:text-dsg-orange focus-visible:text-dsg-orange",
+                  )}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* CONTACT US — 25% column, content flush right. Hidden at <= 767px. */}
+        <div className="ml-auto hidden h-[51.203px] w-auto shrink-0 flex-col items-end justify-center tab:flex desk:ml-0 desk:w-1/4">
+          <a
+            href={CONTACT_ITEM.href}
+            className={cn(
+              "inline-block rounded-[200px] border border-solid border-dsg-orange",
+              "bg-transparent px-[32px] py-[12px] text-center",
+              "font-sans text-[16px] font-medium leading-[19.2px] text-dsg-orange",
+              "transition-colors duration-300",
+              "hover:bg-dsg-orange hover:text-white focus-visible:bg-dsg-orange focus-visible:text-white",
+            )}
+          >
+            {CONTACT_ITEM.label}
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+}
