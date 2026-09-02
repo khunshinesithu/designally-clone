@@ -139,16 +139,32 @@ function CaseStudyCard({ study }: { study: DsgCaseStudy }) {
   );
 }
 
-interface CaseStudySectionProps {
+export interface CaseStudySectionProps {
   className?: string;
+  /**
+   * Which case studies to show. Defaults to the four on the homepage; `/works/`
+   * passes six. The card itself is fluid — its measured 522.375px on `/` and
+   * 588px on `/works/` are both just `(container - 24px gap) / 2`, so the only
+   * thing that changes between the two pages is the container width.
+   */
+  studies?: readonly DsgCaseStudy[];
+  /**
+   * Container utility. `/` uses the fluid `.dsg-container` (75%); `/works/` and the
+   * other inner pages use a fixed `max-w-[1200px] mx-auto`.
+   */
+  containerClassName?: string;
 }
 
-export function CaseStudySection({ className }: CaseStudySectionProps) {
+export function CaseStudySection({
+  className,
+  studies = CASE_STUDIES,
+  containerClassName = "dsg-container",
+}: CaseStudySectionProps) {
   return (
     <section
       className={cn("relative flex w-full flex-col font-sans", className)}
     >
-      <div className="dsg-container flex flex-col py-[160px]">
+      <div className={cn(containerClassName, "flex flex-col py-[160px]")}>
         {/*
           space-between row from 1025px up: "Case Study" flush left, the
           three-part line flush right. Below that the right group drops onto
@@ -172,7 +188,7 @@ export function CaseStudySection({ className }: CaseStudySectionProps) {
           24px column gap lands the cards on 522.375px at 1440.
         */}
         <div className="mt-[40px] grid grid-cols-1 gap-y-[40px] tab:mt-[56px] tab:grid-cols-2 tab:gap-x-[24px] tab:gap-y-[56px] desk:mt-[80px]">
-          {CASE_STUDIES.map((study) => (
+          {studies.map((study) => (
             <CaseStudyCard key={study.href} study={study} />
           ))}
         </div>
