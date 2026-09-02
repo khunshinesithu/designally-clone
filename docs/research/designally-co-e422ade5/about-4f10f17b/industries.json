@@ -1,0 +1,268 @@
+{
+ "columns": [
+  {
+   "panel": 5,
+   "category": "Agencies",
+   "count": "5",
+   "x": 6451,
+   "names": [
+    "Convergency",
+    "Merge Collective",
+    "On-Point Media",
+    "Qccommunications",
+    "Rise Creative"
+   ]
+  },
+  {
+   "panel": 5,
+   "category": "Bars & Restaurants",
+   "count": "12",
+   "x": 6743,
+   "names": [
+    "Attitude Rooftop",
+    "Black The Jazz Spot",
+    "Fat Coco",
+    "Haoma",
+    "Khao",
+    "Kin + Duem",
+    "Malibrew",
+    "NoWhere",
+    "Pippa",
+    "Shinsen Fish Market",
+    "The 51 Tasty Moments",
+    "Tim Ho Wan"
+   ]
+  },
+  {
+   "panel": 5,
+   "category": "Corporate",
+   "count": "12",
+   "x": 7035,
+   "names": [
+    "AIA",
+    "AsiaInfo Linkage",
+    "Benchachinda Group",
+    "Brainergy",
+    "Huawei",
+    "INNNews",
+    "Major Cineplex",
+    "Mjets",
+    "Muang Thai Insurance",
+    "SCG",
+    "SCG Trading",
+    "SCSI"
+   ]
+  },
+  {
+   "panel": 5,
+   "category": "Consumer Products",
+   "count": "25",
+   "x": 7327,
+   "names": [
+    "Aunchalee Boutique",
+    "BanaPlaya",
+    "Boonthavorn",
+    "CannaKacha",
+    "Dr.Bewell",
+    "Ducati",
+    "Koze Furniture",
+    "Laga",
+    "Lee",
+    "Miyoshi",
+    "Mohmee",
+    "Monier Group",
+    "Nanobag",
+    "Nich Cosmetic",
+    "Nikko",
+    "Nourigo",
+    "Spark Kids",
+    "PIP Intetnational",
+    "Pet Party",
+    "Pomelo Fashion",
+    "Ramita Trading",
+    "Thai Gem Center",
+    "Thai Kitchen Mart",
+    "Villeroy & Boch",
+    "Woonae Cosmetics",
+    "Zalora"
+   ]
+  },
+  {
+   "panel": 6,
+   "category": "Education",
+   "count": "8",
+   "x": 7891,
+   "names": [
+    "Bangkok University",
+    "Chulalongkorn University",
+    "English MunMun",
+    "Kasetsart University",
+    "Pearson",
+    "Raffles Design Institute",
+    "Sripratum University",
+    "Thammasart University"
+   ]
+  },
+  {
+   "panel": 6,
+   "category": "Events & Festivals",
+   "count": "8",
+   "x": 8183,
+   "names": [
+    "Dontri Music Festival",
+    "Epic Entertainment",
+    "Live Events Group",
+    "Miss Thailand",
+    "Miss Universe Thailand",
+    "Mystic Valley",
+    "Transmission Festival",
+    "Unkonscious Festival"
+   ]
+  },
+  {
+   "panel": 6,
+   "category": "Energy",
+   "count": "4",
+   "x": 8475,
+   "names": [
+    "Banpu Next",
+    "PTT MCC Biochem",
+    "Scan Inter",
+    "Technip"
+   ]
+  },
+  {
+   "panel": 6,
+   "category": "Food & Beverages",
+   "count": "10",
+   "x": 8767,
+   "names": [
+    "Aroma Group",
+    "Bangkok Sausage House",
+    "Chao Doi Coffee",
+    "Mingo",
+    "Puchi",
+    "Redbull",
+    "Russian Standard Vodka",
+    "Siam Winery Commercial",
+    "So Fresh",
+    "Tattva"
+   ]
+  },
+  {
+   "panel": 6,
+   "category": "Financial Services",
+   "count": "4",
+   "x": 9059,
+   "names": [
+    "Bitazza",
+    "Kryptodian",
+    "StashAway",
+    "Superrich"
+   ]
+  },
+  {
+   "panel": 7,
+   "category": "Government",
+   "count": "8",
+   "x": 9331,
+   "names": [
+    "Airport of Thailand",
+    "EGAT",
+    "GIZ Thailand",
+    "MCOT",
+    "PEA",
+    "Thailand Immigration Bureau",
+    "Thailand Ministry of Energy",
+    "Thailand Ministry of Finance"
+   ]
+  },
+  {
+   "panel": 7,
+   "category": "Hospitality",
+   "count": "7",
+   "x": 9623,
+   "names": [
+    "A-One Hotel",
+    "Avani Hotel",
+    "Marriot Resort & Spa",
+    "Mytt Beach hotel",
+    "Richmond Hotel",
+    "So/ Bangkok",
+    "The White Garden"
+   ]
+  },
+  {
+   "panel": 7,
+   "category": "Industrial & Manufacturing",
+   "count": "13",
+   "x": 9915,
+   "names": [
+    "BIS Group",
+    "Betagro",
+    "Green Leaf Chemical",
+    "Hi-Tech Apparel",
+    "Lucky Star",
+    "Nihon Superior",
+    "PP Prime",
+    "SPS Intertech",
+    "Skytower",
+    "Skytower Infra",
+    "Success Group",
+    "Voestalpine",
+    "Wann Cosmetics & Laboratory"
+   ]
+  },
+  {
+   "panel": 7,
+   "category": "Online Services",
+   "count": "7",
+   "x": 10207,
+   "names": [
+    "DDproperty",
+    "ICAR Asia",
+    "Insightera",
+    "Lazada",
+    "Line",
+    "Mespace",
+    "Rakmao"
+   ]
+  },
+  {
+   "panel": 7,
+   "category": "Real Estate",
+   "count": "13",
+   "x": 10499,
+   "names": [
+    "Aesthete Estate",
+    "CP Land",
+    "Motif Development",
+    "Property Perfect",
+    "Ratcha",
+    "SC Assets",
+    "Utopia Corporation"
+   ]
+  },
+  {
+   "panel": 8,
+   "category": "Others",
+   "count": "13",
+   "x": 10771,
+   "names": [
+    "Atlas Capital",
+    "Fitness 7 Thailand",
+    "Foodie Market",
+    "Global Assets",
+    "Hallmark",
+    "Honda Leasing Thailand",
+    "K Village",
+    "Nakornloung Promotion",
+    "Rajpruek Club",
+    "Seacon Bangkae",
+    "Siam Park City",
+    "ThaiSangThai Party",
+    "Young President Organization"
+   ]
+  }
+ ]
+}
