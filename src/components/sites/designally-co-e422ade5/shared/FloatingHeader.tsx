@@ -16,6 +16,7 @@
  */
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import type { DsgNavItem } from "@/types/designally";
@@ -80,13 +81,13 @@ export function FloatingHeader({ className, activeNav }: FloatingHeaderProps) {
         className,
       )}
     >
-      <a
+      <Link
         href="/"
         aria-label="Designally home"
         className="inline-block h-[52px] w-[52px] text-dsg-orange"
       >
         <DMonogramIcon width={52} height={52} className="block h-[52px] w-[52px]" />
-      </a>
+      </Link>
 
       <div className="flex flex-col items-end">
         <button

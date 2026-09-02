@@ -1,4 +1,5 @@
 import type { DsgNavItem } from "@/types/designally";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
@@ -84,7 +85,7 @@ export function SiteHeader({ className, activeNav }: SiteHeaderProps) {
       <div className="dsg-container flex flex-row py-0 tab:py-[24px] desk:py-[40px]">
         {/* Logo — 25% column, content flush left, vertically centred. */}
         <div className="flex h-[51.203px] w-auto shrink-0 flex-col items-start justify-center desk:w-1/4">
-          <a
+          <Link
             href="/"
             aria-label="DESIGNALLY"
             className="inline-block h-[20px] w-[214.398px] transition-all duration-300"
@@ -94,7 +95,7 @@ export function SiteHeader({ className, activeNav }: SiteHeaderProps) {
               className="block h-[20px] bg-dsg-orange"
               style={{ ...WORDMARK_MASK, width: WORDMARK_WIDTH }}
             />
-          </a>
+          </Link>
         </div>
 
         {/* Primary nav — 50% column. Hidden below 1025px (tablet + mobile). */}
