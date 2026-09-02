@@ -1,214 +1,115 @@
-<div align="center">
+# Designally
 
-# AI Website Cloner Template
+A Next.js recreation of [designally.co](https://designally.co), built as a static site.
 
-### Clone any website with one command
+Six routes, matching the original's layout, typography and interactions.
 
-Give your AI coding agent a URL and watch it recreate the website as a clean Next.js app.
+## Getting started
 
-**Best results with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) + Opus 5. Works with Codex, Cursor, Gemini, and more.**
+Requires Node.js 24+.
 
-[![Use this template](https://img.shields.io/badge/Use_this_template-Create_your_copy-2ea44f?style=for-the-badge&logo=github&logoColor=white)](https://github.com/JCodesMore/ai-website-cloner-template/generate) [![Discord](https://img.shields.io/badge/Join_the_community-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/hrTSX5yTpB)
-
-[Quick Start](#quick-start) · [Watch Demo](#demo) · [Supported Platforms](#supported-platforms)
-
-<a href="https://github.com/JCodesMore/ai-website-cloner-template/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT License" /></a> <a href="https://github.com/JCodesMore/ai-website-cloner-template"><img src="https://img.shields.io/github/stars/JCodesMore/ai-website-cloner-template?style=flat" alt="Stars" /></a> <img src="https://img.shields.io/endpoint?url=https://gittokens.rsamf.com/badge/JCodesMore/ai-website-cloner-template" alt="tokens" />
-
-  <a href="https://trendshift.io/repositories/24302?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-24302" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/repositories/24302" alt="JCodesMore%2Fai-website-cloner-template | Trendshift" width="250" height="55" /></a> <a href="https://www.star-history.com/jcodesmore/ai-website-cloner-template/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=JCodesMore/ai-website-cloner-template&amp;theme=dark" /><source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=JCodesMore/ai-website-cloner-template" /><img alt="Star History Global Rank" src="https://api.star-history.com/badge?repo=JCodesMore/ai-website-cloner-template" width="216" height="55" /></picture></a>
-
-<br />
-<sub><strong>SPONSORED BY</strong></sub>
-<br /><br />
-<a href="https://www.rapidproxy.io/?ref=JCM"><img src="docs/assets/sponsors/rapidproxy-banner.png" alt="RapidProxy residential proxy service" width="680" /></a>
-<br />
-<sub>Power your scraping and automation with 90M+ residential IPs, 500MB free traffic, and non-expiring bandwidth. <a href="https://www.rapidproxy.io/?ref=JCM">Explore RapidProxy →</a></sub>
-<br /><br />
-<a href="https://www.atlascloud.ai/?utm_source=github&amp;utm_medium=sponsor&amp;utm_campaign=ai-website-cloner-template">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/sponsors/atlas-cloud-logo-white.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="docs/assets/sponsors/atlas-cloud-logo.svg" />
-    <img src="docs/assets/sponsors/atlas-cloud-logo.svg" alt="Atlas Cloud" width="240" />
-  </picture>
-</a>
-<br />
-<sub>Generate AI images, video, audio, and 3D assets through one API. <a href="https://www.atlascloud.ai/?utm_source=github&amp;utm_medium=sponsor&amp;utm_campaign=ai-website-cloner-template">Explore Atlas Cloud →</a></sub>
-
-</div>
-
----
-
-## Demo
-
-[![Watch the demo](docs/design-references/comparison.png)](https://youtu.be/O669pVZ_qr0)
-
-> Click the image above to watch the full demo on YouTube.
-
-## Quick Start
-
-> **Important:** Start by making your own copy with GitHub's **Use this template** button. Do not clone this template repository directly for your website project, and do not open pull requests here with your generated website.
-
-1. **Create your own repository from this template**
-
-   On the GitHub page for this project, click **Use this template**, then click **Create a new repository**.
-
-   Give your new repository a name, choose whether it should be public or private, then click **Create repository**. If GitHub shows an **Include all branches** option, you can leave it off.
-
-   This gives you your own separate project to work in, so your website changes stay in your account instead of coming back to the main template.
-
-2. **Open your new repository on your computer**
-
-   After GitHub creates your copy, open that new repository. Click **Code** and open or clone your new repository with your preferred coding tool.
-
-   If you use the terminal, the command will look like this:
-
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/YOUR-NEW-REPOSITORY.git
-   cd YOUR-NEW-REPOSITORY
-   ```
-
-3. **Install dependencies**
-   ```bash
-   npm install
-   ```
-4. **Start your AI agent** — Claude Code recommended:
-   ```bash
-   claude --chrome
-   ```
-5. **Run the skill**:
-   ```
-   /clone-website <target-url1> [<target-url2> ...]
-   ```
-6. **Customize** (optional) — after the base clone is built, modify as needed
-
-> Most supported clients expose `/clone-website` directly. If your client activates skills from natural-language requests, enter `Clone <target-url> using the clone-website workflow`. Project instructions are in `AGENTS.md`.
-
-## Supported Platforms
-
-| Agent                                                         | Status                     |
-| ------------------------------------------------------------- | -------------------------- |
-| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | **Recommended** — Opus 5   |
-| [Codex CLI](https://github.com/openai/codex)                  | Supported                  |
-| [OpenCode](https://opencode.ai/)                              | Supported                  |
-| [GitHub Copilot](https://github.com/features/copilot)         | Supported                  |
-| [Kiro](https://kiro.dev/)                                    | Supported                  |
-| [Cursor](https://cursor.com/)                                 | Supported                  |
-| [Windsurf](https://codeium.com/windsurf)                      | Supported                  |
-| [Gemini CLI](https://github.com/google-gemini/gemini-cli)     | Supported                  |
-| [Cline](https://github.com/cline/cline)                       | Supported                  |
-| [Roo Code](https://github.com/RooCodeInc/Roo-Code)            | Supported                  |
-| [Continue](https://continue.dev/)                             | Supported                  |
-| [Amazon Q](https://aws.amazon.com/q/developer/)               | Supported                  |
-| [Augment Code](https://www.augmentcode.com/)                  | Supported                  |
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org/) 24+
-- An AI coding agent (see [Supported Platforms](#supported-platforms))
-
-## Tech Stack
-
-- **Next.js 16** — App Router, React 19, TypeScript strict
-- **shadcn/ui** — Radix primitives + Tailwind CSS v4
-- **Tailwind CSS v4** — oklch design tokens
-- **Lucide React** — default icons (replaced by extracted SVGs during cloning)
-
-## How It Works
-
-The `/clone-website` skill runs a multi-phase pipeline:
-
-```mermaid
-flowchart LR
-    P1["1. Reconnaissance"] --> P2["2. Foundation"]
-    P2 --> P3["3. Component Specs"]
-    P3 --> P4["4. Parallel Build"]
-    P4 --> P5["5. Assembly and QA"]
+```bash
+npm install
+npm run dev
 ```
 
-1. **Reconnaissance** — screenshots, design token extraction, interaction sweep (scroll, click, hover, responsive)
-2. **Foundation** — updates fonts, colors, globals, downloads all assets
-3. **Component Specs** — writes detailed spec files (`docs/research/components/`) with exact computed CSS values, states, behaviors, and content
-4. **Parallel Build** — dispatches builder agents in git worktrees, one per section/component
-5. **Assembly & QA** — merges worktrees, wires up the page, runs visual diff against the original
+Then open http://localhost:3000.
 
-Each builder agent receives the full component specification inline — exact `getComputedStyle()` values, interaction models, multi-state content, responsive breakpoints, and asset paths. No guessing.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run check` | Lint + typecheck + build — **run this before every push** |
 
-## Use Cases
+## Routes
 
-- **Platform migration** — rebuild a site you own from WordPress/Webflow/Squarespace into a modern Next.js codebase
-- **Lost source code** — your site is live but the repo is gone, the developer left, or the stack is legacy. Get the code back in a modern format
-- **Learning** — deconstruct how production sites achieve specific layouts, animations, and responsive behavior by working with real code
+| Route | Notes |
+|---|---|
+| `/` | Video carousel hero, sticky services panel, filterable works gallery |
+| `/services/` | Sticky panel with five service cards, four-step process section |
+| `/works/` | 74-tile filterable gallery with load-more, six case studies |
+| `/about/` | **Scrolls horizontally** — ten panels, 12 000px wide, desktop only |
+| `/thoughts/` | Blog listing, nine posts |
+| `/contact-us/` | Enquiry form, Google Map embed |
 
-## Not Intended For
+All six prerender as static pages.
 
-- **Phishing or impersonation** — this project must not be used for deceptive purposes, impersonation, or any activity that breaks the law.
-- **Passing off someone's design as your own** — logos, brand assets, and original copy belong to their owners.
-- **Violating terms of service** — some sites explicitly prohibit scraping or reproduction. Check first.
+## Tech stack
 
-## Project Structure
+- **Next.js 16** — App Router, React 19, TypeScript strict
+- **Tailwind CSS v4** — design tokens in `src/app/globals.css`
+- **Fonts** — Poppins (UI), EB Garamond (display), Caveat (handwriting accents), all via `next/font/google`
+
+## Project structure
+
+Components are namespaced per page, so work on one page rarely touches another:
 
 ```
 src/
-  app/              # Next.js routes
-  components/       # React components
-    ui/             # shadcn/ui primitives
-    icons.tsx       # Extracted SVG icons
-  lib/utils.ts      # cn() utility
-  types/            # TypeScript interfaces
-  hooks/            # Custom React hooks
-public/
-  images/           # Downloaded images from target
-  videos/           # Downloaded videos from target
-  seo/              # Favicons, OG images
-docs/
-  research/         # Extraction output & component specs
-  design-references/ # Screenshots
-scripts/
-  sync-agent-rules.sh  # Regenerate agent instruction files
-  sync-skills.mjs      # Regenerate /clone-website for all platforms
-.kiro/skills/          # Generated Kiro workspace skill
-.cline/skills/         # Generated Cline workspace skill
-.roo/skills/           # Generated Roo Code workspace skill
-.roo/commands/         # Generated Roo Code slash command
-AGENTS.md           # Agent instructions (single source of truth)
-CLAUDE.md           # Claude Code config (imports AGENTS.md)
-GEMINI.md           # Gemini CLI config (imports AGENTS.md)
+  app/                     routes — one folder per page
+  components/sites/designally-co-e422ade5/
+    shared/                used by EVERY page — headers, footer, CTA, case studies, icons
+    root-8a5edab2/         homepage only
+    services-eeda784a/     /services/ only
+    works-cad9886f/        /works/ only
+    about-4f10f17b/        /about/ only
+    thoughts-e2a689e8/     /thoughts/ only
+    contact-us-ae5848da/   /contact-us/ only
+  types/designally.ts      shared content types
+public/sites/designally-co-e422ade5/
+  shared/                  logos, SVGs, favicons
+  <page-key>/              images and video for that page
 ```
 
-## Commands
+The odd-looking folder names (`root-8a5edab2`, `works-cad9886f`) are stable page keys — a readable slug plus a short hash of the source path. They keep each page's components, assets and notes from colliding.
+
+## Working on this with someone else
+
+Most of the codebase is naturally isolated — two people on different pages touch no files in common.
+
+**Three places are shared, and changes there affect every page:**
+
+- `src/components/sites/designally-co-e422ade5/shared/` — headers, footer, CTA, case-study section
+- `src/app/globals.css` — design tokens, container widths
+- `src/app/layout.tsx` and `src/types/designally.ts`
+
+Suggested workflow:
+
+1. One branch per page — `refine/works`, `refine/about`.
+2. Merge through pull requests rather than pushing to `master`.
+3. Land shared-file changes as their own small PR, and tell the other person before you start.
+4. Run `npm run check` before pushing.
+5. After changing anything in `shared/`, check the other pages still look right — a passing build won't catch a layout regression.
+
+**Assets are binary and can't be merged.** Rather than editing images by hand, re-download them with the scripts in `scripts/`:
 
 ```bash
-npm run dev    # Start dev server
-npm run build  # Production build
-npm run lint   # ESLint check
-npm run typecheck # TypeScript check
-npm run check  # Run lint + typecheck + build
+node scripts/download-assets-designally-co-e422ade5-works-cad9886f.mjs
 ```
 
-### If using docker
+Each script only writes into its own page's asset folder and skips files that already exist.
 
-```bash
-docker compose up app --build # build and run the app
-docker compose up dev --build # run the app in dev mode on port 3001
-```
+## Documentation
 
-## Updating for Other Platforms
+`docs/` holds the notes from building this:
 
-Two source-of-truth files power all platform support. Edit the source, then run the sync script:
+- `docs/research/designally-co-e422ade5/<page-key>/` — per-page component specs with measured values, plus the raw extraction data
+- `docs/research/designally-co-e422ade5/root-8a5edab2/VISUAL_QA.md` — how closely each page matches the original, and the known gaps
+- `docs/design-references/designally-co-e422ade5/` — reference screenshots
 
-| What                   | Source of truth                         | Sync command                       |
-| ---------------------- | --------------------------------------- | ---------------------------------- |
-| Project instructions   | `AGENTS.md`                             | `bash scripts/sync-agent-rules.sh` |
-| `/clone-website` skill | `.claude/skills/clone-website/SKILL.md` | `node scripts/sync-skills.mjs`     |
+Worth reading before changing layout values: most numbers in the components were measured from the original rather than chosen, and the specs say which.
 
-Each script regenerates the platform-specific copies automatically. Agents that read the source files natively need no regeneration.
+## Known limitations
 
+- The contact form validates but **does not submit anywhere** — there is no backend.
+- Sub-1025px styling on the five inner pages is approximate; only the desktop layout was measured.
+- A few decorative icons are redrawn rather than extracted.
 
-## Star History
+See `VISUAL_QA.md` for the full list.
 
-![Star History Chart](docs/assets/star-history.png)
+## Licence
 
-## License
-
-MIT
-
-<sub>Translations: <a href="README.ja.md">日本語</a> · <a href="README.zh-CN.md">Simplified Chinese</a></sub>
+This project was scaffolded from the MIT-licensed
+[ai-website-cloner-template](https://github.com/JCodesMore/ai-website-cloner-template);
+see [LICENSE](LICENSE). Site content, imagery and branding belong to Designally.
