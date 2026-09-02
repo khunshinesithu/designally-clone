@@ -153,18 +153,31 @@ export interface CaseStudySectionProps {
    * other inner pages use a fixed `max-w-[1200px] mx-auto`.
    */
   containerClassName?: string;
+  /**
+   * Whether to render the "View All Projects" pill under the grid. The homepage has
+   * it; `/works/` does not (measured: no such text anywhere in its case-study
+   * section) — it would be a link to the page you are already on.
+   */
+  showViewAll?: boolean;
+  /**
+   * Vertical padding on the inner container. The homepage measures `160px 0`;
+   * `/works/` measures `0 0 160px` — its heading sits flush with the section top.
+   */
+  paddingClassName?: string;
 }
 
 export function CaseStudySection({
   className,
   studies = CASE_STUDIES,
   containerClassName = "dsg-container",
+  showViewAll = true,
+  paddingClassName = "py-[160px]",
 }: CaseStudySectionProps) {
   return (
     <section
       className={cn("relative flex w-full flex-col font-sans", className)}
     >
-      <div className={cn(containerClassName, "flex flex-col py-[160px]")}>
+      <div className={cn(containerClassName, "flex flex-col", paddingClassName)}>
         {/*
           space-between row from 1025px up: "Case Study" flush left, the
           three-part line flush right. Below that the right group drops onto
@@ -193,6 +206,8 @@ export function CaseStudySection({
           ))}
         </div>
 
+        {showViewAll ? (
+        <>
         {/*
           "View All Projects" — measured on the live site as a 103.203px block
           below the grid: 48px of top padding above a centred outline pill
@@ -206,6 +221,8 @@ export function CaseStudySection({
             View All Projects
           </Link>
         </div>
+        </>
+        ) : null}
       </div>
     </section>
   );

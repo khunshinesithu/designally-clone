@@ -378,24 +378,36 @@ function ContactForm() {
     <section className={cn("flex w-full flex-col", SECTION_PADDING)}>
       <PageContainer className="flex flex-col py-[80px] desk:py-[160px]">
         {/* Heading row: flex, gap 16px, padding-bottom 40px. */}
-        <h2 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] font-medium desk:text-[64px] desk:leading-[64px]">
+        <h2 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] font-medium desk:min-h-[131px] desk:items-center desk:text-[64px] desk:leading-[64px]">
           <span className="text-dsg-ink-strong">Which services are you</span>
           {/*
-            Elementor headline highlight: the stroke SVG (viewBox "0 0 500 150",
-            `preserveAspectRatio="none"`, rendered 460 x 103) is drawn around the
-            words rather than behind them, so the span stays in the flow and the
-            mark is overlaid.
+            Elementor headline highlight — the loop drawn around "interested in?".
+            Path copied verbatim from `heading-highlight.svg` (viewBox "0 0 500 150",
+            `preserveAspectRatio="none"`, rendered 460 x 103).
+
+            This is the ONE recovered mark that is inlined rather than referenced as
+            an `<img>`, and it has to be: the file carries no `fill`/`stroke` at all
+            (Elementor drives them from CSS), so as an `<img>` the browser applies
+            the SVG default — an opaque black fill — which blots out the heading.
+            Inlined, it can be what it is meant to be: unfilled, stroked, and
+            painted in the brand orange. Stroke width and colour are the only
+            invented values here.
           */}
           <span className="relative inline-block text-dsg-ink">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`${SVG_BASE}/heading-highlight.svg`}
-              alt=""
-              width={500}
-              height={150}
+            <svg
+              viewBox="0 0 500 150"
+              preserveAspectRatio="none"
+              fill="none"
               aria-hidden="true"
-              className="pointer-events-none absolute top-1/2 left-1/2 hidden h-[103px] w-[460px] max-w-none -translate-x-1/2 -translate-y-1/2 desk:block"
-            />
+              className="pointer-events-none absolute top-1/2 left-1/2 hidden h-[103px] w-[460px] max-w-none -translate-x-1/2 -translate-y-1/2 text-dsg-orange desk:block"
+            >
+              <path
+                d="M325,18C228.7-8.3,118.5,8.3,78,21C22.4,38.4,4.6,54.6,5.6,77.6c1.4,32.4,52.2,54,142.6,63.7 c66.2,7.1,212.2,7.5,273.5-8.3c64.4-16.6,104.3-57.6,33.8-98.2C386.7-4.9,179.4-1.4,126.3,20.7"
+                stroke="currentColor"
+                strokeWidth="9"
+                strokeLinecap="round"
+              />
+            </svg>
             <span className="relative">interested in?</span>
           </span>
         </h2>
@@ -426,7 +438,7 @@ function ContactForm() {
             {/* Field 1 — "Interested in" checkbox group, six inline options. */}
             <fieldset className="flex flex-col gap-3">
               <legend className="sr-only">Interested in</legend>
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3 desk:min-h-[58px]">
                 {SERVICE_OPTIONS.map((option) => {
                   const isChecked = values.services.includes(option);
                   return (
@@ -587,7 +599,7 @@ function ContactForm() {
               desktop that reads as bottom-aligned, which is what is reproduced here.
             */}
             <div className="flex flex-col gap-8 desk:flex-row desk:items-end desk:justify-between">
-              <div className="flex max-w-[588px] flex-col gap-1">
+              <div className="flex max-w-[588px] flex-col gap-1 desk:min-h-[109px]">
                 <label className="flex items-start gap-3" htmlFor={`${formId}-acceptance`}>
                   <input
                     id={`${formId}-acceptance`}
@@ -687,7 +699,7 @@ function ContactSupport() {
           (viewBox "0 0 67 73", 73 x 77) sits just right of line 2, raised 26px.
           Desktop only — below `desk` they would collide with the wrapping text.
         */}
-        <h2 className="flex flex-col gap-2 font-sans text-[28px] leading-[1.15] font-medium text-dsg-ink-strong desk:text-[40px] desk:leading-[40px]">
+        <h2 className="flex flex-col items-center gap-2 font-sans text-[28px] leading-[1.15] font-medium text-dsg-ink-strong desk:text-[40px] desk:leading-[40px]">
           <span className="relative">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

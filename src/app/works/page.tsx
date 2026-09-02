@@ -140,9 +140,16 @@ export default function WorksPage() {
           fluid: its measured 588px here is just (1200 − 24px gap) / 2, so passing
           the container is all it needs.
         */}
+        {/*
+          Measured on the live /works/ page: the case-study inner is `padding: 0 0 160px`
+          (its heading sits flush with the section top, unlike the homepage's 160px top
+          padding) and there is no "View All Projects" pill — it would link to this page.
+        */}
         <CaseStudySection
           studies={WORKS_CASE_STUDIES}
           containerClassName={WORKS_CONTAINER}
+          paddingClassName="pb-[160px]"
+          showViewAll={false}
         />
 
         <CtaSection />
