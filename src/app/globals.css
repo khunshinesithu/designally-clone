@@ -178,3 +178,19 @@
     max-width: 83.8%;
   }
 }
+
+/*
+ * The live site's "Click to Connect !" headline is the one element on the page that
+ * is NOT Poppins — Elementor's animated-headline widget leaves it on the default
+ * system stack. Measured font-family at 1440:
+ *   -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+ *   "Noto Sans", sans-serif, ...
+ * Reproduced verbatim so the clone matches the live rendering rather than
+ * "correcting" it to the brand face.
+ */
+.dsg-system-font {
+  font-family:
+    -apple-system, "system-ui", "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+}

@@ -207,7 +207,7 @@ export function CtaSection() {
           <a
             href="tel:0650055993"
             className={cn(
-              "relative block text-center font-medium whitespace-nowrap text-dsg-ink no-underline",
+              "dsg-system-font relative block text-center font-medium whitespace-nowrap text-dsg-ink no-underline",
               "text-[26px] leading-[31.2px]",
               "tab:text-[32px] tab:leading-[38.4px]",
               "desk:text-[43px] desk:leading-[51.6px]",
