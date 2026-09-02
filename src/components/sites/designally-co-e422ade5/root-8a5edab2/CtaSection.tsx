@@ -168,11 +168,16 @@ export function CtaSection() {
       <div
         aria-hidden="true"
         className={cn(
-          "pointer-events-none absolute inset-x-0 top-[-1px] z-0 rotate-180",
+          "pointer-events-none absolute inset-x-0 top-[-1px] z-0 overflow-hidden rotate-180",
           "h-[80px] text-white tab:h-[120px] desk:h-[160px]",
         )}
       >
-        <CtaWaveShape className="block h-full w-full" />
+        {/*
+            The live shape SVG is 2281.3px wide inside a 1425px wrapper — 160%,
+            centred (left: 712.5px with translateX(-1140.65px)). Stretching it to
+            just 100% makes the arc far too deep, so keep the 160% overscale.
+          */}
+          <CtaWaveShape className="block h-full w-[160%] max-w-none -translate-x-[18.75%]" />
       </div>
 
       <div
@@ -202,16 +207,16 @@ export function CtaSection() {
         <div className="relative mt-[8px] mb-[16px] inline-block">
           <ScribbleUnderline
             aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-[-10px] left-[-10px] h-[147%] -translate-y-1/2 text-dsg-ink"
+            className="pointer-events-none absolute top-1/2 right-[-10px] left-[-10px] h-[147%] -translate-y-1/2 text-white/25"
           />
           <a
             href="tel:0650055993"
             className={cn(
-              "dsg-system-font relative block text-center font-medium whitespace-nowrap text-dsg-ink no-underline",
+              "relative block text-center font-medium whitespace-nowrap text-white no-underline",
               "text-[26px] leading-[31.2px]",
               "tab:text-[32px] tab:leading-[38.4px]",
               "desk:text-[43px] desk:leading-[51.6px]",
-              "transition-colors duration-300 hover:text-white focus-visible:text-white",
+              "transition-colors duration-300 hover:text-dsg-ink focus-visible:text-dsg-ink",
             )}
           >
             Click to Connect !
