@@ -115,7 +115,7 @@ export function ServicesSection({ className }: ServicesSectionProps) {
         Card column. The 12.5% right padding puts the 356.25px column's right
         edge exactly on the page container's right edge (x = 1247 at 1425px).
       */}
-      <div className="mt-[80px] flex w-full justify-end px-[8.1%] tab:px-[6.2%] desk:mt-0 desk:w-1/2 desk:px-0 desk:pr-[12.5%]">
+      <div className="mt-[80px] flex w-full justify-end px-[8.1%] pb-[80px] tab:px-[6.2%] tab:pb-[100px] desk:mt-0 desk:w-1/2 desk:px-0 desk:pt-[99px] desk:pr-[12.5%] desk:pb-[114px]">
         <div className="flex w-full flex-col gap-[160px] desk:w-[356.25px]">
           {SERVICE_CARDS.map((card) => (
             <ServiceCard key={card.title} card={card} />

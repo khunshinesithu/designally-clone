@@ -24,7 +24,10 @@ separate from `SiteHeader` and renders at page level, outside any section.
 
 ### Root
 - position: fixed; top: 0; left: 0
-- width: 375px  ← intentional; the header does not span the viewport
+- width: 100% (1425px at a 1440 viewport) — the header spans the full viewport
+  (CORRECTION: an earlier reading of 375px was a pre-layout artifact taken while the
+  element was still `visibility: hidden`. Re-measured at scrollY 0 / 1100 / 1500 / 3000 /
+  5800 / 8000: width is 1425px at every one, logo at x=80, toggle at x=1294.)
 - height: 147px
 - padding: 40px 80px
 - display: flex; align-items: flex-start; justify-content: space-between
@@ -48,7 +51,7 @@ separate from `SiteHeader` and renders at page level, outside any section.
 - border-radius: 500px
 - background: transparent
 - color: rgb(245, 99, 65)
-- positioned at x=244, y=40
+- positioned at x=1294, y=40 — flush to the right padding edge (1425 − 80 − 51)
 - aria-label: `Menu Toggle`
 - Inner glyph: 36×36 box, font-size 24px → render `MenuBarsIcon` at 24×24 inside a 36×36 box.
   When open, swap to `CloseIcon` (same box).
@@ -116,10 +119,11 @@ Both states render the same markup; only visibility/transform and the dropdown d
 SERVICES · WORKS · ABOUT · THOUGHTS · CONTACT
 
 ## Responsive Behavior
-- Identical at all three widths — the element is a fixed 375px-wide overlay anchored top-left, and
-  the reveal threshold stays 1000px. It is the only navigation on mobile, where `SiteHeader` hides
-  both its inline nav and its CONTACT US button.
-- Do not make the root full-width; 375px is the measured value at every breakpoint.
+- Identical at all three widths — a full-width fixed overlay, and the reveal threshold stays
+  1000px. It is the only navigation on mobile, where `SiteHeader` hides both its inline nav and
+  its CONTACT US button.
+- The root IS full-width at every breakpoint; `justify-content: space-between` puts the
+  logo left and the toggle right.
 
 ## Build notes
 - Render once at page level (in `page.tsx`), not inside a section — it must overlay everything.

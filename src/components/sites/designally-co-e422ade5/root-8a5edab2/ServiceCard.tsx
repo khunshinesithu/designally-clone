@@ -138,7 +138,10 @@ export function ServiceCard({ card, className }: ServiceCardProps) {
     <article
       id={anchorId}
       className={cn(
-        "flex w-full flex-col font-sans desk:w-[356.25px]",
+        // The live card carries a 24px inset above the eyebrow row and below the
+        // image (measured: card top 1778 -> eyebrow 1802, image bottom 2409 ->
+        // card bottom 2433), which makes each card 655px rather than 607px.
+        "flex w-full flex-col py-[24px] font-sans desk:w-[356.25px]",
         className,
       )}
     >

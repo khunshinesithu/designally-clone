@@ -10,7 +10,9 @@
  *
  * Every measurement below is taken from getComputedStyle on the live site at
  * 1440x900 and is identical at all three breakpoints — including the root's
- * 375px width, which is intentional: the header does not span the viewport.
+ * Spans the full viewport width: the logo sits at the left padding edge (x=80) and
+ * the toggle at the right (x=1294 at a 1425px content width). Measured identical at
+ * scrollY 0 / 1100 / 1500 / 3000 / 5800 / 8000.
  */
 
 import { useCallback, useEffect, useState } from "react";
@@ -67,7 +69,7 @@ export function FloatingHeader({ className }: FloatingHeaderProps) {
   return (
     <div
       className={cn(
-        "fixed top-0 left-0 z-[999] flex h-[147px] w-[375px] items-start justify-between",
+        "fixed top-0 left-0 z-[999] flex h-[147px] w-full items-start justify-between",
         "bg-transparent px-[80px] py-[40px] transition-all duration-300",
         isRevealed
           ? "visible translate-y-0 opacity-100"

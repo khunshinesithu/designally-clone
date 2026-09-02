@@ -145,10 +145,13 @@ export function WorksGallery({ className }: WorksGalleryProps) {
     <section className={cn("relative flex w-full flex-col font-sans", className)}>
       <div
         className={cn(
-          "flex flex-col items-center justify-between",
-          "gap-[60px] px-[8.1%] py-[80px]",
-          "tab:gap-[90px] tab:px-[6.2%] tab:py-[120px]",
-          "desk:gap-[120px] desk:px-[12.5%] desk:py-[160px]",
+          "flex flex-col items-center",
+          "gap-[24px] px-[8.1%] py-[80px]",
+          "tab:gap-[16px] tab:px-[6.2%] tab:py-[120px]",
+          // The live inner has only two children - the heading block and the
+          // gallery block - and they sit flush: heading block ends at y=6148,
+          // the gallery starts at y=6154. So the desktop gap is ~6px, not 120.
+          "desk:gap-[6px] desk:px-[12.5%] desk:py-[160px]",
         )}
       >
         {/*
@@ -190,9 +193,16 @@ export function WorksGallery({ className }: WorksGalleryProps) {
           />
         </div>
 
-        {/* Filter bar — 1097.25 × 64.5 at 1440, the 40px coming from the
-            buttons' own margin-bottom rather than the bar. */}
-        <nav
+        {/*
+          Gallery block — the live `.premium-img-gallery` wrapper. Its three
+          parts are NOT evenly spaced flex children: the filter bar is 64.5px
+          tall, the grid starts immediately beneath it, and the "View More"
+          button sits 80px below the grid.
+        */}
+        <div className="flex w-full flex-col items-center">
+          {/* Filter bar — 1097.25 × 64.5 at 1440, the 40px coming from the
+              buttons' own margin-bottom rather than the bar. */}
+          <nav
           aria-label="Filter works by category"
           className="flex w-full flex-row items-center justify-center"
         >
@@ -265,14 +275,14 @@ export function WorksGallery({ className }: WorksGalleryProps) {
           </div>
         </div>
 
-        {/* "View More" disappears once the current filter is fully revealed. */}
-        {hasMore ? (
-          <button
-            type="button"
+          {/* "View More" disappears once the current filter is fully revealed. */}
+          {hasMore ? (
+            <button
+              type="button"
             onClick={() => setVisibleCount((count) => count + BATCH_SIZE)}
-            className={cn(
-              "inline-flex cursor-pointer items-center",
-              "rounded-[200px] border border-dsg-orange bg-transparent",
+              className={cn(
+                "mt-[40px] inline-flex cursor-pointer items-center tab:mt-[60px] desk:mt-[80px]",
+                "rounded-[200px] border border-dsg-orange bg-transparent",
               "pt-[16px] pr-[40px] pb-[16px] pl-[48px]",
               "text-center text-[16px] font-medium leading-[19.2px] text-dsg-orange",
               "transition-colors duration-300 ease-in-out",
@@ -280,9 +290,10 @@ export function WorksGallery({ className }: WorksGalleryProps) {
               "focus-visible:bg-dsg-orange focus-visible:text-white",
             )}
           >
-            View More
-          </button>
-        ) : null}
+              View More
+            </button>
+          ) : null}
+        </div>
       </div>
     </section>
   );
