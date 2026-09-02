@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Poppins } from "next/font/google";
+import { Caveat, EB_Garamond, Poppins } from "next/font/google";
 import "./globals.css";
 
 /**
- * designally.co uses exactly two families:
+ * designally.co uses three families:
  *   Poppins      — all UI text, nav, body copy, headings
  *   EB Garamond  — serif display ("OUR SERVICES", the hero headline)
+ *   Caveat       — handwriting accent, e.g. "Don't be shy, say hello!" on /contact-us/
  * The live site self-hosts them; next/font/google serves the same faces.
  */
 const poppins = Poppins({
@@ -21,6 +22,13 @@ const ebGaramond = EB_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "700"],
   display: "swap",
 });
 
@@ -70,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${ebGaramond.variable} h-full antialiased`}
+      className={`${poppins.variable} ${ebGaramond.variable} ${caveat.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
