@@ -166,14 +166,15 @@
   margin-inline: auto;
 }
 
+/* Measured on the live site: 87.6% at a 768px viewport, 83.8% at 390px. */
 @media (max-width: 1024px) {
   .dsg-container {
-    max-width: 88%;
+    max-width: 87.6%;
   }
 }
 
 @media (max-width: 767px) {
   .dsg-container {
-    max-width: 90%;
+    max-width: 83.8%;
   }
 }

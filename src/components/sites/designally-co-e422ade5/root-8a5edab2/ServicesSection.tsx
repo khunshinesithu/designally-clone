@@ -62,8 +62,8 @@ export function ServicesSection({ className }: ServicesSectionProps) {
       */}
       <aside
         className={cn(
-          "w-full rounded-r-[80px] bg-dsg-orange px-[5%] pt-[80px] pb-[80px]",
-          "tab:px-[6%] tab:pt-[100px] tab:pb-[100px]",
+          "w-full rounded-r-[80px] bg-dsg-orange px-[8.1%] pt-[80px] pb-[80px]",
+          "tab:px-[6.2%] tab:pt-[100px] tab:pb-[100px]",
           "desk:sticky desk:top-0 desk:w-1/2 desk:self-start",
           "desk:px-0 desk:pt-[114px] desk:pb-0 desk:pl-[12.5%]",
         )}
@@ -115,7 +115,7 @@ export function ServicesSection({ className }: ServicesSectionProps) {
         Card column. The 12.5% right padding puts the 356.25px column's right
         edge exactly on the page container's right edge (x = 1247 at 1425px).
       */}
-      <div className="mt-[80px] flex w-full justify-end px-[5%] tab:px-[6%] desk:mt-0 desk:w-1/2 desk:px-0 desk:pr-[12.5%]">
+      <div className="mt-[80px] flex w-full justify-end px-[8.1%] tab:px-[6.2%] desk:mt-0 desk:w-1/2 desk:px-0 desk:pr-[12.5%]">
         <div className="flex w-full flex-col gap-[160px] desk:w-[356.25px]">
           {SERVICE_CARDS.map((card) => (
             <ServiceCard key={card.title} card={card} />
