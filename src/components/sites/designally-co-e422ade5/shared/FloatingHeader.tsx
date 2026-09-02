@@ -20,28 +20,30 @@ import { useCallback, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import type { DsgNavItem } from "@/types/designally";
 
-import { CloseIcon, DMonogramIcon, MenuBarsIcon } from "../shared/icons";
+import { CloseIcon, DMonogramIcon, MenuBarsIcon } from "./icons";
 
 /** Scroll offset at which the header reveals itself. */
 const REVEAL_OFFSET = 1000;
 
 /** Dropdown links, in the order the live site renders them. */
 const NAV_ITEMS: readonly DsgNavItem[] = [
-  { label: "SERVICES", href: "https://designally.co/services/" },
-  { label: "WORKS", href: "https://designally.co/works/" },
-  { label: "ABOUT", href: "https://designally.co/about/" },
-  { label: "THOUGHTS", href: "https://designally.co/thoughts/" },
-  { label: "CONTACT", href: "https://designally.co/contact-us/" },
+  { label: "SERVICES", href: "/services/" },
+  { label: "WORKS", href: "/works/" },
+  { label: "ABOUT", href: "/about/" },
+  { label: "THOUGHTS", href: "/thoughts/" },
+  { label: "CONTACT", href: "/contact-us/" },
 ];
 
 /** 5 links x 28px — the open max-height the collapse animates to. */
 const NAV_OPEN_MAX_HEIGHT = NAV_ITEMS.length * 28;
 
-interface FloatingHeaderProps {
+export interface FloatingHeaderProps {
   className?: string;
+  /** Current page — its dropdown entry renders in the active orange state. */
+  activeNav?: string;
 }
 
-export function FloatingHeader({ className }: FloatingHeaderProps) {
+export function FloatingHeader({ className, activeNav }: FloatingHeaderProps) {
   const [isRevealed, setIsRevealed] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -79,7 +81,7 @@ export function FloatingHeader({ className }: FloatingHeaderProps) {
       )}
     >
       <a
-        href="https://designally.co"
+        href="/"
         aria-label="Designally home"
         className="inline-block h-[52px] w-[52px] text-dsg-orange"
       >
@@ -122,10 +124,12 @@ export function FloatingHeader({ className }: FloatingHeaderProps) {
               key={item.href}
               href={item.href}
               tabIndex={isOpen ? undefined : -1}
+              aria-current={item.href === activeNav ? "page" : undefined}
               className={cn(
                 "flex h-[28px] items-center justify-end py-[4px] pl-[40px]",
                 "font-sans text-[16px] leading-[20px] font-medium uppercase",
-                "text-dsg-ink-strong transition-colors duration-300 hover:text-dsg-orange",
+                "transition-colors duration-300 hover:text-dsg-orange",
+                item.href === activeNav ? "text-dsg-orange" : "text-dsg-ink-strong",
               )}
             >
               {item.label}

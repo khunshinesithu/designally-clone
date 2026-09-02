@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-import { CtaWaveShape, ScribbleUnderline } from "../shared/icons";
+import { CtaWaveShape, ScribbleUnderline } from "./icons";
 
 const DUCK_SRC = "/sites/designally-co-e422ade5/shared/svg/duck.svg";
 

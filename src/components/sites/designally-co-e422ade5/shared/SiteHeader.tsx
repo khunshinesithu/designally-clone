@@ -22,12 +22,26 @@ const WORDMARK_SRC = "/sites/designally-co-e422ade5/shared/svg/designally-wordma
 /** Rendered wordmark box: 214.398 x 20 out of the source viewBox "0 0 536 50". */
 const WORDMARK_WIDTH = "214.398px";
 
+/**
+ * Internal hrefs are relative so navigation stays inside the clone. The live site
+ * uses absolute `https://designally.co/...` URLs here; every one of these paths now
+ * has a local route, so keeping them absolute would walk the visitor off the clone.
+ */
 const NAV_ITEMS: readonly DsgNavItem[] = [
-  { label: "SERVICES", href: "https://designally.co/services/" },
-  { label: "WORKS", href: "https://designally.co/works/" },
-  { label: "ABOUT", href: "https://designally.co/about/" },
-  { label: "THOUGHTS", href: "https://designally.co/thoughts/" },
+  { label: "SERVICES", href: "/services/" },
+  { label: "WORKS", href: "/works/" },
+  { label: "ABOUT", href: "/about/" },
+  { label: "THOUGHTS", href: "/thoughts/" },
 ];
+
+/** Which nav entry renders in the active orange state, keyed by href. */
+export type DsgActiveNav =
+  | "/services/"
+  | "/works/"
+  | "/about/"
+  | "/thoughts/"
+  | "/contact-us/"
+  | undefined;
 
 const CONTACT_ITEM: DsgNavItem = { label: "CONTACT US", href: "/contact-us/" };
 
@@ -49,9 +63,16 @@ const WORDMARK_MASK: React.CSSProperties = {
 
 export interface SiteHeaderProps {
   className?: string;
+  /**
+   * The current page. On the live site the matching nav item carries
+   * `elementor-item-active` and renders rgb(245, 99, 65) rather than rgb(33, 33, 33).
+   * `/` passes nothing — the homepage is not in the nav, which is why this state
+   * never appeared while only the homepage was cloned.
+   */
+  activeNav?: DsgActiveNav;
 }
 
-export function SiteHeader({ className }: SiteHeaderProps) {
+export function SiteHeader({ className, activeNav }: SiteHeaderProps) {
   return (
     <header
       className={cn(
@@ -64,7 +85,7 @@ export function SiteHeader({ className }: SiteHeaderProps) {
         {/* Logo — 25% column, content flush left, vertically centred. */}
         <div className="flex h-[51.203px] w-auto shrink-0 flex-col items-start justify-center desk:w-1/4">
           <a
-            href="https://designally.co"
+            href="/"
             aria-label="DESIGNALLY"
             className="inline-block h-[20px] w-[214.398px] transition-all duration-300"
           >
@@ -86,10 +107,12 @@ export function SiteHeader({ className }: SiteHeaderProps) {
               <li key={item.href} className="mx-[20px] flex">
                 <a
                   href={item.href}
+                  aria-current={item.href === activeNav ? "page" : undefined}
                   className={cn(
                     "flex items-center py-[16px] font-sans text-[16px] font-medium",
-                    "uppercase leading-[19.2px] text-dsg-ink-strong",
+                    "uppercase leading-[19.2px]",
                     "transition-colors duration-[400ms] hover:text-dsg-orange focus-visible:text-dsg-orange",
+                    item.href === activeNav ? "text-dsg-orange" : "text-dsg-ink-strong",
                   )}
                 >
                   {item.label}

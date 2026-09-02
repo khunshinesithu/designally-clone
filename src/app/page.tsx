@@ -1,12 +1,12 @@
 import { BreakLimitsSection } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/BreakLimitsSection";
-import { CaseStudySection } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/CaseStudySection";
-import { CtaSection } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/CtaSection";
-import { FloatingHeader } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/FloatingHeader";
+import { CaseStudySection } from "@/components/sites/designally-co-e422ade5/shared/CaseStudySection";
+import { CtaSection } from "@/components/sites/designally-co-e422ade5/shared/CtaSection";
+import { FloatingHeader } from "@/components/sites/designally-co-e422ade5/shared/FloatingHeader";
 import { HeroShowcase } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/HeroShowcase";
 import { IntroSection } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/IntroSection";
 import { ServicesSection } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/ServicesSection";
-import { SiteFooter } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/SiteFooter";
-import { SiteHeader } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/SiteHeader";
+import { SiteFooter } from "@/components/sites/designally-co-e422ade5/shared/SiteFooter";
+import { SiteHeader } from "@/components/sites/designally-co-e422ade5/shared/SiteHeader";
 import { WorksGallery } from "@/components/sites/designally-co-e422ade5/root-8a5edab2/WorksGallery";
 
 /**
