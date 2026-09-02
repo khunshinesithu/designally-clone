@@ -13,7 +13,7 @@
  */
 
 import { mkdir, writeFile, readFile, access } from 'node:fs/promises';
-import { dirname, join, extname, basename } from 'node:path';
+import { dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
