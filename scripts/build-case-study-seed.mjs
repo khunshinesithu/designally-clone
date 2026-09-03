@@ -35,6 +35,17 @@ async function imageEntry(url, alt, width, height) {
   };
 }
 
+/**
+ * Banners the original gets wrong, dropped so the renderer falls back to the
+ * linked project's own cover.
+ *
+ * Nourigo's "Next up: Laga" shows `Nourigo_footer-scaled.jpg` — a Nourigo
+ * image. It is not a scraping mistake: the WordPress media library holds six
+ * project banners and two of them are Nourigo's, so a Laga banner was never
+ * made and the gap was filled with the wrong file.
+ */
+const WRONG_BANNER = new Set(['nourigo-supplements-branding-project']);
+
 const pages = JSON.parse(await readFile(IN, 'utf8'));
 const out = [];
 for (const p of pages) {
@@ -72,9 +83,15 @@ for (const p of pages) {
     gallery,
     nextUpSlug: p.nextUp.slug,
     nextUpClient: p.nextUp.client,
-    nextUpImage: p.nextUp.imageUrl
-      ? await imageEntry(p.nextUp.imageUrl, `${p.nextUp.client} project`, p.nextUp.width, p.nextUp.height)
-      : null,
+    nextUpImage:
+      p.nextUp.imageUrl && !WRONG_BANNER.has(p.slug)
+        ? await imageEntry(
+            p.nextUp.imageUrl,
+            `${p.nextUp.client} project`,
+            p.nextUp.width,
+            p.nextUp.height,
+          )
+        : null,
   });
 }
 

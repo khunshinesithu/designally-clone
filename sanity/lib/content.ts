@@ -365,7 +365,16 @@ function fromSeed(d: SeedDetail): CaseStudyDetailView {
       ? {
           slug: d.nextUpSlug,
           client: d.nextUpClient,
-          image: d.nextUpImage ? img(d.nextUpImage) : null,
+          // Same fallback as the Sanity path: no dedicated banner means the
+          // linked project's own cover.
+          image: d.nextUpImage
+            ? img(d.nextUpImage)
+            : (() => {
+                const target = seed.caseStudies.find((c) => c.href?.includes(`/works/${d.nextUpSlug}`));
+                return target
+                  ? { src: target.localPath, alt: `${d.nextUpClient} project`, width: target.width, height: target.height }
+                  : null;
+              })(),
         }
       : null,
   };
@@ -397,7 +406,7 @@ type DetailDoc = {
     height?: number;
   }>;
   nextUpImage?: SanityImage;
-  nextUp?: { client: string; slug: string };
+  nextUp?: { client: string; slug: string; image?: SanityImage; alt?: string };
 };
 
 /** A Sanity file asset id encodes its extension: file-<sha>-<ext>. */
@@ -446,9 +455,13 @@ export async function getCaseStudy(slug: string): Promise<CaseStudyDetailView | 
       ? {
           slug: doc.nextUp.slug,
           client: doc.nextUp.client,
-          image: doc.nextUpImage
-            ? { ...toImage(doc.nextUpImage), alt: `${doc.nextUp.client} project` }
-            : null,
+          // A dedicated banner wins; otherwise fall back to the linked
+          // project's own cover. Five of the six have a banner — Laga never
+          // got one made, and the original filled the gap with a Nourigo image.
+          image: (() => {
+            const src = doc.nextUpImage ?? doc.nextUp.image;
+            return src ? { ...toImage(src), alt: `${doc.nextUp.client} project` } : null;
+          })(),
         }
       : null,
   };

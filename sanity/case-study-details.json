@@ -474,12 +474,7 @@
     ],
     "nextUpSlug": "laga-branding-and-website-project",
     "nextUpClient": "Laga",
-    "nextUpImage": {
-      "localPath": "/sites/designally-co-e422ade5/case-studies/images/Nourigo_footer-scaled.jpg",
-      "alt": "Laga project",
-      "width": 1920,
-      "height": 640
-    }
+    "nextUpImage": null
   },
   {
     "slug": "skytower-rebranding-and-website-projects",

@@ -57,8 +57,9 @@ export const CASE_STUDY_SLUGS_QUERY = defineQuery(`
 
 /**
  * One case-study detail page. `nextUp->` dereferences the linked project so the
- * footer link needs no second round trip; the banner itself lives on this
- * document because the original does not always use the linked project's own.
+ * footer link needs no second round trip, and brings back its cover as the
+ * fallback banner: `nextUpImage` overrides it where a project has a dedicated
+ * one, and an empty banner falls back to the linked project's own image.
  */
 export const CASE_STUDY_DETAIL_QUERY = defineQuery(`
   *[_type == "caseStudy" && slug.current == $slug][0] {
@@ -70,6 +71,6 @@ export const CASE_STUDY_DETAIL_QUERY = defineQuery(`
       _type == "galleryVideo" => { file, width, height }
     },
     nextUpImage,
-    nextUp-> { client, "slug": slug.current }
+    nextUp-> { client, "slug": slug.current, image, alt }
   }
 `);
