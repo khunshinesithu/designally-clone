@@ -29,7 +29,7 @@ export default function ServicesPage() {
     <div className="dsg-site flex min-h-screen flex-col">
       <FloatingHeader activeNav="/services/" />
 
-      <SiteHeader activeNav="/services/" />
+      <SiteHeader activeNav="/services/" overlay />
 
       <main className="flex flex-col">
         <ServicesPageContent />

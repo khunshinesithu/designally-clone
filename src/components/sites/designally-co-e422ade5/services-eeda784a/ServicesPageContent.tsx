@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
+import { ProcessLine } from "./ProcessLine";
 import { ServiceCard } from "../shared/ServiceCard";
 import { ServicesPanel } from "../shared/ServicesPanel";
 
@@ -336,7 +337,15 @@ const PROCESS_STEPS: readonly ProcessStep[] = [
  */
 function ServicesProcess() {
   return (
-    <section className="w-full font-sans">
+    <section className="relative w-full font-sans">
+      {/*
+        The drawn line running down the section. Measured on the live page: 392 x
+        1700 at `z-index: 99`, its left edge at x=327 of the 1425px viewport
+        (22.95%) and its top 152px above this section. Desktop only — the
+        section stacks to one column below 1025px and the line has nowhere to
+        run.
+      */}
+      <ProcessLine className="pointer-events-none absolute -top-[152px] left-[22.95%] z-[99] hidden h-[1700px] w-[392px] desk:block" />
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[24px] pt-[40px] pb-[64px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
         {PROCESS_STEPS.map((step) => (
           <div
