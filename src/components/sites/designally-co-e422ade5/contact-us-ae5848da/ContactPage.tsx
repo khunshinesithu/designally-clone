@@ -226,14 +226,28 @@ function ContactHero() {
 /**
  * 2. "Don't be shy" band — live section `463aaa2`, 1425 x 414, `padding: 0 10px`.
  *
- * The extraction captured no background for this section, but its only text is
- * `rgb(255, 255, 255)` — so per the spec it is painted brand orange here. The
- * headline block carries an Elementor `e-transform`: its 180 x 80 box paints into a
- * 197 x 146 rect, which solves to a ~24deg rotation (direction assumed).
+ * The band is a photograph of the studio, not a flat colour: `contactus-scaled.jpg`
+ * (1920 x 978) at `cover` / `50% 50%` with **`background-attachment: fixed`**, so
+ * the picture holds still while the band scrolls over it and a different slice
+ * shows through as you move down the page. There is no tint over it — the white
+ * text sits straight on the photograph.
+ *
+ * An earlier extraction read no background here at all and the band was painted
+ * brand orange as a stand-in.
+ *
+ * `fixed` is ignored by iOS Safari, which falls back to `scroll`; the picture still
+ * fills the band there, it just does not hold still. The live site has the same
+ * limitation.
+ *
+ * The headline block carries an Elementor `e-transform`: its 180 x 80 box paints
+ * into a 197 x 146 rect, which solves to a ~24deg rotation (direction assumed).
  */
 function ContactHello() {
   return (
-    <section className="w-full bg-dsg-orange px-[10px]">
+    <section
+      className="w-full bg-cover bg-fixed bg-center bg-no-repeat px-[10px]"
+      style={{ backgroundImage: `url(${IMAGE_BASE}/contactus-scaled.jpg)` }}
+    >
       <PageContainer className="flex min-h-[320px] flex-col items-center justify-end gap-5 py-[10px] desk:min-h-[414px] desk:items-end">
         <p className="-rotate-[24deg] text-center font-[family-name:var(--font-hand)] text-[40px] leading-[40px] font-bold whitespace-pre-line text-white">
           {"Don’t be shy,\nsay hello!"}
