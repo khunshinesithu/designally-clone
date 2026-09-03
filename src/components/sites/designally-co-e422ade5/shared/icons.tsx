@@ -118,8 +118,15 @@ export function CtaWaveShape({ className, ...props }: IconProps) {
 /**
  * Hand-drawn loop that circles the CTA headline.
  * Stroked, not filled — the source has no fill on the path.
+ *
+ * `pathClassName` is separate so the caller can animate the stroke without
+ * touching the box the SVG occupies.
  */
-export function ScribbleUnderline({ className, ...props }: IconProps) {
+export function ScribbleUnderline({
+  className,
+  pathClassName,
+  ...props
+}: IconProps & { pathClassName?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -134,6 +141,7 @@ export function ScribbleUnderline({ className, ...props }: IconProps) {
         stroke="currentColor"
         strokeWidth="6"
         fill="none"
+        className={pathClassName}
       />
     </svg>
   );

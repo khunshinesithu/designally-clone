@@ -201,13 +201,20 @@ export function CtaSection() {
           Let&rsquo;s work toge<i>t</i>her.
         </h1>
 
-        {/* Phone link + scribble. The wrapper shrink-wraps the link text, so the
-            scribble's -10px horizontal inset and 147% height (75.898 / 51.6)
-            keep it looped around the text at every font size. */}
+        {/*
+          Phone link + scribble. The wrapper shrink-wraps the link text and the
+          loop is inset past it on both sides.
+
+          The width has to be explicit. An <svg> is a replaced element with an
+          intrinsic ratio from its viewBox (500:150), so `width: auto` resolves
+          from the height and ignores `left`/`right` — the loop came out 253px
+          wide against 381px of text, stopping short of the last word.
+        */}
         <div className="relative mt-[8px] mb-[16px] inline-block">
           <ScribbleUnderline
             aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 right-[-10px] left-[-10px] h-[147%] -translate-y-1/2 text-white/25"
+            className="pointer-events-none absolute top-1/2 left-[-24px] h-[168%] w-[calc(100%+48px)] -translate-y-1/2 text-white/25"
+            pathClassName="dsg-scribble"
           />
           <a
             href="tel:0650055993"

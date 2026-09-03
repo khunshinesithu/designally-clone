@@ -354,10 +354,15 @@ function ServicesProcess() {
         text columns. A percentage only lined up at exactly 1425px wide and
         drifted left of centre on anything wider.
 
+        The height runs to the section's own bottom edge plus the 215px
+        overhang, so the line meets the CTA below with no gap. The asset carries
+        `preserveAspectRatio="none"` for that: at its natural ratio it would fit
+        inside the taller box and stop about 29px short.
+
         Desktop only: below 1025px the section stacks to one column and the line
         has nowhere to run.
       */}
-      <ProcessLine className="pointer-events-none absolute -top-[215px] left-1/2 z-[99] hidden h-[1700px] w-[392px] -translate-x-[382px] desk:block" />
+      <ProcessLine className="pointer-events-none absolute -top-[215px] left-1/2 z-[99] hidden h-[calc(100%+215px)] w-[392px] -translate-x-[382px] desk:block" />
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[24px] pt-[40px] pb-[64px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
         {PROCESS_STEPS.map((step) => (
           <div

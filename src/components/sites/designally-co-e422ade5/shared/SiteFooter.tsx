@@ -26,7 +26,9 @@ const FOOTER_TEXT = "text-[16px] font-normal leading-[24px] text-white";
  */
 export function SiteFooter() {
   return (
-    <footer className="relative m-0 flex w-full flex-col bg-dsg-orange font-sans tab:h-[57px]">
+    // The live bar carries `border-top: 1px solid #fff` across its full width,
+    // separating the legal row from the CTA above it.
+    <footer className="relative m-0 flex w-full flex-col border-t border-white bg-dsg-orange font-sans tab:h-[57px]">
       <div
         className={cn(
           "dsg-container flex flex-col items-center gap-[8px] py-[16px]",

@@ -181,3 +181,28 @@
     max-width: 83.8%;
   }
 }
+
+/*
+ * The CTA loop draws itself, holds, then unwinds — the "alive" scribble around
+ * "Click to Connect !". 1200 comfortably exceeds the path's length, so the
+ * dash covers it whole at either end of the cycle.
+ */
+@keyframes dsg-scribble-draw {
+  0% { stroke-dashoffset: 1200; }
+  35% { stroke-dashoffset: 0; }
+  75% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -1200; }
+}
+
+.dsg-scribble {
+  stroke-dasharray: 1200;
+  animation: dsg-scribble-draw 6s ease-in-out infinite;
+}
+
+/* Someone who has asked for less motion gets the finished loop, not the draw. */
+@media (prefers-reduced-motion: reduce) {
+  .dsg-scribble {
+    stroke-dasharray: none;
+    animation: none;
+  }
+}
