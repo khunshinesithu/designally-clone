@@ -3,10 +3,7 @@
 import Image from "next/image";
 import { useId, useState } from "react";
 
-import {
-  ArrowUpRightIcon,
-  ScribbleUnderline,
-} from "@/components/sites/designally-co-e422ade5/shared/icons";
+import { ArrowUpRightIcon } from "@/components/sites/designally-co-e422ade5/shared/icons";
 import { cn } from "@/lib/utils";
 
 /**
@@ -254,10 +251,16 @@ function ContactHello() {
         </p>
         {/*
           Hand-drawn arrow, verbatim from the live DOM: viewBox "0 0 80 124",
-          rendered 90 x 140. On the live page it is pulled 98px below the band
-          (`margin: 0 64px -98px 0`); it is kept inside the band here so the white
-          mark stays on the orange ground rather than bleeding onto the white
-          section below.
+          rendered 90 x 140, in brand orange.
+
+          It hangs 98px below the band — the live `margin: 0 64px -98px 0` — so
+          the tip reaches past the photograph and points into the form beneath
+          it. That overhang is the whole point of the mark, and it is why the
+          arrow is orange rather than white: below the band it sits on white
+          page, not on the picture.
+
+          An earlier pass kept it inside the band to stop a white mark bleeding
+          onto the section below. With the right colour it does not need to.
         */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -266,7 +269,7 @@ function ContactHello() {
           width={80}
           height={124}
           aria-hidden="true"
-          className="block h-[140px] w-[90px] max-w-none desk:mr-16"
+          className="-mb-[98px] block h-[140px] w-[90px] max-w-none desk:mr-16"
         />
       </PageContainer>
     </section>
@@ -394,8 +397,17 @@ function ContactForm() {
   return (
     <section className={cn("flex w-full flex-col", SECTION_PADDING)}>
       <PageContainer className="flex flex-col py-[80px] desk:py-[160px]">
-        {/* Heading row: flex, gap 16px, padding-bottom 40px. */}
-        <h2 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] font-medium desk:min-h-[131px] desk:items-center desk:text-[64px] desk:leading-[64px]">
+        {/*
+          Heading row: flex, padding-bottom 40px.
+
+          The gap widens to 72px at desktop. The drawn loop is 460px wide and
+          centred on "interested in?", which is only 338px, so it overhangs the
+          phrase by 61px on each side; on the live 16px gap that put its left
+          edge 45px inside the word "you". 72px carries it clear with about 10px
+          to spare, and the row still fits the 1200px column (568 + 72 + 338).
+          Below the desktop breakpoint the loop is hidden, so the gap stays 16.
+        */}
+        <h2 className="flex flex-wrap items-baseline gap-x-4 gap-y-2 pb-10 font-serif text-[40px] leading-[1.05] font-medium desk:min-h-[131px] desk:items-center desk:gap-x-[72px] desk:text-[64px] desk:leading-[64px]">
           <span className="text-dsg-ink-strong">Which services are you</span>
           {/*
             Elementor headline highlight — the loop drawn around "interested in?".
@@ -654,26 +666,14 @@ function ContactForm() {
               </div>
 
               <div className="flex justify-start desk:justify-end">
-                {/*
-                  The CTA's drawn loop, circling the button. Orange rather than
-                  white here — the button sits on the page's white background,
-                  where a white stroke would not read.
-                */}
-                <span className="relative inline-block">
-                  <ScribbleUnderline
-                    aria-hidden="true"
-                    className="pointer-events-none absolute top-1/2 left-[-22px] h-[175%] w-[calc(100%+44px)] -translate-y-1/2 text-dsg-orange/40"
-                    pathClassName="dsg-scribble"
-                  />
-                  <button
-                    type="submit"
-                    className="relative flex h-[60px] items-center gap-[10px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
-                  >
-                    {/* Same ↗ mark the shared components use, painted white here. */}
-                    <ArrowUpRightIcon className="h-[28px] w-[28px] shrink-0 desk:h-[40px] desk:w-[40px]" />
-                    Send inquiry
-                  </button>
-                </span>
+                <button
+                  type="submit"
+                  className="flex h-[60px] items-center gap-[10px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
+                >
+                  {/* Same ↗ mark the shared components use, painted white here. */}
+                  <ArrowUpRightIcon className="h-[28px] w-[28px] shrink-0 desk:h-[40px] desk:w-[40px]" />
+                  Send inquiry
+                </button>
               </div>
             </div>
           </form>
