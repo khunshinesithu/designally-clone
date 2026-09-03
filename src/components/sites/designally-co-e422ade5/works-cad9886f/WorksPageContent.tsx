@@ -191,7 +191,7 @@ export function WorksPageContent({
         <div
           className={cn(
             containerClassName,
-            "pt-[40px] pb-[80px]",
+            "pt-[56px] pb-[64px]",
             "tab:pt-[60px] tab:pb-[120px]",
             "desk:pt-[80px] desk:pb-[160px]",
           )}
@@ -207,12 +207,12 @@ export function WorksPageContent({
               className={cn(
                 "flex flex-row flex-wrap gap-x-[12px] tab:gap-x-[16px] desk:gap-x-[23px]",
                 "font-serif font-medium text-dsg-ink-strong",
-                "text-[48px] leading-[52px]",
+                "gap-y-[8px] text-[48px] leading-[74px] tab:gap-y-0",
                 "tab:text-[72px] tab:leading-[76px]",
                 "desk:text-[102px] desk:leading-[102px]",
               )}
             >
-              <span>Explore</span>
+              <span className="basis-full tab:basis-auto">Explore</span>
               <span>our</span>
               <span className="text-dsg-orange">works</span>
             </h1>
@@ -273,7 +273,7 @@ export function WorksPageContent({
                       /* Decorative separator — never interactive. */
                       <span
                         aria-hidden="true"
-                        className="mb-[40px] block h-[24px] px-[12px] text-[16px] font-normal leading-[24px] text-dsg-ink-strong"
+                        className="mb-[16px] block h-[24px] px-[4px] text-[16px] font-normal leading-[24px] text-dsg-ink-strong tab:px-[8px] desk:mb-[40px] desk:px-[12px]"
                       >
                         /
                       </span>
@@ -284,7 +284,8 @@ export function WorksPageContent({
                       onClick={() => selectCategory(filter.category)}
                       aria-pressed={isActive}
                       className={cn(
-                        "mb-[40px] block h-[24px] cursor-pointer px-[12px]",
+                        "mb-[16px] block h-[24px] cursor-pointer px-[4px]",
+                        "tab:px-[8px] desk:mb-[40px] desk:px-[12px]",
                         "text-center text-[16px] font-normal leading-[24px]",
                         "transition-colors duration-300 ease-in-out",
                         isActive
@@ -303,14 +304,14 @@ export function WorksPageContent({
           {/* Grid wrapper — `overflow-hidden` mirrors the isotope container and
               also clips the 1.1x hover zoom at the outer edge. */}
           <div className="w-full overflow-hidden">
-            <div className="relative grid w-full grid-cols-2 tab:grid-cols-3 desk:grid-cols-4">
+            <div className="relative grid w-full grid-cols-2 gap-[16px] tab:gap-0 tab:grid-cols-3 desk:grid-cols-4">
               {visibleItems.map((item) => {
                 if (!item.src) return null;
 
                 return (
                   <figure
                     key={item.src}
-                    className="group m-0 aspect-square w-full p-[8px]"
+                    className="group m-0 aspect-square w-full tab:p-[8px]"
                   >
                     <div className="h-full w-full overflow-hidden rounded-[16px]">
                       <Image

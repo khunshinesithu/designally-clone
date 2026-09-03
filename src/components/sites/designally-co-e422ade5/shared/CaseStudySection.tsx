@@ -198,7 +198,7 @@ export function CaseStudySection({
               height={40}
               className="h-[28px] w-[13px] shrink-0 desk:h-[40px] desk:w-[18px]"
             />
-            <div className="flex flex-row items-baseline gap-[11.9px] text-[32px] font-medium leading-[42px] desk:text-[40px] desk:leading-[52px]">
+            <div className="flex flex-row items-baseline gap-[11.9px] text-[40px] font-medium leading-[52px]">
               <h1 className="text-dsg-ink-strong">Case</h1>
               <h1 className="text-dsg-orange">Study</h1>
             </div>

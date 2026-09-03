@@ -78,7 +78,7 @@ export default async function WorksPage() {
         <CaseStudySection
           studies={studies}
           containerClassName={WORKS_CONTAINER}
-          paddingClassName="pb-[160px]"
+          paddingClassName="pb-[64px] tab:pb-[160px]"
           showViewAll={false}
         />
 

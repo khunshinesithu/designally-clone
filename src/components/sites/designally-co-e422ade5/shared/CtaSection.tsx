@@ -183,7 +183,7 @@ export function CtaSection() {
       <div
         className={cn(
           "dsg-container relative z-10 flex flex-col items-center",
-          "pt-[96px] pb-0 tab:pt-[120px] desk:pt-[160px]",
+          "pt-[80px] pb-0 tab:pt-[120px] desk:pt-[160px]",
         )}
       >
         <h2 className="m-0 text-center text-[16px] font-normal leading-[24px] text-white">
@@ -193,7 +193,7 @@ export function CtaSection() {
         <h1
           className={cn(
             "m-0 text-center font-serif font-medium text-white",
-            "text-[40px] leading-[48px]",
+            "mt-[16px] text-[64px] leading-[64px] tab:mt-0",
             "tab:text-[64px] tab:leading-[77px]",
             "desk:text-[96px] desk:leading-[115.2px]",
           )}
@@ -210,7 +210,7 @@ export function CtaSection() {
           from the height and ignores `left`/`right` — the loop came out 253px
           wide against 381px of text, stopping short of the last word.
         */}
-        <div className="relative mt-[8px] mb-[16px] inline-block">
+        <div className="relative mt-[8px] mb-[16px] hidden tab:inline-block">
           <ScribbleUnderline
             aria-hidden="true"
             className="pointer-events-none absolute top-1/2 left-[-24px] h-[168%] w-[calc(100%+48px)] -translate-y-1/2 text-white/25"
@@ -232,7 +232,7 @@ export function CtaSection() {
 
         {/* Social row — measured ~130px below the phone link (16px of that is the
             link's own bottom margin). */}
-        <ul className="m-0 flex list-none items-center justify-center gap-[16px] p-0 mt-[114px] tab:gap-[20px]">
+        <ul className="m-0 flex list-none items-center justify-center gap-[16px] p-0 mt-[40px] tab:mt-[114px] tab:gap-[20px]">
           {SOCIAL_LINKS.map(({ href, label, size, Icon }) => (
             <li key={href} className="flex">
               <a
