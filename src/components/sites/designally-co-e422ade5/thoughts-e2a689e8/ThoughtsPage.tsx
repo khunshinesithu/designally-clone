@@ -294,7 +294,7 @@ function ThoughtsMasthead() {
 function ThoughtCard({ post }: { post: ThoughtPost }) {
   return (
     <article className="w-full">
-      <a
+      <Link
         href={post.href}
         className="group flex w-full flex-col gap-[24px] tab:flex-row tab:gap-[80px]"
       >
@@ -335,7 +335,7 @@ function ThoughtCard({ post }: { post: ThoughtPost }) {
             className="h-auto w-full rounded-[8px]"
           />
         </div>
-      </a>
+      </Link>
     </article>
   );
 }

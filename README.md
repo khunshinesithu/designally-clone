@@ -32,9 +32,10 @@ Then open http://localhost:3000.
 | `/works/<slug>/` | Six project case studies — one dynamic route, video hero, full-bleed gallery |
 | `/about/` | **Scrolls horizontally** — ten panels, 12 000px wide, desktop only |
 | `/thoughts/` | Blog listing, nine posts |
+| `/thoughts/<slug>/` | Nine articles — one dynamic route, Portable Text body |
 | `/contact-us/` | Enquiry form, Google Map embed |
 
-All eleven prerender as static pages.
+All twenty prerender as static pages.
 
 ## Tech stack
 
@@ -138,19 +139,23 @@ Run `npm run dev` and open http://localhost:3000/studio.
 | **Work item** | Gallery tiles on `/` and `/works/`. `Show in the homepage gallery` picks the homepage subset. |
 | **Case study** | Cards on `/` and `/works/`. `Show on the homepage` picks the four the homepage shows. |
 | **Service card** | Cards on `/` and `/services/`. The `Page` field decides which — the two pages use different copy. |
-| **Thought** | The `/thoughts/` listing. |
+| **Thought** | The `/thoughts/` listing and the article at `/thoughts/<slug>/`. **Article** is rich text; **Next up** references another post. |
 
 A case study is both the card and the detail page at `/works/<slug>/`: the fields from
 **Slug** down drive the detail page, and **Next up** is a reference to another case study, so the
 six form a ring.
 
-Three things to know:
+Four things to know:
 
 - **Dates are plain strings, not date pickers.** The original renders Thai dates
   (`กรกฎาคม 17, 2024`); a real date field would force a locale conversion and change what readers
   see. Type them exactly as they should appear.
 - **Ordering is the `Order` number**, not alphabetical or by date — the gallery sequence is
   deliberate.
+- **Articles live under `/thoughts/<slug>/`, not at the site root.** The original serves them
+  from the root (`/the-basic-fundamentals-of-graphic-design/`); matching that would need a
+  catch-all route competing with `/about`, `/works` and every static page. The canonical still
+  points at the original URL.
 - **Case-study videos live only in Sanity.** They are 133MB, so they are gitignored rather than
   committed. A clone with Sanity configured serves them from the CDN; without it, the seed
   fallback references local files that are not in the repository and the video blocks render

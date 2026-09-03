@@ -74,3 +74,19 @@ export const CASE_STUDY_DETAIL_QUERY = defineQuery(`
     nextUp-> { client, "slug": slug.current, image, alt }
   }
 `);
+
+/** Slugs for generateStaticParams on /thoughts/<slug>/. */
+export const POST_SLUGS_QUERY = defineQuery(`
+  *[_type == "post" && defined(slug.current)].slug.current
+`);
+
+/**
+ * One article. `related->` brings back the linked post's own card image, which
+ * is what the "Next up" block at the foot of the article shows.
+ */
+export const POST_DETAIL_QUERY = defineQuery(`
+  *[_type == "post" && slug.current == $slug][0] {
+    "id": _id, title, categories, date, image, alt, body,
+    related-> { title, "slug": slug.current, image, alt }
+  }
+`);

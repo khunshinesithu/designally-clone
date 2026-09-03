@@ -4,6 +4,7 @@ import type { DsgWorkCategory } from "@/types/designally";
 
 import { isSanityConfigured } from "../env";
 import caseStudyDetails from "../case-study-details.json";
+import postDetails from "../post-details.json";
 import seed from "../seed-data.json";
 import { client, REVALIDATE_SECONDS } from "./client";
 import { dimensions, urlFor } from "./image";
@@ -11,6 +12,8 @@ import {
   ALL_CASE_STUDIES_QUERY,
   CASE_STUDY_DETAIL_QUERY,
   CASE_STUDY_SLUGS_QUERY,
+  POST_DETAIL_QUERY,
+  POST_SLUGS_QUERY,
   ALL_WORK_ITEMS_QUERY,
   HOME_CASE_STUDIES_QUERY,
   HOME_WORK_ITEMS_QUERY,
@@ -267,11 +270,21 @@ type PostDoc = {
   alt?: string;
 };
 
+/**
+ * The stored href is the original's root-level URL, e.g.
+ * https://designally.co/the-basic-fundamentals-of-graphic-design/. The clone
+ * serves articles nested under /thoughts/, so the listing links there.
+ */
+function internalPostHref(href: string): string {
+  const slug = (href ?? "").replace(/[?#].*$/, "").replace(/\/$/, "").split("/").pop();
+  return slug ? `/thoughts/${slug}/` : href;
+}
+
 function seedPosts(): PostView[] {
   return seed.posts.map((p) => ({
     id: p.title,
     title: p.title,
-    href: p.href,
+    href: internalPostHref(p.href),
     categories: p.categories,
     date: p.date,
     imageUrl: p.localPath,
@@ -287,7 +300,7 @@ export async function getPosts(): Promise<PostView[]> {
   return docs.map((d) => ({
     id: d.id,
     title: d.title,
-    href: d.href,
+    href: internalPostHref(d.href),
     categories: d.categories,
     date: d.date,
     imageUrl: imageUrl(d.image, 1200) ?? "",
@@ -462,6 +475,117 @@ export async function getCaseStudy(slug: string): Promise<CaseStudyDetailView | 
             const src = doc.nextUpImage ?? doc.nextUp.image;
             return src ? { ...toImage(src), alt: `${doc.nextUp.client} project` } : null;
           })(),
+        }
+      : null,
+  };
+}
+
+// --- article pages -----------------------------------------------------------
+
+/**
+ * Portable Text, plus the inline images the articles place between paragraphs.
+ * `contentImage` blocks arrive with `src` already resolved so the renderer never
+ * touches Sanity's image builder.
+ */
+export type PostBodyBlock =
+  | { _type: "contentImage"; _key: string; src: string; alt: string; width: number; height: number }
+  | { _type: "block"; _key: string; [key: string]: unknown };
+
+export interface PostDetailView {
+  slug: string;
+  title: string;
+  metaTitle: string;
+  metaDescription: string | null;
+  category: string | null;
+  date: string | null;
+  image: CaseStudyImage | null;
+  body: PostBodyBlock[];
+  related: { slug: string; title: string; image: CaseStudyImage | null } | null;
+}
+
+type SeedPost = (typeof postDetails)[number];
+
+function postFromSeed(d: SeedPost): PostDetailView {
+  const img = (i: { localPath: string; alt: string; width: number; height: number } | null) =>
+    i ? { src: i.localPath, alt: i.alt, width: i.width, height: i.height } : null;
+  return {
+    slug: d.slug,
+    title: d.title,
+    metaTitle: d.metaTitle,
+    metaDescription: d.metaDescription,
+    category: d.category,
+    date: d.date,
+    image: img(d.featuredImage),
+    body: d.body.map((b) => {
+      if (b._type !== "contentImage") return { ...b, _type: "block" as const } as PostBodyBlock;
+      // The JSON import widens the two block shapes into one union, so the
+      // image fields have to be narrowed back rather than trusted.
+      const img = b as unknown as { localPath: string; alt?: string; width?: number; height?: number };
+      return {
+        _type: "contentImage" as const,
+        _key: b._key,
+        src: img.localPath,
+        alt: img.alt ?? "",
+        width: img.width ?? 0,
+        height: img.height ?? 0,
+      };
+    }),
+    related: d.related
+      ? { slug: d.related.slug, title: d.related.title, image: img(d.related.image) }
+      : null,
+  };
+}
+
+/** Every article slug, for `generateStaticParams`. */
+export async function getPostSlugs(): Promise<string[]> {
+  const slugs = await query<string[]>(POST_SLUGS_QUERY, {}, []);
+  if (slugs.length === 0) return postDetails.map((d) => d.slug);
+  return slugs;
+}
+
+type PostDetailDoc = {
+  title: string;
+  categories?: string;
+  date?: string;
+  image?: SanityImage;
+  alt?: string;
+  body?: Array<Record<string, unknown>>;
+  related?: { title: string; slug: string; image?: SanityImage; alt?: string };
+};
+
+export async function getPost(slug: string): Promise<PostDetailView | null> {
+  const seeded = postDetails.find((d) => d.slug === slug);
+  const doc = await query<PostDetailDoc | null>(POST_DETAIL_QUERY, { slug }, null);
+  if (!doc) return seeded ? postFromSeed(seeded) : null;
+
+  const toImage = (i: SanityImage | undefined, alt: string): CaseStudyImage | null =>
+    i ? { src: imageUrl(i, 1600) ?? "", alt, ...(dimensions(i) ?? { width: 1200, height: 739 }) } : null;
+
+  return {
+    slug,
+    title: doc.title,
+    // Not editable in the Studio; keep the original's wording.
+    metaTitle: seeded?.metaTitle ?? doc.title,
+    metaDescription: seeded?.metaDescription ?? null,
+    category: doc.categories ?? null,
+    date: doc.date ?? null,
+    image: toImage(doc.image, doc.alt ?? ""),
+    body: (doc.body ?? []).map((b) =>
+      b._type === "contentImage"
+        ? {
+            _type: "contentImage" as const,
+            _key: String(b._key),
+            src: imageUrl(b as SanityImage, 1600) ?? "",
+            alt: typeof b.alt === "string" ? b.alt : "",
+            ...(dimensions(b as SanityImage) ?? { width: 800, height: 800 }),
+          }
+        : ({ ...b, _type: "block" as const } as PostBodyBlock),
+    ),
+    related: doc.related
+      ? {
+          slug: doc.related.slug,
+          title: doc.related.title,
+          image: toImage(doc.related.image, doc.related.alt ?? doc.related.title),
         }
       : null,
   };

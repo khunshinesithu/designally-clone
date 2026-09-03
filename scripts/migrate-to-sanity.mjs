@@ -120,6 +120,7 @@ async function main() {
   const details = JSON.parse(
     await readFile(join(ROOT, 'sanity/case-study-details.json'), 'utf8'),
   );
+  const articles = JSON.parse(await readFile(join(ROOT, 'sanity/post-details.json'), 'utf8'));
 
   const client = createClient({
     projectId,
@@ -147,6 +148,12 @@ async function main() {
       if (b.kind === 'row') for (const i of b.images) allPaths.push(i.localPath);
     }
     if (d.nextUpImage) allPaths.push(d.nextUpImage.localPath);
+  }
+  // Article pages: featured image, inline body images and the "Next up" card.
+  for (const a of articles) {
+    if (a.featuredImage) allPaths.push(a.featuredImage.localPath);
+    for (const b of a.body) if (b._type === 'contentImage') allPaths.push(b.localPath);
+    if (a.related?.image) allPaths.push(a.related.image.localPath);
   }
   const distinct = [...new Set(allPaths)];
 
@@ -310,17 +317,45 @@ async function main() {
       alt: s.alt,
       order: s.order,
     })),
-    ...seed.posts.map((p) => ({
-      _id: docId('post', p.title),
-      _type: 'post',
-      title: p.title,
-      href: p.href,
-      categories: p.categories,
-      date: p.date,
-      image: imageRef(p.localPath),
-      alt: p.alt,
-      order: p.order,
-    })),
+    ...seed.posts.map((p) => {
+      // The listing seed and the article seed join on the slug in `href`.
+      const slug = (p.href ?? '').replace(/[?#].*$/, '').replace(/\/$/, '').split('/').pop();
+      const a = articles.find((x) => x.slug === slug);
+      const articleFields = a
+        ? {
+            slug: { _type: 'slug', current: a.slug },
+            // Portable Text passes through as-is; only the images need turning
+            // into asset references.
+            body: a.body
+              .map((b) => {
+                if (b._type !== 'contentImage') return b;
+                const ref = imageRef(b.localPath);
+                return ref ? { ...ref, _type: 'contentImage', _key: b._key, alt: b.alt } : null;
+              })
+              .filter(Boolean),
+            related: a.related?.slug
+              ? (() => {
+                  const target = articles.find((x) => x.slug === a.related.slug);
+                  return target
+                    ? { _type: 'reference', _ref: docId('post', target.title) }
+                    : undefined;
+                })()
+              : undefined,
+          }
+        : {};
+      return {
+        _id: docId('post', p.title),
+        _type: 'post',
+        title: p.title,
+        href: p.href,
+        categories: p.categories,
+        date: p.date,
+        image: imageRef(p.localPath),
+        alt: p.alt,
+        order: p.order,
+        ...articleFields,
+      };
+    }),
   ];
 
   console.log(`\nDocuments: ${docs.length}`);
