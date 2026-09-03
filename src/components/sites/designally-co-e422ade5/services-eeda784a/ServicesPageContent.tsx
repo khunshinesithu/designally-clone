@@ -186,7 +186,7 @@ function ServicesOverview() {
           (heading 76 + gap 40 + paragraph 72 + free space + button 53 = 725).
         */}
         <div className="mx-auto flex w-full max-w-[540px] flex-col gap-[40px] desk:h-[725px]">
-          <h1 className="font-serif text-[40px] font-medium leading-[40px] text-white tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
+          <h1 className="font-serif text-[56px] font-medium leading-[56px] text-white tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
             Our Serv<i>i</i>ces
           </h1>
 
@@ -205,7 +205,7 @@ function ServicesOverview() {
         </div>
       </aside>
 
-      <div className="w-full px-[8.1%] py-[80px] tab:px-[6.2%] tab:py-[100px] desk:w-1/2 desk:px-0 desk:py-[160px]">
+      <div className="w-full px-[24px] py-[80px] tab:px-[6.2%] tab:py-[100px] desk:w-1/2 desk:px-0 desk:py-[160px]">
         {/* 29px sits the first eyebrow at y = 637 against a column padded to 608. */}
         <div className="mx-auto flex w-full max-w-[540px] flex-col pt-[29px]">
           {SERVICE_CARDS.map((card) => (
@@ -218,7 +218,7 @@ function ServicesOverview() {
                 {card.eyebrow}
               </h3>
 
-              <h1 className="mt-[29px] font-serif text-[40px] font-medium leading-[40px] text-dsg-ink-strong tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
+              <h1 className="mt-[29px] font-serif text-[56px] font-medium leading-[56px] text-dsg-ink-strong tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
                 {card.title[0]}
                 <i>{card.title[1]}</i>
                 {card.title[2]}
@@ -228,7 +228,12 @@ function ServicesOverview() {
                 {card.description}
               </p>
 
-              {/* 800 x 501 natural, rendered 540 x 339. */}
+              {/*
+                800 x 501 natural, rendered 540 x 339 at desktop. The live site
+                crops these to a square below the tablet breakpoint — measured
+                342 x 342 at a 390px viewport — so the mobile card is taller
+                than the natural aspect would make it.
+              */}
               <Image
                 src={card.image}
                 alt={`${card.title.join("")} service`}
@@ -236,7 +241,12 @@ function ServicesOverview() {
                 height={501}
                 sizes="(min-width: 1025px) 540px, 100vw"
                 className={cn(
+                  // Natural aspect is the base so desktop keeps its measured
+                  // 540 x 339; the square crop is scoped to below the tablet
+                  // breakpoint rather than reset above it, because resetting
+                  // aspect-ratio on a next/image collapses its height to 0.
                   "h-auto w-full rounded-[8px]",
+                  "max-tab:aspect-square max-tab:object-cover",
                   card.imageGapClass,
                 )}
               />
@@ -308,7 +318,7 @@ const PROCESS_STEPS: readonly ProcessStep[] = [
 function ServicesProcess() {
   return (
     <section className="w-full font-sans">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[8.1%] py-[80px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[24px] py-[80px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
         {PROCESS_STEPS.map((step) => (
           <div
             key={step.title}

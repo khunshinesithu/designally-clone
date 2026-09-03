@@ -434,7 +434,13 @@ function ContactForm() {
             </button>
           </div>
         ) : (
-          <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-6">
+          <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-[25px] tab:gap-6">
+            {/*
+              Measured on the live mobile form: every field sits 125px below the
+              last, whichever group it is in. Stacked, the gap counts twice per
+              field (the group's plus the label's), so 25px lands the pitch on
+              125. The desktop row layout keeps its measured 16/24.
+            */}
             {/* Field 1 — "Interested in" checkbox group, six inline options. */}
             <fieldset className="flex flex-col gap-3">
               <legend className="sr-only">Interested in</legend>
@@ -467,9 +473,9 @@ function ContactForm() {
             </fieldset>
 
             {/* Fields 2 + 3 — "My name's [ ] from [ ]". */}
-            <div className="flex flex-col gap-x-6 gap-y-4 tab:flex-row tab:flex-wrap tab:items-center">
+            <div className="flex flex-col gap-x-6 gap-y-[25px] tab:flex-row tab:gap-y-4 tab:flex-wrap tab:items-center">
               <span className={SENTENCE_RUN}>My name’s</span>
-              <div className="flex min-w-[220px] shrink grow basis-[466px] flex-col gap-1">
+              <div className="flex min-w-[220px] shrink grow basis-auto tab:basis-[466px] flex-col gap-1">
                 <label htmlFor={`${formId}-fullname`} className="sr-only">
                   Input name
                 </label>
@@ -494,7 +500,7 @@ function ContactForm() {
                 ) : null}
               </div>
               <span className={SENTENCE_RUN}>from</span>
-              <div className="flex min-w-[220px] shrink grow basis-[411px] flex-col gap-1">
+              <div className="flex min-w-[220px] shrink grow basis-auto tab:basis-[411px] flex-col gap-1">
                 <label htmlFor={`${formId}-company`} className="sr-only">
                   Company name
                 </label>
@@ -521,9 +527,9 @@ function ContactForm() {
             </div>
 
             {/* Field 4 — "I'd like to discuss about [ ]". */}
-            <div className="flex flex-col gap-x-6 gap-y-4 tab:flex-row tab:flex-wrap tab:items-center">
+            <div className="flex flex-col gap-x-6 gap-y-[25px] tab:flex-row tab:gap-y-4 tab:flex-wrap tab:items-center">
               <span className={SENTENCE_RUN}>I’d like to discuss about</span>
-              <div className="flex min-w-[220px] shrink grow basis-[803px] flex-col gap-1">
+              <div className="flex min-w-[220px] shrink grow basis-auto tab:basis-[803px] flex-col gap-1">
                 <label htmlFor={`${formId}-briefly`} className="sr-only">
                   Briefly
                 </label>
@@ -550,9 +556,9 @@ function ContactForm() {
             </div>
 
             {/* Fields 5 + 6 — "Feel free to contact me at [ ] or [ ]". */}
-            <div className="flex flex-col gap-x-6 gap-y-4 tab:flex-row tab:flex-wrap tab:items-center">
+            <div className="flex flex-col gap-x-6 gap-y-[25px] tab:flex-row tab:gap-y-4 tab:flex-wrap tab:items-center">
               <span className={SENTENCE_RUN}>Feel free to contact me at</span>
-              <div className="flex min-w-[220px] shrink grow basis-[341px] flex-col gap-1">
+              <div className="flex min-w-[220px] shrink grow basis-auto tab:basis-[341px] flex-col gap-1">
                 <label htmlFor={`${formId}-email`} className="sr-only">
                   Email
                 </label>
@@ -577,7 +583,7 @@ function ContactForm() {
                 ) : null}
               </div>
               <span className={SENTENCE_RUN}>or</span>
-              <div className="flex min-w-[220px] shrink grow basis-[341px] flex-col gap-1">
+              <div className="flex min-w-[220px] shrink grow basis-auto tab:basis-[341px] flex-col gap-1">
                 <label htmlFor={`${formId}-phone`} className="sr-only">
                   Phone
                 </label>
