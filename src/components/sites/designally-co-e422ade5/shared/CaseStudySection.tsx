@@ -34,7 +34,7 @@ export const CASE_STUDIES: readonly DsgCaseStudy[] = [
   {
     client: "Skytower",
     meta: "Industrial & Manufacturing / Branding / Website",
-    href: "https://designally.co/works/skytower-rebranding-and-website-projects/",
+    href: "/works/skytower-rebranding-and-website-projects/",
     image: {
       src: `${IMAGE_BASE}/Skytower-1024x576.jpg`,
       alt: "Skytower",
@@ -45,7 +45,7 @@ export const CASE_STUDIES: readonly DsgCaseStudy[] = [
   {
     client: "Bitazza Thailand/Global",
     meta: "Financial Services / Design Support / Website",
-    href: "https://designally.co/works/bitazza-design-support-and-website/",
+    href: "/works/bitazza-design-support-and-website/",
     image: {
       src: `${IMAGE_BASE}/Bitazza-1024x576.jpg`,
       alt: "Bitazza Thailand/Global",
@@ -56,7 +56,7 @@ export const CASE_STUDIES: readonly DsgCaseStudy[] = [
   {
     client: "Laga",
     meta: "Consumers Products / Branding / Website",
-    href: "https://designally.co/works/laga-branding-and-website-project/",
+    href: "/works/laga-branding-and-website-project/",
     image: {
       src: `${IMAGE_BASE}/LAGA-1024x576.jpg`,
       alt: "Laga",
@@ -67,7 +67,7 @@ export const CASE_STUDIES: readonly DsgCaseStudy[] = [
   {
     client: "INN News",
     meta: "Corporate / Branding / Website",
-    href: "https://designally.co/works/inn-news-rebranding-and-website-projects/",
+    href: "/works/inn-news-rebranding-and-website-projects/",
     image: {
       src: `${IMAGE_BASE}/INN-News-1024x576.jpg`,
       alt: "INN News",
@@ -95,7 +95,7 @@ function CaseStudyCard({ study }: { study: DsgCaseStudy }) {
   const { industry, services } = splitMeta(study.meta);
 
   return (
-    <a
+    <Link
       href={study.href}
       className={cn(
         "group relative flex w-full flex-col",
@@ -135,7 +135,7 @@ function CaseStudyCard({ study }: { study: DsgCaseStudy }) {
         <span className="inline-block w-[18.82px] text-center">/</span>
         <span>{services}</span>
       </div>
-    </a>
+    </Link>
   );
 }
 

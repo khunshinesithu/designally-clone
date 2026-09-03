@@ -49,3 +49,27 @@ export const POSTS_QUERY = defineQuery(`
     "id": _id, title, href, categories, date, image, alt
   }
 `);
+
+/** Slugs for generateStaticParams on /works/<slug>/. */
+export const CASE_STUDY_SLUGS_QUERY = defineQuery(`
+  *[_type == "caseStudy" && defined(slug.current)].slug.current
+`);
+
+/**
+ * One case-study detail page. `nextUp->` dereferences the linked project so the
+ * footer link needs no second round trip; the banner itself lives on this
+ * document because the original does not always use the linked project's own.
+ */
+export const CASE_STUDY_DETAIL_QUERY = defineQuery(`
+  *[_type == "caseStudy" && slug.current == $slug][0] {
+    "id": _id, client, title, industry, services, duration,
+    heroVideoUrl, body, visitLabel, visitHref, tags,
+    gallery[] {
+      _type,
+      _type == "galleryRow" => { images[] { ..., alt } },
+      _type == "galleryVideo" => { file, width, height }
+    },
+    nextUpImage,
+    nextUp-> { client, "slug": slug.current }
+  }
+`);

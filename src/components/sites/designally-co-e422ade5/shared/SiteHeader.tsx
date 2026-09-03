@@ -71,13 +71,24 @@ export interface SiteHeaderProps {
    * never appeared while only the homepage was cloned.
    */
   activeNav?: DsgActiveNav;
+  /**
+   * Float the header over the section below instead of sitting above it.
+   *
+   * The case-study detail pages open on a full-bleed video band that starts at
+   * the very top of the page: the live site pulls its content wrapper up by
+   * 131px so the 132px header overlaps it. Positioning the header absolutely is
+   * the same result without the negative margin. Colours do not change — the
+   * nav is rgb(33, 33, 33) and the wordmark rgb(245, 99, 65) here as everywhere.
+   */
+  overlay?: boolean;
 }
 
-export function SiteHeader({ className, activeNav }: SiteHeaderProps) {
+export function SiteHeader({ className, activeNav, overlay = false }: SiteHeaderProps) {
   return (
     <header
       className={cn(
-        "relative z-[999] flex w-full flex-col bg-transparent",
+        "z-[999] flex w-full flex-col bg-transparent",
+        overlay ? "absolute inset-x-0 top-0" : "relative",
         "[transition:background_0.3s,border_0.3s,box-shadow_0.3s,transform_0.4s]",
         className,
       )}
