@@ -186,9 +186,3 @@ Worth reading before changing layout values: most numbers in the components were
 - A few decorative icons are redrawn rather than extracted.
 
 See `VISUAL_QA.md` for the full list.
-
-## Licence
-
-This project was scaffolded from the MIT-licensed
-[ai-website-cloner-template](https://github.com/JCodesMore/ai-website-cloner-template);
-see [LICENSE](LICENSE). Site content, imagery and branding belong to Designally.
