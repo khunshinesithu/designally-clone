@@ -115,21 +115,27 @@ const ILLUSTRATION_SRC =
   "/sites/designally-co-e422ade5/shared/svg/works-illustration.svg";
 
 interface WorksGalleryProps {
+  /**
+   * Tiles to render. Supplied by the route, which reads them from Sanity and
+   * falls back to the seed when the CMS is unconfigured. Defaults to the
+   * original hardcoded set so the component still renders standalone.
+   */
+  items?: readonly DsgWorkItem[];
   className?: string;
 }
 
-export function WorksGallery({ className }: WorksGalleryProps) {
+export function WorksGallery({ className, items = WORK_ITEMS }: WorksGalleryProps) {
   const [activeCategory, setActiveCategory] = useState<DsgWorkCategory | null>(
     null,
   );
   const [visibleCount, setVisibleCount] = useState<number>(BATCH_SIZE);
 
-  const filteredItems = useMemo<DsgWorkItem[]>(
+  const filteredItems = useMemo<readonly DsgWorkItem[]>(
     () =>
       activeCategory === null
-        ? WORK_ITEMS
-        : WORK_ITEMS.filter((item) => item.categories.includes(activeCategory)),
-    [activeCategory],
+        ? items
+        : items.filter((item) => item.categories.includes(activeCategory)),
+    [activeCategory, items],
   );
 
   const visibleItems = filteredItems.slice(0, visibleCount);

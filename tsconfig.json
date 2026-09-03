@@ -19,6 +19,9 @@
       }
     ],
     "paths": {
+      // More specific than "@/*", so it wins for Sanity imports. The Studio and
+      // schemas live at the repo root by Sanity convention, outside src/.
+      "@/sanity/*": ["./sanity/*"],
       "@/*": ["./src/*"]
     }
   },

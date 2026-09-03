@@ -5,6 +5,7 @@ import { FloatingHeader } from "@/components/sites/designally-co-e422ade5/shared
 import { SiteFooter } from "@/components/sites/designally-co-e422ade5/shared/SiteFooter";
 import { SiteHeader } from "@/components/sites/designally-co-e422ade5/shared/SiteHeader";
 import { ThoughtsPage } from "@/components/sites/designally-co-e422ade5/thoughts-e2a689e8/ThoughtsPage";
+import { getPosts } from "@/sanity/lib/content";
 
 /**
  * Clone of https://designally.co/thoughts/ — site key designally-co-e422ade5,
@@ -31,7 +32,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://designally.co/thoughts/" },
 };
 
-export default function Thoughts() {
+export default async function Thoughts() {
+  // `getPosts` returns the render-ready view shape; the component's own type
+  // still calls the thumbnail `src`. Adapting here keeps the mapping at the
+  // data boundary rather than pushing CMS naming into the component.
+  const posts = (await getPosts()).map((p) => ({ ...p, src: p.imageUrl }));
+
   return (
     <div className="dsg-site flex min-h-screen flex-col">
       <FloatingHeader activeNav="/thoughts/" />
@@ -39,7 +45,7 @@ export default function Thoughts() {
       <SiteHeader activeNav="/thoughts/" />
 
       <main className="flex flex-col">
-        <ThoughtsPage />
+        <ThoughtsPage posts={posts} />
         <CtaSection />
       </main>
 
