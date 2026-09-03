@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-import { ArrowUpRightIcon, ScribbleUnderline } from "./icons";
+import { ArrowUpRightIcon } from "./icons";
 
 export interface ServicesPanelRow {
   number: string;
@@ -92,29 +92,16 @@ export function ServicesPanel({
           ))}
         </nav>
 
-        {/*
-          The same drawn loop the CTA uses, circling the button. Sized off the
-          button rather than the text, so it clears the pill's border on both
-          axes, and given an explicit width — an <svg> resolves `width: auto`
-          from its viewBox ratio and would otherwise ignore the insets.
-        */}
-        <span className="relative inline-block self-start">
-          <ScribbleUnderline
-            aria-hidden="true"
-            className="pointer-events-none absolute top-1/2 left-[-22px] h-[190%] w-[calc(100%+44px)] -translate-y-1/2 text-white/30"
-            pathClassName="dsg-scribble"
-          />
-          <a
-            href={cta.href}
-            className={cn(
-              "relative inline-block rounded-[200px] border-[2px] border-white bg-transparent",
-              "px-[32px] py-[16px] text-center text-[16px] font-medium leading-[19.2px] text-white",
-              "transition-colors duration-300 hover:bg-white hover:text-dsg-orange",
-            )}
-          >
-            {cta.label}
-          </a>
-        </span>
+        <a
+          href={cta.href}
+          className={cn(
+            "inline-block self-start rounded-[200px] border-[2px] border-white bg-transparent",
+            "px-[32px] py-[16px] text-center text-[16px] font-medium leading-[19.2px] text-white",
+            "transition-colors duration-300 hover:bg-white hover:text-dsg-orange",
+          )}
+        >
+          {cta.label}
+        </a>
       </div>
     </aside>
   );

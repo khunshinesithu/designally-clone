@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { ThoughtsBlob, ThoughtsSparkle } from "./MastheadMarks";
+
 import { ArrowUpRightIcon } from "@/components/sites/designally-co-e422ade5/shared/icons";
 import { cn } from "@/lib/utils";
 
@@ -220,22 +222,30 @@ function ThoughtsMasthead({ activeCategory }: { activeCategory: ThoughtsCategory
         )}
       >
         {/*
-          Three runs on one baseline — and the middle one is WHITE on a white
-          page, so the word reads as "T oughts" with a hole in it. That is the
-          live design (the same trick as the italic I in "OUR SERVICES"), not a
-          contrast bug: do not darken it. The live markup is three separate H1
-          widgets; one H1 with three spans is the same pixels with a sane
-          document outline, and screen readers still announce "Thoughts".
+          Three runs on one baseline. The middle one is WHITE because it sits on
+          the orange blob behind it — that mark is what makes the letter read.
+          Without it the word looks like "T oughts" with a hole punched in it.
+          The live markup is three separate H1 widgets; one H1 with three spans
+          is the same pixels with a sane document outline, and screen readers
+          still announce "Thoughts".
+
+          Both marks are sized and placed in `em`, so they track the heading
+          through its three type sizes instead of needing a set per breakpoint.
+          Measured against the 102px desktop heading: the blob is 136 x 130 at
+          x+34 y-8, the sparkle 72 x 75 at x+382 y-16.
         */}
         <h1
           className={cn(
             DISPLAY_TYPE,
-            "m-0 text-[56px] leading-[56px] tab:text-[72px] tab:leading-[72px] desk:text-[102px] desk:leading-[102px]",
+            "relative m-0 text-[56px] leading-[56px] tab:text-[72px] tab:leading-[72px] desk:text-[102px] desk:leading-[102px]",
           )}
         >
-          <span className="text-dsg-ink-strong">T</span>
-          <span className="text-white">h</span>
-          <span className="text-dsg-ink-strong">oughts</span>
+          <ThoughtsBlob className="pointer-events-none absolute top-[-0.078em] left-[0.333em] h-[1.275em] w-[1.333em]" />
+          {/* Positioned, so the letters paint over the blob behind them. */}
+          <span className="relative text-dsg-ink-strong">T</span>
+          <span className="relative text-white">h</span>
+          <span className="relative text-dsg-ink-strong">oughts</span>
+          <ThoughtsSparkle className="pointer-events-none absolute top-[-0.157em] left-[3.745em] h-[0.735em] w-[0.706em]" />
         </h1>
 
         <nav
