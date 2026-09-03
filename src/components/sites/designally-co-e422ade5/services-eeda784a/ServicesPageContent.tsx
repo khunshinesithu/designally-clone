@@ -229,7 +229,7 @@ function ServicesOverview() {
         className={cn(
           "w-full rounded-br-[80px] bg-dsg-orange px-[8.1%] py-[80px]",
           "tab:px-[6.2%] tab:py-[100px]",
-          "desk:sticky desk:top-0 desk:w-1/2 desk:self-start",
+          "desk:w-1/2 desk:min-h-screen",
           "desk:px-0 desk:pt-[160px] desk:pb-0",
         )}
       >
@@ -238,7 +238,7 @@ function ServicesOverview() {
           gaps. The rows were missing from this panel until they were measured
           at both widths; the live block is 380px (4 x 77 + 3 x 24).
         */}
-        <div className="mx-auto flex w-full max-w-[540px] flex-col gap-[40px]">
+        <div className="mx-auto flex w-full max-w-[540px] flex-col gap-[40px] desk:sticky desk:top-[160px]">
           <h1 className="font-serif text-[56px] font-medium leading-[56px] text-white tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
             Our Serv<i>i</i>ces
           </h1>

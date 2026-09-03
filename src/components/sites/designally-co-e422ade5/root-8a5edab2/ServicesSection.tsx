@@ -65,15 +65,23 @@ export function ServicesSection({ className, cards = SERVICE_CARDS }: ServicesSe
         flex item would be as tall as the whole section and could never move,
         which silently disables `position: sticky`.
       */}
+      {/*
+        The orange column runs the full height of the section, not just its own
+        content: measured `min-height: 900px` (the viewport) on the live panel,
+        stretching to the section's 4785px. The content inside it is what
+        sticks, so the background stays behind the cards the whole way down.
+        Making the column itself sticky instead leaves the orange only as tall
+        as its text.
+      */}
       <aside
         className={cn(
           "w-full rounded-r-[80px] bg-dsg-orange px-[8.1%] pt-[80px] pb-[80px]",
           "tab:px-[6.2%] tab:pt-[100px] tab:pb-[100px]",
-          "desk:sticky desk:top-0 desk:w-1/2 desk:self-start",
+          "desk:w-1/2 desk:min-h-screen",
           "desk:px-0 desk:pt-[114px] desk:pb-0 desk:pl-[12.5%]",
         )}
       >
-        <div className="flex w-full flex-col desk:h-[740px] desk:w-[356.25px]">
+        <div className="flex w-full flex-col desk:sticky desk:top-[114px] desk:h-[740px] desk:w-[356.25px]">
           <h1 className="font-serif text-[36px] font-medium leading-[36px] text-white tab:text-[44px] tab:leading-[44px] desk:text-[50.4px] desk:leading-[50.4px]">
             OUR SERV<i>I</i>CES
           </h1>
