@@ -618,8 +618,14 @@ export function AboutScroller() {
 
           {/* Bottom-right "Scroll to / Navigate" badge — a 115 x 110 hand-drawn blob
               with the two Caveat 32px/700 lines sitting on top of it at the measured
-              offsets (12,-8) and (41,17) from the blob's top-left corner. */}
-          <div className="mt-12 flex w-full max-w-[1307px] items-center justify-end desk:mt-0">
+              offsets (12,-8) and (41,17) from the blob's top-left corner.
+
+              Desktop only: the track is only a horizontal scroller from 1025px
+              up — below that the panels stack and the page scrolls down like
+              any other — so the hint describes something that is not happening.
+              It also overhung the viewport by 3px at 390, since the text is
+              rotated and positioned outside its 115px blob. */}
+          <div className="mt-12 hidden w-full max-w-[1307px] items-center justify-end desk:mt-0 desk:flex">
             <div className="relative h-[110px] w-[115px]">
               <span
                 aria-hidden="true"
@@ -752,10 +758,17 @@ export function AboutScroller() {
                   />
                   {/* Elementor hotspot tooltip: `background: rgb(33, 33, 33)`,
                       `border-radius: 4px`, `padding: 4px 16px`, white 16px Poppins,
-                      hidden until the logo is hovered or focused. */}
+                      hidden until the logo is hovered or focused.
+
+                      Desktop only. Below 1025px the panels stack and a tooltip
+                      centred on a logo near the right edge reached 423px in a
+                      390px viewport, giving the page 33px of horizontal scroll
+                      — for a label that is `opacity-0`, `pointer-events-none`
+                      and `aria-hidden`, so nothing is lost by not rendering it
+                      where there is no pointer to hover with. */}
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 rounded-[4px] bg-dsg-ink-strong px-4 py-1 text-[16px] leading-6 whitespace-nowrap text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+                    className="pointer-events-none absolute bottom-full left-1/2 mb-2 hidden -translate-x-1/2 rounded-[4px] bg-dsg-ink-strong px-4 py-1 text-[16px] leading-6 whitespace-nowrap text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100 desk:block"
                   >
                     {logo.name}
                   </span>
