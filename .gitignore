@@ -49,3 +49,9 @@ next-env.d.ts
 # Local temp files
 temp/
 .playwright-mcp/
+
+# Case-study videos (133MB) live in Sanity, not in git — committing them would
+# roughly double the repository for every clone, permanently. Fetch them with
+# scripts/download-assets-designally-co-e422ade5-case-studies.mjs if you need
+# to re-run the migration; the deployed site serves them from the Sanity CDN.
+/public/sites/designally-co-e422ade5/case-studies/videos/

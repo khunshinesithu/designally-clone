@@ -29,11 +29,12 @@ Then open http://localhost:3000.
 | `/` | Video carousel hero, sticky services panel, filterable works gallery |
 | `/services/` | Sticky panel with five service cards, four-step process section |
 | `/works/` | 74-tile filterable gallery with load-more, six case studies |
+| `/works/<slug>/` | Six project case studies — one dynamic route, video hero, full-bleed gallery |
 | `/about/` | **Scrolls horizontally** — ten panels, 12 000px wide, desktop only |
 | `/thoughts/` | Blog listing, nine posts |
 | `/contact-us/` | Enquiry form, Google Map embed |
 
-All six prerender as static pages.
+All eleven prerender as static pages.
 
 ## Tech stack
 
@@ -139,13 +140,21 @@ Run `npm run dev` and open http://localhost:3000/studio.
 | **Service card** | Cards on `/` and `/services/`. The `Page` field decides which — the two pages use different copy. |
 | **Thought** | The `/thoughts/` listing. |
 
-Two things to know:
+A case study is both the card and the detail page at `/works/<slug>/`: the fields from
+**Slug** down drive the detail page, and **Next up** is a reference to another case study, so the
+six form a ring.
+
+Three things to know:
 
 - **Dates are plain strings, not date pickers.** The original renders Thai dates
   (`กรกฎาคม 17, 2024`); a real date field would force a locale conversion and change what readers
   see. Type them exactly as they should appear.
 - **Ordering is the `Order` number**, not alphabetical or by date — the gallery sequence is
   deliberate.
+- **Case-study videos live only in Sanity.** They are 133MB, so they are gitignored rather than
+  committed. A clone with Sanity configured serves them from the CDN; without it, the seed
+  fallback references local files that are not in the repository and the video blocks render
+  empty. Run the case-study downloader if you need them locally.
 
 Pages revalidate hourly (`REVALIDATE_SECONDS` in `sanity/lib/client.ts`), so a published change
 appears within the hour without a redeploy. Content still renders at build time, so all six pages

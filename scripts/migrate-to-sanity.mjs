@@ -117,6 +117,9 @@ async function main() {
   }
 
   const seed = JSON.parse(await readFile(join(ROOT, 'sanity/seed-data.json'), 'utf8'));
+  const details = JSON.parse(
+    await readFile(join(ROOT, 'sanity/case-study-details.json'), 'utf8'),
+  );
 
   const client = createClient({
     projectId,
@@ -138,6 +141,13 @@ async function main() {
   const allPaths = [
     ...seed.workItems, ...seed.caseStudies, ...seed.services, ...seed.posts,
   ].map((e) => e.localPath).filter(Boolean);
+  // Case-study detail pages: gallery images plus each page's "Next up" banner.
+  for (const d of details) {
+    for (const b of d.gallery) {
+      if (b.kind === 'row') for (const i of b.images) allPaths.push(i.localPath);
+    }
+    if (d.nextUpImage) allPaths.push(d.nextUpImage.localPath);
+  }
   const distinct = [...new Set(allPaths)];
 
   console.log(`Images: ${distinct.length} distinct files (${allPaths.length} references)`);
@@ -167,6 +177,39 @@ async function main() {
     console.log(`  [${i + 1}/${distinct.length}] upload ${filename}`);
   }
 
+  // --- videos ---------------------------------------------------------------
+  // Uploaded as file assets rather than committed: 133MB of MP4 would roughly
+  // double the repository, permanently, for every clone.
+  const videoUploads = new Map();
+  const videoPaths = [
+    ...new Set(
+      details.flatMap((d) => d.gallery.filter((b) => b.kind === 'video').map((b) => b.localPath)),
+    ),
+  ];
+  console.log(`\nVideos: ${videoPaths.length} files`);
+  for (const [i, localPath] of videoPaths.entries()) {
+    const abs = join(ROOT, 'public', localPath);
+    if (!(await exists(abs))) {
+      console.error(`  MISSING ON DISK  ${localPath}`);
+      process.exitCode = 1;
+      continue;
+    }
+    if (DRY_RUN) { videoUploads.set(localPath, `dry-run-video-${i}`); continue; }
+    const filename = basename(localPath);
+    const existing = await client.fetch(
+      '*[_type == "sanity.fileAsset" && originalFilename == $filename][0]._id',
+      { filename },
+    );
+    if (existing) {
+      videoUploads.set(localPath, existing);
+      console.log(`  [${i + 1}/${videoPaths.length}] reuse  ${filename}`);
+      continue;
+    }
+    const asset = await client.assets.upload('file', createReadStream(abs), { filename });
+    videoUploads.set(localPath, asset._id);
+    console.log(`  [${i + 1}/${videoPaths.length}] upload ${filename}`);
+  }
+
   const imageRef = (localPath) =>
     localPath && uploads.has(localPath)
       ? { _type: 'image', asset: { _type: 'reference', _ref: uploads.get(localPath) } }
@@ -184,18 +227,75 @@ async function main() {
       showOnHome: w.showOnHome,
       order: w.order,
     })),
-    ...seed.caseStudies.map((c) => ({
-      _id: docId('caseStudy', c.client),
-      _type: 'caseStudy',
-      client: c.client,
-      industry: c.industry,
-      services: c.services,
-      href: c.href,
-      image: imageRef(c.localPath),
-      alt: c.alt,
-      showOnHome: c.showOnHome,
-      order: c.order,
-    })),
+    ...seed.caseStudies.map((c) => {
+      // The card seed and the detail seed are joined on the slug in `href`.
+      const slug = /\/works\/([^/?#]+)/.exec(c.href ?? '')?.[1];
+      const d = details.find((x) => x.slug === slug);
+      const detailFields = d
+        ? {
+            slug: { _type: 'slug', current: d.slug },
+            title: d.title,
+            heroVideoUrl: d.heroVideoUrl ?? undefined,
+            body: d.body?.length ? d.body : undefined,
+            visitLabel: d.visitLabel ?? undefined,
+            visitHref: d.visitHref ?? undefined,
+            duration: d.duration ?? undefined,
+            tags: d.tags?.length ? d.tags : undefined,
+            gallery: d.gallery
+              .map((b, i) =>
+                b.kind === 'video'
+                  ? videoUploads.has(b.localPath)
+                    ? {
+                        _key: `v${i}`,
+                        _type: 'galleryVideo',
+                        file: {
+                          _type: 'file',
+                          asset: { _type: 'reference', _ref: videoUploads.get(b.localPath) },
+                        },
+                        width: b.width,
+                        height: b.height,
+                      }
+                    : null
+                  : {
+                      _key: `g${i}`,
+                      _type: 'galleryRow',
+                      images: b.images
+                        .map((img, j) => {
+                          const ref = imageRef(img.localPath);
+                          return ref ? { ...ref, _key: `g${i}i${j}`, alt: img.alt } : null;
+                        })
+                        .filter(Boolean),
+                    },
+              )
+              .filter(Boolean),
+            // Self-reference: the ring is closed, so every target exists.
+            nextUp: d.nextUpSlug
+              ? {
+                  _type: 'reference',
+                  _ref: docId(
+                    'caseStudy',
+                    seed.caseStudies.find((o) => o.href?.includes(`/works/${d.nextUpSlug}`))
+                      ?.client ?? d.nextUpClient,
+                  ),
+                }
+              : undefined,
+            nextUpImage: d.nextUpImage ? imageRef(d.nextUpImage.localPath) : undefined,
+          }
+        : {};
+      return {
+        _id: docId('caseStudy', c.client),
+        _type: 'caseStudy',
+        client: c.client,
+        industry: c.industry,
+        services: c.services,
+        href: c.href,
+        image: imageRef(c.localPath),
+        alt: c.alt,
+        showOnHome: c.showOnHome,
+        order: c.order,
+        ...detailFields,
+      };
+    }),
     ...seed.services.map((s) => ({
       _id: docId('service', `${s.page}-${s.title}`),
       _type: 'service',
