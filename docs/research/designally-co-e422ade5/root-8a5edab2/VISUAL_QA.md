@@ -187,3 +187,86 @@ caught real errors:
   them on the live site.
 - **Two live-site inconsistencies reproduced verbatim**, not corrected: `/about/` labels Consumer
   Products 25 while listing 26 names, and Real Estate 13 while listing 7.
+
+---
+
+# Mobile pass (390 x 844)
+
+Measured against the live site at 390. Every original figure below was taken
+with its lazy images force-loaded — see "Measuring the original" at the end,
+which matters more than any single number here.
+
+## Document heights
+
+| Page | Original | Clone | Δ |
+|---|---|---|---|
+| Article | 6048 | 5991 | −0.9% |
+| `/privacy-policy/` | 4669 | 4681 | +0.3% |
+| `/thoughts/` | 5188 | 5288 | +1.9% |
+| `/thoughts/tips/` | 3232 | 3318 | +2.7% |
+| `/contact-us/` | 3877 | 3755 | −3.1% |
+| `/` | 11011 | 11439 | +3.9% |
+| Case study | 3945 | 4155 | +5.3% ¹ |
+| `/works/` | 4083 | 4443 | +8.8% |
+| `/services/` | ~7200 ² | 6160 | −14% |
+| `/about/` | — | 10284 | not yet measured |
+
+¹ Almost entirely the gallery: ours is 975 where the live one measures 781,
+because the live container collapses and lets its images overflow. Excluding it
+the page is +16.
+
+² The raw reading is 7607, but three of the five card images never load, and an
+unloaded placeholder box is square rather than the natural 342x214 — inflating
+the section by ~384.
+
+## What this pass changed
+
+| Page | Before | After | Cause |
+|---|---|---|---|
+| `/contact-us/` | +51% | −3.1% | `basis-[466px]` on a column flex container sized the cross axis, stretching every 41px input to 466 |
+| `/thoughts/` | +13% | +1.9% | Card title held 32/38.4 at mobile; the live one is 24/29 |
+| `/thoughts/tips/` | +10% | +2.7% | Same component |
+| Case study | +7.3% | +5.3% ¹ | Hero band is 506 not 420; Next up is 287 not 453 |
+| `/services/` | −23% | −14% | Two missing features, below |
+
+Two of these were missing content rather than responsive gaps, and were absent
+at **every** width:
+
+- The `/services/` panel had none of its four numbered rows (01 Branding,
+  02 Website Design, 03 Design Support, 04 Digital Brand Book).
+- The `/services/` cards carried prose lifted from the homepage cards. The live
+  cards have 37 outlined tag pills across the five and no description at all.
+
+## Deviations from the original, deliberately
+
+The live site scrolls sideways at 390 on five page types — `/works/` reaches
+578px of content in a 390px viewport, `/services/` and the case studies 560,
+`/` 458, `/about/` 404. The case-study gallery is worse: its container collapses
+to 7px while the images spill out of it.
+
+None of that is reproduced. The clone has no horizontal overflow anywhere. That
+is why heights on those pages stay a few percent apart — matching them would
+mean shipping the bug.
+
+## Measuring the original
+
+Two traps, both of which produced wrong numbers before they were caught:
+
+1. **Its lazy-loader never fires under viewport emulation.** `/works/` reads as
+   3241px with all 80 images pending; force-loading `data-src` gives 4083-4251.
+   Set `img.src = img.dataset.src` and wait for `complete` before measuring.
+2. **The emulated viewport silently reverts.** A set of readings taken at
+   1229px was very nearly recorded as mobile. Assert
+   `document.documentElement.clientWidth` inside the measurement itself.
+
+Two content notes: the `/thoughts/` listing paginates, showing six cards until a
+scroll loads the rest, so a naive reading is 3728 rather than 5188. And an
+unloaded image measures as a square placeholder — which is what produced a
+briefly-believed "the cards are square-cropped on mobile".
+
+## Still open
+
+- `/services/` card column is ~900 short of the original.
+- `/works/` +8.8% and `/` +3.9% are unexamined at this width.
+- Case-study intro is +127.
+- `/about/` has had no mobile pass; it is a horizontal scroller and needs its own.
