@@ -304,7 +304,12 @@ function ThoughtCard({ post }: { post: ThoughtPost }) {
       >
         <div className="flex min-w-0 flex-col tab:flex-1">
           {/* Live tag is H1; H2 keeps the page to a single H1 ("Thoughts"). */}
-          <h2 className="m-0 font-sans text-[32px] leading-[38.4px] font-medium text-dsg-ink-strong transition-colors duration-300 group-hover:text-dsg-orange">
+          {/*
+            24/29 at 390 on the live listing, stepping up to the measured
+            32/38.4 from the tablet breakpoint. Keeping 32 at mobile made every
+            card ~67px too tall.
+          */}
+          <h2 className="m-0 font-sans text-[24px] leading-[29px] font-medium text-dsg-ink-strong transition-colors duration-300 group-hover:text-dsg-orange tab:text-[32px] tab:leading-[38.4px]">
             {post.title}
           </h2>
 
