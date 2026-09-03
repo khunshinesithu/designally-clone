@@ -21,8 +21,9 @@
 import { cn } from "@/lib/utils";
 import type { DsgServiceCard, DsgServiceNavRow } from "@/types/designally";
 
-import { ArrowUpRightIcon } from "../shared/icons";
-import { ServiceCard, SERVICE_CARDS } from "./ServiceCard";
+import { ServicesPanel } from "../shared/ServicesPanel";
+import { ServiceCard } from "../shared/ServiceCard";
+import { SERVICE_CARDS } from "./ServiceCard";
 
 /**
  * The four numbered rows of the panel.
@@ -65,64 +66,14 @@ export function ServicesSection({ className, cards = SERVICE_CARDS }: ServicesSe
         flex item would be as tall as the whole section and could never move,
         which silently disables `position: sticky`.
       */}
-      {/*
-        The orange column runs the full height of the section, not just its own
-        content: measured `min-height: 900px` (the viewport) on the live panel,
-        stretching to the section's 4785px. The content inside it is what
-        sticks, so the background stays behind the cards the whole way down.
-        Making the column itself sticky instead leaves the orange only as tall
-        as its text.
-      */}
-      <aside
-        className={cn(
-          "w-full rounded-r-[80px] bg-dsg-orange px-[8.1%] pt-[80px] pb-[80px]",
-          "tab:px-[6.2%] tab:pt-[100px] tab:pb-[100px]",
-          "desk:w-1/2 desk:min-h-screen",
-          "desk:px-0 desk:pt-[114px] desk:pb-0 desk:pl-[12.5%]",
-        )}
-      >
-        <div className="flex w-full flex-col desk:sticky desk:top-[114px] desk:h-[740px] desk:w-[356.25px]">
-          <h1 className="font-serif text-[36px] font-medium leading-[36px] text-white tab:text-[44px] tab:leading-[44px] desk:text-[50.4px] desk:leading-[50.4px]">
-            OUR SERV<i>I</i>CES
-          </h1>
+      <ServicesPanel
+        heading={["OUR SERV", "I", "CES"]}
+        intro="We provide comprehensive design solutions for every business—from branding to website development and ongoing creative support—tailored to what your brand truly needs."
+        rows={NAV_ROWS}
+        cta={{ label: "Start Your Project with Designally", href: "/contact-us/" }}
+        topClassName="desk:pt-[114px]"
+      />
 
-          <p className="mt-[40px] mb-[14.4px] text-[16px] font-normal leading-[24px] text-white">
-            We provide comprehensive design solutions for every business—from
-            branding to website development and ongoing creative support—tailored
-            to what your brand truly needs.
-          </p>
-
-          {/* 4 rows on a 95px pitch: 71px tall + 24px gap = 356px overall. */}
-          <nav className="flex w-full flex-col gap-[24px]">
-            {NAV_ROWS.map((row) => (
-              <a
-                key={row.number}
-                href={row.href}
-                className="group flex h-[71px] w-full border-b border-white transition-[background-color,border-color,box-shadow,transform] duration-300"
-              >
-                <div className="flex h-[70px] w-full items-center justify-start pb-[24px]">
-                  <h3 className="text-[20px] font-medium leading-[26px] text-white/48">
-                    {row.number}
-                  </h3>
-                  <h1 className="ml-[16px] text-[23.04px] font-medium leading-[29.952px] text-white transition-colors duration-300 group-hover:text-dsg-ink-strong">
-                    {row.label}
-                  </h1>
-                  <span className="ml-auto flex h-[46px] w-[35.96px] items-center justify-center text-center text-white">
-                    <ArrowUpRightIcon width={40} height={40} />
-                  </span>
-                </div>
-              </a>
-            ))}
-          </nav>
-
-          <a
-            href="/contact-us/"
-            className="mt-[55px] inline-block self-start rounded-[200px] border-[2px] border-white bg-transparent px-[32px] py-[16px] text-center text-[16px] font-medium leading-[19.2px] text-white transition-colors duration-300 hover:bg-white hover:text-dsg-orange"
-          >
-            Start Your Project with Designally
-          </a>
-        </div>
-      </aside>
 
       {/*
         Card column. The 12.5% right padding puts the 356.25px column's right

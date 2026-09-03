@@ -2,7 +2,8 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
-import { ArrowUpRightIcon } from "../shared/icons";
+import { ServiceCard } from "../shared/ServiceCard";
+import { ServicesPanel } from "../shared/ServicesPanel";
 
 /** The panel's four numbered rows, as measured on the live /services/ panel. */
 const PANEL_ROWS: readonly { number: string; label: string; href: string }[] = [
@@ -95,9 +96,11 @@ type ItalicTitle = readonly [before: string, italic: string, after: string];
 interface ServicePageCard {
   eyebrow: string;
   title: ItalicTitle;
-  /** The outlined pills under the title. The live cards carry these, not prose. */
+  /** The paragraph under the heading — a <div> on the live page, which is why an
+   *  earlier `p` query reported these cards as having no deck at all. */
+  description: string;
   tags: readonly string[];
-  image: string;
+  image: { src: string; alt: string; width: number; height: number };
   /**
    * Space above this card, measured between the previous card's image bottom and this
    * card's eyebrow: 165, 164, 189, 189. Empty on the first card.
@@ -119,6 +122,8 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
   {
     eyebrow: "BRANDING",
     title: ["Brand C", "o", "re"],
+    description:
+      "Delving deep into your brand strategy, we establish a strong foundation that defines your unique identity, setting the stage for a powerful and purposeful brand presence.",
     tags: [
       "Brand Audit",
       "Naming",
@@ -134,13 +139,20 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       "Value Proposition Analysis",
       "Stake Holder Mapping",
     ],
-    image: `${CARD_IMAGES}/brandcore.jpg`,
+    image: {
+      src: `${CARD_IMAGES}/brandcore.jpg`,
+      alt: "Brand Core service",
+      width: 960,
+      height: 602,
+    },
     gapAboveClass: "",
     imageGapClass: "mt-[40px] tab:mt-[72px] desk:mt-[264px]",
   },
   {
     eyebrow: "BRANDING",
     title: ["Brand Vis", "u", "als"],
+    description:
+      "Empower your brand with a design system and curated brand assets, ensuring consistency and flexibility.",
     tags: [
       "Logo Design",
       "Logo Guideline",
@@ -148,13 +160,20 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       "Typography",
       "Graphic Elements",
     ],
-    image: `${CARD_IMAGES}/brandvisual.jpg`,
+    image: {
+      src: `${CARD_IMAGES}/brandvisual.jpg`,
+      alt: "Brand Visuals service",
+      width: 960,
+      height: 602,
+    },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[165px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
   },
   {
     eyebrow: "BRANDING",
     title: ["Brand Execut", "i", "on"],
+    description:
+      "Bring your brand identity to life by translating it into tangible assets that communicate effectively with your audience.",
     tags: [
       "Collateral",
       "Social Media Template",
@@ -162,13 +181,20 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       "Motion Graphic",
       "Print Design & Production",
     ],
-    image: `${CARD_IMAGES}/brandexc.jpg`,
+    image: {
+      src: `${CARD_IMAGES}/brandexc.jpg`,
+      alt: "Brand Execution service",
+      width: 960,
+      height: 602,
+    },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[164px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
   },
   {
     eyebrow: "WEBSITE",
     title: ["Webs", "i", "te + Dev"],
+    description:
+      "Our Website Design and Development service ensure your website represents your brand authentically and effectively. Our expert development team brings your vision to life, crafting a dynamic online platform that drives user engagement and achieves your business objectives.",
     tags: [
       "Informative",
       "Corporate",
@@ -180,7 +206,12 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       "Sales Page",
       "Investor Relation",
     ],
-    image: `${CARD_IMAGES}/website.jpg`,
+    image: {
+      src: `${CARD_IMAGES}/website.jpg`,
+      alt: "Website + Dev service",
+      width: 960,
+      height: 602,
+    },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[189px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[184px]",
   },
@@ -189,6 +220,8 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
     // and different from the homepage card, which is titled "Design Support".
     eyebrow: "DESIGN SUPPORT",
     title: ["Des", "i", "gn Ally"],
+    description:
+      "Our Design Support service is your trusted design ally, offering monthly support for all your creative needs. Say goodbye to complexities and hello to hassle-free design solutions, allowing you to focus on what you do best while we take care of the rest.",
     tags: [
       "Design Outsourcing Service",
       "Graphic Design",
@@ -196,7 +229,12 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       "Motion Graphic",
       "Print Design & Production",
     ],
-    image: `${CARD_IMAGES}/designsupport.jpg`,
+    image: {
+      src: `${CARD_IMAGES}/designsupport.jpg`,
+      alt: "Design Ally service",
+      width: 960,
+      height: 602,
+    },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[189px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
   },
@@ -224,120 +262,19 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
 function ServicesOverview() {
   return (
     <section className="relative flex w-full flex-col font-sans desk:flex-row">
-      {/* Sticky only from 1025px up — Elementor's `sticky_on: ["desktop"]`. */}
-      <aside
-        className={cn(
-          "w-full rounded-br-[80px] bg-dsg-orange px-[8.1%] py-[80px]",
-          "tab:px-[6.2%] tab:py-[100px]",
-          "desk:w-1/2 desk:min-h-screen",
-          "desk:px-0 desk:pt-[160px] desk:pb-0",
-        )}
-      >
-        {/*
-          Heading 76 + paragraph 72 + the 380px row block + the button, on 40px
-          gaps. The rows were missing from this panel until they were measured
-          at both widths; the live block is 380px (4 x 77 + 3 x 24).
-        */}
-        <div className="mx-auto flex w-full max-w-[540px] flex-col gap-[40px] desk:sticky desk:top-[160px]">
-          <h1 className="font-serif text-[56px] font-medium leading-[56px] text-white tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
-            Our Serv<i>i</i>ces
-          </h1>
-
-          <p className="text-[16px] font-normal leading-[24px] text-white">
-            We specialize in shaping impactful brand identities, building
-            captivating websites through design and development, and providing
-            reliable design support to meet all your requirements.
-          </p>
-
-          {/*
-            The four numbered rows. Measured on the live panel: each row is 77px
-            tall with a 1px white rule, 24px apart, the number 20px/500 at 48%
-            white and the label 40px/500. Rows 01-03 are in-page anchors matching
-            the card ids; row 04 leaves the site.
-
-            Note the fourth label is "Digital Brand Book" here, not the
-            homepage's "Online Brand Guide" for the same destination.
-          */}
-          <nav className="flex w-full flex-col gap-[24px]">
-            {PANEL_ROWS.map((row) => (
-              <a
-                key={row.number}
-                href={row.href}
-                className="group flex h-[62px] w-full items-center border-b border-white transition-colors duration-300 tab:h-[77px]"
-              >
-                <h3 className="text-[20px] font-medium leading-[26px] text-white/48">
-                  {row.number}
-                </h3>
-                <h2 className="ml-[16px] text-[28px] font-medium leading-[36px] text-white transition-colors duration-300 group-hover:text-dsg-ink-strong tab:text-[40px] tab:leading-[48px]">
-                  {row.label}
-                </h2>
-                <span className="ml-auto flex items-center justify-center text-white">
-                  <ArrowUpRightIcon width={40} height={40} />
-                </span>
-              </a>
-            ))}
-          </nav>
-
-          <a
-            href="/contact-us/"
-            className="mt-auto inline-block h-[53px] w-[210px] rounded-[200px] border-[2px] border-white bg-transparent px-[56px] py-[16px] text-center text-[16px] font-medium leading-[19.2px] text-white transition-colors duration-300 hover:bg-white hover:text-dsg-orange"
-          >
-            Get a Quote
-          </a>
-        </div>
-      </aside>
+      <ServicesPanel
+        heading={["Our Serv", "i", "ces"]}
+        intro="We specialize in shaping impactful brand identities, building captivating websites through design and development, and providing reliable design support to meet all your requirements."
+        rows={PANEL_ROWS}
+        cta={{ label: "Get a Quote", href: "/contact-us/" }}
+        topClassName="desk:pt-[160px]"
+      />
 
       <div className="w-full px-[24px] py-[80px] tab:px-[6.2%] tab:py-[100px] desk:w-1/2 desk:px-0 desk:py-[160px]">
         {/* 29px sits the first eyebrow at y = 637 against a column padded to 608. */}
         <div className="mx-auto flex w-full max-w-[540px] flex-col pt-[29px]">
           {SERVICE_CARDS.map((card) => (
-            <article
-              key={card.title.join("")}
-              className={cn("flex w-full flex-col", card.gapAboveClass)}
-            >
-              {/* The eyebrow is indented 27px past the rest of the card (x 826 vs 799). */}
-              <h3 className="pl-[27px] text-[20px] font-medium leading-[26px] text-dsg-ink-strong">
-                {card.eyebrow}
-              </h3>
-
-              <h1 className="mt-[29px] font-serif text-[54px] font-medium leading-[54px] text-dsg-ink-strong tab:text-[76px] tab:leading-[76px] desk:text-[76px] desk:leading-[76px]">
-                {card.title[0]}
-                <i>{card.title[1]}</i>
-                {card.title[2]}
-              </h1>
-
-              {/*
-                Outlined pills, not prose: measured 14/14 at 400 in #F56341,
-                padding 8px 16px, 200px radius, 32px tall. The live /services/
-                cards carry no description paragraph at any width — that copy
-                belongs to the homepage cards.
-              */}
-              <ul className="mt-[24px] flex flex-wrap gap-[8px]">
-                {card.tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className="rounded-[200px] border border-dsg-orange px-[16px] py-[8px] text-[14px] leading-[14px] font-normal text-dsg-orange"
-                  >
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-
-              {/*
-                800 x 501 natural, rendered 540 x 339 at desktop and 342 x 214
-                at 390 — natural aspect at every width, no crop. (An earlier
-                reading of 342 x 342 here was measuring images that had not
-                loaded; the placeholder box is square.)
-              */}
-              <Image
-                src={card.image}
-                alt={`${card.title.join("")} service`}
-                width={800}
-                height={501}
-                sizes="(min-width: 1025px) 540px, 100vw"
-                className={cn("h-auto w-full rounded-[8px]", card.imageGapClass)}
-              />
-            </article>
+            <ServiceCard key={card.title.join("")} card={card} />
           ))}
         </div>
       </div>

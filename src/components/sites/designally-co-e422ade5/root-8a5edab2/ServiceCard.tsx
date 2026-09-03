@@ -1,9 +1,4 @@
-import Image from "next/image";
-
-import { cn } from "@/lib/utils";
 import type { DsgServiceCard } from "@/types/designally";
-
-import { DoubleChevronIcon } from "../shared/icons";
 
 const IMAGE_BASE = "/sites/designally-co-e422ade5/root-8a5edab2/images";
 
@@ -116,69 +111,3 @@ export const SERVICE_CARDS: DsgServiceCard[] = [
     },
   },
 ];
-
-export interface ServiceCardProps {
-  card: DsgServiceCard;
-  className?: string;
-}
-
-/**
- * One card of the Services column.
- *
- * Static apart from the CSS-only hover on the pill tags (transparent → solid
- * orange over 0.3s), so this stays a server component.
- *
- * Measured at 1440×900: 356.25px column, 43.2px/43.2px title, 15px/22.5px body,
- * 34px pills with a 1px rgb(245,99,65) border and a 200px radius, image 800/501.
- */
-export function ServiceCard({ card, className }: ServiceCardProps) {
-  const { anchorId, eyebrow, title, description, tags, image } = card;
-
-  return (
-    <article
-      id={anchorId}
-      className={cn(
-        // The live card carries a 24px inset above the eyebrow row and below the
-        // image (measured: card top 1778 -> eyebrow 1802, image bottom 2409 ->
-        // card bottom 2433), which makes each card 655px rather than 607px.
-        "flex w-full flex-col py-[24px] font-sans desk:w-[356.25px]",
-        className,
-      )}
-    >
-      <div className="flex h-[36px] items-center">
-        <DoubleChevronIcon width={11} height={24} className="shrink-0" />
-        <h3 className="ml-[26px] text-[20px] font-medium leading-[26px] text-dsg-ink-strong">
-          {eyebrow}
-        </h3>
-      </div>
-
-      <h1 className="mt-[24px] text-[32px] font-semibold leading-[32px] text-dsg-ink-strong tab:text-[36px] tab:leading-[36px] desk:text-[43.2px] desk:leading-[43.2px]">
-        {title}
-      </h1>
-
-      <p className="mt-[24px] text-[15px] font-normal leading-[22.5px] text-dsg-ink-strong">
-        {description}
-      </p>
-
-      <div className="mt-[24px] flex flex-wrap gap-[8px]">
-        {tags.map((tag) => (
-          <span
-            key={tag}
-            className="inline-block h-[34px] rounded-[200px] border border-dsg-orange bg-transparent px-[16px] py-[8px] text-center text-[16px] font-normal leading-[16px] text-dsg-orange transition-[background-color,color] duration-300 hover:bg-dsg-orange hover:text-white"
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-      <Image
-        src={image.src}
-        alt={image.alt}
-        width={image.width}
-        height={image.height}
-        className="mt-[24px] h-auto w-full rounded-none"
-        sizes="(min-width: 1025px) 356px, 100vw"
-      />
-    </article>
-  );
-}
