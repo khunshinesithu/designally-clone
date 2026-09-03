@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Caveat, EB_Garamond, Poppins } from "next/font/google";
+import { Caveat, EB_Garamond, IBM_Plex_Sans_Thai, Poppins } from "next/font/google";
 import "./globals.css";
 
 /**
@@ -7,6 +7,8 @@ import "./globals.css";
  *   Poppins      — all UI text, nav, body copy, headings
  *   EB Garamond  — serif display ("OUR SERVICES", the hero headline)
  *   Caveat       — handwriting accent, e.g. "Don't be shy, say hello!" on /contact-us/
+ *   IBM Plex Sans Thai — the two legal pages only; their copy is Thai and the
+ *                        live site sets a different family for them
  * The live site self-hosts them; next/font/google serves the same faces.
  */
 const poppins = Poppins({
@@ -14,6 +16,13 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const ibmPlexSansThai = IBM_Plex_Sans_Thai({
+  variable: "--font-thai-face",
+  subsets: ["thai", "latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -78,7 +87,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} ${ebGaramond.variable} ${caveat.variable} h-full antialiased`}
+      className={`${poppins.variable} ${ebGaramond.variable} ${caveat.variable} ${ibmPlexSansThai.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

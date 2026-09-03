@@ -41,7 +41,7 @@ export function SiteFooter() {
         {/* Right — three spans on one line, right-aligned, 16px apart. */}
         <div className="flex flex-row items-center gap-[16px] text-end">
           <Link
-            href="https://designally.co/privacy-policy"
+            href="/privacy-policy/"
             className={cn(
               FOOTER_TEXT,
               "no-underline transition-colors duration-300 hover:text-dsg-ink focus-visible:text-dsg-ink",
@@ -58,7 +58,7 @@ export function SiteFooter() {
           {/* Measured href: TERMS OF SERVICES points at /cookie-policy on the
               live site, not /terms-of-services. Reproduced as measured. */}
           <Link
-            href="https://designally.co/cookie-policy"
+            href="/cookie-policy/"
             className={cn(
               FOOTER_TEXT,
               "no-underline transition-colors duration-300 hover:text-dsg-ink focus-visible:text-dsg-ink",

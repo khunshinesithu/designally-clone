@@ -12,6 +12,8 @@
   --font-heading: var(--font-sans);
   --font-serif: var(--font-eb-garamond), "EB Garamond", ui-serif, Georgia, serif;
   --font-hand: var(--font-caveat), "Caveat", ui-rounded, cursive;
+  /* The two legal pages only — their copy is Thai. */
+  --font-thai: var(--font-thai-face), "IBM Plex Sans Thai", ui-sans-serif, sans-serif;
 
   /* designally.co brand palette — exact rgb() values measured from the live site */
   --color-dsg-orange: #f56341;        /* rgb(245, 99, 65)  — brand primary */

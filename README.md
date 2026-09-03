@@ -35,14 +35,16 @@ Then open http://localhost:3000.
 | `/thoughts/knowledge/`, `/thoughts/tips/` | The listing filtered by category, five posts each |
 | `/thoughts/<slug>/` | Nine articles — one dynamic route, Portable Text body |
 | `/contact-us/` | Enquiry form, Google Map embed |
+| `/privacy-policy/`, `/cookie-policy/` | Thai legal text, set in IBM Plex Sans Thai |
 
-All twenty-two prerender as static pages.
+All twenty-four prerender as static pages.
 
 ## Tech stack
 
 - **Next.js 16** — App Router, React 19, TypeScript strict
 - **Tailwind CSS v4** — design tokens in `src/app/globals.css`
-- **Fonts** — Poppins (UI), EB Garamond (display), Caveat (handwriting accents), all via `next/font/google`
+- **Fonts** — Poppins (UI), EB Garamond (display), Caveat (handwriting accents) and
+  IBM Plex Sans Thai (the two legal pages only), all via `next/font/google`
 
 ## Project structure
 

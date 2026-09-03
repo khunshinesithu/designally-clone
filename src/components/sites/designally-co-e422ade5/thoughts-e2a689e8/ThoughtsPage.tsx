@@ -71,7 +71,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   {
     title:
       "Elevate Your Brand with Effective Packaging Design: Insights and Best Practices",
-    href: "https://designally.co/elevate-your-brand-with-effective-packaging-design-insights-and-best-practices/",
+    href: "/thoughts/elevate-your-brand-with-effective-packaging-design-insights-and-best-practices/",
     categories: "Knowledge",
     date: "กรกฎาคม 17, 2024",
     src: `${IMAGE_BASE}/Albotroos-packaging-design-by-Designally-design-agency-bangkok-2-1536x904.jpg`,
@@ -81,7 +81,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   },
   {
     title: "Developing a Strong Brand Identity",
-    href: "https://designally.co/developing-a-strong-brand-identity/",
+    href: "/thoughts/developing-a-strong-brand-identity/",
     categories: "Knowledge, Tips, Uncategorized @th",
     date: "มิถุนายน 10, 2024",
     src: `${IMAGE_BASE}/strong_brand_identity_cover-1536x1097.jpg`,
@@ -91,7 +91,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   },
   {
     title: "Annual Brand Health Check: Preparing for Success in 2024",
-    href: "https://designally.co/annual-brand-health-check-preparing-for-success-in-2024/",
+    href: "/thoughts/annual-brand-health-check-preparing-for-success-in-2024/",
     categories: "Tips",
     date: "พฤศจิกายน 14, 2023",
     src: `${IMAGE_BASE}/Content_1_Shared-Image-1536x804.webp`,
@@ -102,7 +102,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   {
     title:
       "The Art and Science of Naming: Crafting a Brand Identity Through Words",
-    href: "https://designally.co/the-art-and-science-of-naming-crafting-a-brand-identity-through-words/",
+    href: "/thoughts/the-art-and-science-of-naming-crafting-a-brand-identity-through-words/",
     categories: "Tips",
     date: "สิงหาคม 23, 2023",
     src: `${IMAGE_BASE}/5.0-1536x946.png`,
@@ -113,7 +113,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   {
     title:
       "Exploring Brand Archetypes: Unveiling the Personality Behind Your Brand",
-    href: "https://designally.co/exploring-brand-archetypes-unveiling-the-personality-behind-your-brand/",
+    href: "/thoughts/exploring-brand-archetypes-unveiling-the-personality-behind-your-brand/",
     categories: "Knowledge",
     date: "สิงหาคม 23, 2023",
     src: `${IMAGE_BASE}/4.0-1536x946.png`,
@@ -123,7 +123,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   },
   {
     title: "Designing E-Commerce Websites: Strategies for Driving Sales",
-    href: "https://designally.co/designing-e-commerce-websites-strategies-for-driving-sales/",
+    href: "/thoughts/designing-e-commerce-websites-strategies-for-driving-sales/",
     categories: "Tips",
     date: "สิงหาคม 23, 2023",
     src: `${IMAGE_BASE}/3-1536x946.png`,
@@ -133,7 +133,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   },
   {
     title: "The Basic Fundamentals of Graphic Design",
-    href: "https://designally.co/the-basic-fundamentals-of-graphic-design/",
+    href: "/thoughts/the-basic-fundamentals-of-graphic-design/",
     categories: "Tips",
     date: "สิงหาคม 23, 2023",
     src: `${IMAGE_BASE}/The-Basic-Fundamentals-of-Graphic-Design_feature-1536x946.jpg`,
@@ -143,7 +143,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   },
   {
     title: "The Art of Consistent Branding: A Comprehensive Guide",
-    href: "https://designally.co/the-art-of-consistent-branding-a-comprehensive-guide/",
+    href: "/thoughts/the-art-of-consistent-branding-a-comprehensive-guide/",
     categories: "Knowledge",
     date: "กรกฎาคม 11, 2023",
     src: `${IMAGE_BASE}/Frame-942-1536x1015.png`,
@@ -154,7 +154,7 @@ export const THOUGHT_POSTS: readonly ThoughtPost[] = [
   {
     title:
       "The Power of Online Brand Guidelines: Streamlining Your Brand Identity",
-    href: "https://designally.co/the-power-of-online-brand-guidelines-streamlining-your-brand-identity/",
+    href: "/thoughts/the-power-of-online-brand-guidelines-streamlining-your-brand-identity/",
     categories: "Knowledge",
     date: "กรกฎาคม 11, 2023",
     src: `${IMAGE_BASE}/Frame-9421-1536x1015.png`,
