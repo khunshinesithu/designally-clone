@@ -37,6 +37,10 @@ export interface SharedServiceCard {
  *   title      EB Garamond 76/76 500 #212121, one letter italic
  *   deck       Poppins 16/24 #212121
  *   tags       14/14 400 #F56341, 32px tall, 1px border, 200px radius, 8/16 pad
+ *   image      540 x 339 with an 8px radius
+ *
+ * Vertical gaps, measured between block edges: eyebrow -> title 29, title ->
+ * deck 24, deck -> tags 24, tags -> image 48.
  *
  * Static apart from the CSS-only hover on the pills, so it stays a server
  * component.
@@ -54,7 +58,10 @@ export function ServiceCard({
     <article
       id={anchorId}
       className={cn(
-        "flex w-full flex-col py-[24px] font-sans desk:w-[540px]",
+        // No vertical inset of its own: the space between cards is the live
+        // image-to-next-eyebrow gap (165/165/189 on /services/), which each
+        // page supplies. A 24px inset here would add 48 to every one of them.
+        "flex w-full flex-col font-sans desk:w-[540px]",
         card.gapAboveClass,
         className,
       )}
@@ -66,7 +73,7 @@ export function ServiceCard({
         </h3>
       </div>
 
-      <h1 className="mt-[24px] font-serif text-[40px] font-medium leading-[40px] text-dsg-ink-strong tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
+      <h1 className="mt-[29px] font-serif text-[40px] font-medium leading-[40px] text-dsg-ink-strong tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
         {typeof title === "string" ? (
           title
         ) : (
@@ -99,7 +106,7 @@ export function ServiceCard({
         width={image.width}
         height={image.height}
         sizes="(min-width: 1025px) 540px, 100vw"
-        className={cn("mt-[24px] h-auto w-full", card.imageGapClass)}
+        className={cn("mt-[48px] h-auto w-full rounded-[8px]", card.imageGapClass)}
       />
     </article>
   );

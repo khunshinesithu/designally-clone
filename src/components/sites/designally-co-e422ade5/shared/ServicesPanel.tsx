@@ -14,7 +14,7 @@ export interface ServicesPanelProps {
   intro: string;
   rows: readonly ServicesPanelRow[];
   cta: { label: string; href: string };
-  /** Top padding, which also sets where the sticky content pins. */
+  /** Top padding inside the pinned column. */
   topClassName?: string;
   className?: string;
 }
@@ -22,10 +22,9 @@ export interface ServicesPanelProps {
 /**
  * The orange services panel, shared by the homepage and /services/.
  *
- * The column runs the full height of its section — measured `min-height: 900px`
- * (the viewport) stretching to the whole section, with a 80px right radius. The
- * column is not what sticks; the content inside it is, so the orange stays
- * behind the cards all the way down.
+ * The column is exactly one viewport tall and pinned to the top of the screen,
+ * so it does not scroll and its content does not move while the cards travel
+ * past. An 80px radius rounds its right edge.
  *
  * Sizing follows /services/, which is the larger of the two on the live site:
  * heading EB Garamond 76/76, a 540px column, rows 77px tall with 20/500 numbers
@@ -45,7 +44,11 @@ export function ServicesPanel({
       className={cn(
         "w-full rounded-r-[80px] bg-dsg-orange px-[24px] pt-[80px] pb-[80px]",
         "tab:px-[6.2%] tab:pt-[100px] tab:pb-[100px]",
-        "desk:min-h-screen desk:w-1/2 desk:px-0 desk:pb-0",
+        // Exactly one screen tall and pinned: the column itself stays put
+        // while the cards scroll past it, so neither the orange nor the content
+        // inside it moves. `self-start` stops the flex row stretching it back
+        // to the section's full height, which would defeat the sticky.
+        "desk:sticky desk:top-0 desk:h-screen desk:self-start desk:w-1/2 desk:px-0 desk:pb-0",
         topClassName,
         className,
       )}
@@ -56,9 +59,8 @@ export function ServicesPanel({
           // 540 centred in the 713px half-column leaves the 86.25px margins the
           // live /services/ panel has. Left-aligning it at 12.5% — which suited
           // the homepage's older, narrower column — overruns the panel edge.
-          "desk:sticky desk:mx-auto desk:w-[540px]",
-          // Pin the content where the column's own top padding leaves it.
-          topClassName.replace("pt-", "top-"),
+          // No sticky of its own — it sits inside the pinned column.
+          "desk:mx-auto desk:w-[540px]",
         )}
       >
         <h1 className="font-serif text-[56px] font-medium leading-[56px] text-white desk:text-[76px] desk:leading-[76px]">

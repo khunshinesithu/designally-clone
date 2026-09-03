@@ -107,11 +107,11 @@ interface ServicePageCard {
    */
   gapAboveClass: string;
   /**
-   * Space between the description and the image. Hand-tuned per card on the live site
-   * (264, 144, 144, 184, 144) to line the images up against the pinned panel, so it is
-   * carried as data rather than derived.
+   * Was a hand-tuned space above each image (264, 144, 144, 184, 144), which
+   * compensated for the tag lists being absent from these cards. With the tags
+   * restored the live gap is a flat 48px, so the shared card supplies it.
    */
-  imageGapClass: string;
+  imageGapClass?: string;
 }
 
 /**
@@ -146,7 +146,6 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       height: 602,
     },
     gapAboveClass: "",
-    imageGapClass: "mt-[40px] tab:mt-[72px] desk:mt-[264px]",
   },
   {
     eyebrow: "BRANDING",
@@ -167,7 +166,6 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       height: 602,
     },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[165px]",
-    imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
   },
   {
     eyebrow: "BRANDING",
@@ -188,7 +186,6 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       height: 602,
     },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[164px]",
-    imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
   },
   {
     eyebrow: "WEBSITE",
@@ -213,7 +210,6 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       height: 602,
     },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[189px]",
-    imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[184px]",
   },
   {
     // The eyebrow reads DESIGN SUPPORT but the title is "Design Ally" — measured as such,
@@ -236,7 +232,6 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
       height: 602,
     },
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[189px]",
-    imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
   },
 ];
 
