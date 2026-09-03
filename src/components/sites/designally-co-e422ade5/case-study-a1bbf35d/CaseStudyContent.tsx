@@ -43,7 +43,7 @@ function HeroVideo({ url, client }: { url: string | null; client: string }) {
   return (
     <section
       aria-label={`${client} project showreel`}
-      className="relative h-[420px] w-full overflow-hidden bg-dsg-ink-strong tab:h-[640px] desk:h-[900px]"
+      className="relative h-[506px] w-full overflow-hidden bg-dsg-ink-strong tab:h-[640px] desk:h-[900px]"
     >
       {id ? (
         <iframe
@@ -185,16 +185,16 @@ export function CaseStudyContent({ study }: { study: CaseStudyDetailView }) {
         wave sits on top of the overlap.
       */}
       {study.nextUp ? (
-        <section className={cn(CONTAINER, "-mb-[160px] pt-[80px] pb-[80px] desk:pt-[160px]")}>
+        <section className={cn(CONTAINER, "-mb-[160px] pt-[40px] pb-[40px] desk:pt-[160px] desk:pb-[80px]")}>
           <h2 className="text-center text-[20px] font-semibold leading-[26px] text-dsg-orange">
             Next up
           </h2>
           <Link href={`/works/${study.nextUp.slug}/`} className="group block">
-            <h2 className="mt-[8px] text-center font-serif text-[44px] font-medium leading-[1.3] text-dsg-ink-strong transition-colors duration-300 group-hover:text-dsg-orange desk:text-[64px] desk:leading-[83px]">
+            <h2 className="mt-[8px] text-center font-serif text-[40px] font-medium leading-[40px] text-dsg-ink-strong transition-colors duration-300 group-hover:text-dsg-orange tab:text-[48px] tab:leading-[56px] desk:text-[64px] desk:leading-[83px]">
               {study.nextUp.client}
             </h2>
             {study.nextUp.image ? (
-              <div className="relative mt-[88px] aspect-[3/1] w-full overflow-hidden">
+              <div className="relative mt-[20px] aspect-[3/1] w-full overflow-hidden desk:mt-[88px]">
                 <Image
                   src={study.nextUp.image.src}
                   alt={study.nextUp.image.alt}
