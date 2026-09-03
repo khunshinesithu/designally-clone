@@ -545,9 +545,6 @@ export function AboutScroller() {
     scroller.scrollTo({ left, behavior: "smooth" });
   }, []);
 
-  const columnsFor = (panel: number) =>
-    INDUSTRY_COLUMNS.filter((column) => column.panel === panel);
-
   return (
     <main
       ref={scrollerRef}
@@ -769,35 +766,33 @@ export function AboutScroller() {
         </div>
 
         {/* ---------------------------------------------------------------- */}
-        {/* Panels 5-7 `eb910cc` `09a4fa2` `43cd37e` — industry lists          */}
+        {/* Panels 5-8 `eb910cc` `09a4fa2` `43cd37e` `6462a1e` — industries    */}
         {/* ---------------------------------------------------------------- */}
-        {[5, 6, 7].map((panel) => (
-          <section key={panel} className={WIDE_PANEL}>
-            {/* Columns sit on a 292px pitch (272px wide + 20px gap) and start flush
-                with the panel's left edge — these panels have no padding at all. The
-                group is centred vertically while the columns themselves stay
-                top-aligned, which is what puts every category heading on one line. */}
-            <div className="flex flex-col justify-center desk:min-h-screen">
-              <div className="flex flex-col gap-10 desk:flex-row desk:items-start desk:gap-[20px]">
-                {columnsFor(panel).map((column) => (
-                  <IndustryList
-                    key={column.label.map((run) => run.text).join("")}
-                    column={column}
-                  />
-                ))}
-              </div>
-            </div>
-          </section>
-        ))}
+        {/*
+          One continuous row rather than four panels.
 
-        {/* ---------------------------------------------------------------- */}
-        {/* Panel 8 `6462a1e` — 689px "Others" column                         */}
-        {/* ---------------------------------------------------------------- */}
-        <div className="flex w-full shrink-0 flex-col justify-center px-6 py-16 desk:min-h-screen desk:w-[689px] desk:px-0 desk:py-0">
-          {columnsFor(8).map((column) => (
-            <IndustryList key="others" column={column} />
-          ))}
-        </div>
+          The live build splits these across `w-screen` panels holding 4, 5, 5
+          and 1 columns. On a 1425px viewport a 4-column panel fills 1148 of it,
+          so the panel boundary opens a ~277px hole in the middle of a list that
+          should read straight through. Laid out as a single row every column
+          keeps the measured 292px pitch — 272px wide on a 20px gap — from the
+          first category to the last.
+
+          The row sizes to its content (`w-auto`), so the scroller treats it as
+          one wide panel instead of four screen-wide ones.
+        */}
+        <section className="flex w-full shrink-0 flex-col px-6 py-16 desk:min-h-screen desk:w-auto desk:px-0 desk:py-0">
+          <div className="flex flex-col justify-center desk:min-h-screen">
+            <div className="flex flex-col gap-10 desk:flex-row desk:items-start desk:gap-[20px] desk:pr-[80px]">
+              {INDUSTRY_COLUMNS.map((column) => (
+                <IndustryList
+                  key={column.label.map((run) => run.text).join("")}
+                  column={column}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* ---------------------------------------------------------------- */}
         {/* Panel 9 `c96252e` — orange closing panel                          */}
