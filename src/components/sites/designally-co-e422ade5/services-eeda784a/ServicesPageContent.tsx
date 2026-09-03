@@ -95,7 +95,8 @@ type ItalicTitle = readonly [before: string, italic: string, after: string];
 interface ServicePageCard {
   eyebrow: string;
   title: ItalicTitle;
-  description: string;
+  /** The outlined pills under the title. The live cards carry these, not prose. */
+  tags: readonly string[];
   image: string;
   /**
    * Space above this card, measured between the previous card's image bottom and this
@@ -118,8 +119,21 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
   {
     eyebrow: "BRANDING",
     title: ["Brand C", "o", "re"],
-    description:
-      "Delving deep into your brand strategy, we establish a strong foundation that defines your unique identity, setting the stage for a powerful and purposeful brand presence.",
+    tags: [
+      "Brand Audit",
+      "Naming",
+      "Tagline",
+      "Brand Story",
+      "Core Values, Vision, Mission",
+      "Brand Archetype",
+      "Brand Personality",
+      "Brand Positioning",
+      "Target Audience",
+      "Brand Voice & Messaging",
+      "Personas Development",
+      "Value Proposition Analysis",
+      "Stake Holder Mapping",
+    ],
     image: `${CARD_IMAGES}/brandcore.jpg`,
     gapAboveClass: "",
     imageGapClass: "mt-[40px] tab:mt-[72px] desk:mt-[264px]",
@@ -127,8 +141,13 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
   {
     eyebrow: "BRANDING",
     title: ["Brand Vis", "u", "als"],
-    description:
-      "Empower your brand with a design system and curated brand assets, ensuring consistency and flexibility.",
+    tags: [
+      "Logo Design",
+      "Logo Guideline",
+      "Color Scheme",
+      "Typography",
+      "Graphic Elements",
+    ],
     image: `${CARD_IMAGES}/brandvisual.jpg`,
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[165px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
@@ -136,8 +155,13 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
   {
     eyebrow: "BRANDING",
     title: ["Brand Execut", "i", "on"],
-    description:
-      "Bring your brand identity to life by translating it into tangible assets that communicate effectively with your audience.",
+    tags: [
+      "Collateral",
+      "Social Media Template",
+      "Package Design",
+      "Motion Graphic",
+      "Print Design & Production",
+    ],
     image: `${CARD_IMAGES}/brandexc.jpg`,
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[164px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
@@ -145,8 +169,17 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
   {
     eyebrow: "WEBSITE",
     title: ["Webs", "i", "te + Dev"],
-    description:
-      "Our Website Design and Development service ensure your website represents your brand authentically and effectively. Our expert development team brings your vision to life, crafting a dynamic online platform that drives user engagement and achieves your business objectives.",
+    tags: [
+      "Informative",
+      "Corporate",
+      "E-Commerce",
+      "Company Profile",
+      "Online Brand Guideline",
+      "Booking Platform",
+      "Web Application",
+      "Sales Page",
+      "Investor Relation",
+    ],
     image: `${CARD_IMAGES}/website.jpg`,
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[189px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[184px]",
@@ -156,8 +189,13 @@ const SERVICE_CARDS: readonly ServicePageCard[] = [
     // and different from the homepage card, which is titled "Design Support".
     eyebrow: "DESIGN SUPPORT",
     title: ["Des", "i", "gn Ally"],
-    description:
-      "Our Design Support service is your trusted design ally, offering monthly support for all your creative needs. Say goodbye to complexities and hello to hassle-free design solutions, allowing you to focus on what you do best while we take care of the rest.",
+    tags: [
+      "Design Outsourcing Service",
+      "Graphic Design",
+      "Package Design",
+      "Motion Graphic",
+      "Print Design & Production",
+    ],
     image: `${CARD_IMAGES}/designsupport.jpg`,
     gapAboveClass: "mt-[80px] tab:mt-[120px] desk:mt-[189px]",
     imageGapClass: "mt-[40px] tab:mt-[56px] desk:mt-[144px]",
@@ -262,15 +300,28 @@ function ServicesOverview() {
                 {card.eyebrow}
               </h3>
 
-              <h1 className="mt-[29px] font-serif text-[56px] font-medium leading-[56px] text-dsg-ink-strong tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
+              <h1 className="mt-[29px] font-serif text-[54px] font-medium leading-[54px] text-dsg-ink-strong tab:text-[76px] tab:leading-[76px] desk:text-[76px] desk:leading-[76px]">
                 {card.title[0]}
                 <i>{card.title[1]}</i>
                 {card.title[2]}
               </h1>
 
-              <p className="mt-[24px] text-[16px] font-normal leading-[24px] text-dsg-ink-strong">
-                {card.description}
-              </p>
+              {/*
+                Outlined pills, not prose: measured 14/14 at 400 in #F56341,
+                padding 8px 16px, 200px radius, 32px tall. The live /services/
+                cards carry no description paragraph at any width — that copy
+                belongs to the homepage cards.
+              */}
+              <ul className="mt-[24px] flex flex-wrap gap-[8px]">
+                {card.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-[200px] border border-dsg-orange px-[16px] py-[8px] text-[14px] leading-[14px] font-normal text-dsg-orange"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
 
               {/*
                 800 x 501 natural, rendered 540 x 339 at desktop and 342 x 214
