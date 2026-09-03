@@ -456,6 +456,8 @@ function maskedMark(src: string): React.CSSProperties {
 export function AboutScroller() {
   const scrollerRef = useRef<HTMLElement>(null);
   const [wordIndex, setWordIndex] = useState(0);
+  /** The word that just left, so it can drop out while the next drops in. */
+  const [leavingIndex, setLeavingIndex] = useState<number | null>(null);
 
   /**
    * The page's defining behaviour. `{ passive: false }` is required because the
@@ -496,7 +498,10 @@ export function AboutScroller() {
   /** Panel 2's rotating word. */
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setWordIndex((current) => (current + 1) % CYCLING_WORDS.length);
+      setWordIndex((current) => {
+        setLeavingIndex(current);
+        return (current + 1) % CYCLING_WORDS.length;
+      });
     }, CYCLE_INTERVAL_MS);
     return () => window.clearInterval(timer);
   }, []);
@@ -700,15 +705,23 @@ export function AboutScroller() {
               </span>
               {/* The four words share one slot. An inline grid stacks them in a single
                   cell, so the slot is exactly as wide as the widest word at any type
-                  size and no magic width is needed. */}
-              <span className="relative inline-grid align-top">
+                  size and no magic width is needed.
+
+                  Each word drops in from above and settles with a bounce while the
+                  one it replaces drops out below, so the pair moves top to bottom
+                  together. `overflow-hidden` keeps them clipped to the line while
+                  they travel; the 216px line box leaves room for the descender in
+                  "Simple." */}
+              <span className="relative inline-grid overflow-hidden align-top">
                 {CYCLING_WORDS.map((word, index) => (
                   <span
                     key={word}
                     aria-hidden={index !== wordIndex}
                     className={cn(
-                      "col-start-1 row-start-1 whitespace-nowrap text-dsg-orange transition-opacity duration-500",
-                      index === wordIndex ? "opacity-100" : "opacity-0",
+                      "col-start-1 row-start-1 whitespace-nowrap text-dsg-orange",
+                      index === wordIndex && "dsg-word-in",
+                      index === leavingIndex && index !== wordIndex && "dsg-word-out",
+                      index !== wordIndex && index !== leavingIndex && "opacity-0",
                     )}
                   >
                     {word}

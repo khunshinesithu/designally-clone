@@ -3,7 +3,10 @@
 import Image from "next/image";
 import { useId, useState } from "react";
 
-import { ArrowUpRightIcon } from "@/components/sites/designally-co-e422ade5/shared/icons";
+import {
+  ArrowUpRightIcon,
+  ScribbleUnderline,
+} from "@/components/sites/designally-co-e422ade5/shared/icons";
 import { cn } from "@/lib/utils";
 
 /**
@@ -637,14 +640,26 @@ function ContactForm() {
               </div>
 
               <div className="flex justify-start desk:justify-end">
-                <button
-                  type="submit"
-                  className="flex h-[60px] items-center gap-[10px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
-                >
-                  {/* Same ↗ mark the shared components use, painted white here. */}
-                  <ArrowUpRightIcon className="h-[28px] w-[28px] shrink-0 desk:h-[40px] desk:w-[40px]" />
-                  Send inquiry
-                </button>
+                {/*
+                  The CTA's drawn loop, circling the button. Orange rather than
+                  white here — the button sits on the page's white background,
+                  where a white stroke would not read.
+                */}
+                <span className="relative inline-block">
+                  <ScribbleUnderline
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-1/2 left-[-22px] h-[175%] w-[calc(100%+44px)] -translate-y-1/2 text-dsg-orange/40"
+                    pathClassName="dsg-scribble"
+                  />
+                  <button
+                    type="submit"
+                    className="relative flex h-[60px] items-center gap-[10px] rounded-[500px] bg-dsg-ink-strong px-6 font-sans text-[24px] leading-[60px] font-normal text-white transition-opacity hover:opacity-90 tab:text-[32px] desk:min-w-[343px] desk:text-[40px]"
+                  >
+                    {/* Same ↗ mark the shared components use, painted white here. */}
+                    <ArrowUpRightIcon className="h-[28px] w-[28px] shrink-0 desk:h-[40px] desk:w-[40px]" />
+                    Send inquiry
+                  </button>
+                </span>
               </div>
             </div>
           </form>
