@@ -4,8 +4,8 @@
  * replace the hardcoded arrays.
  *
  * Prerequisites (see the CMS section of README.md):
- *   .env.local with NEXT_PUBLIC_SANITY_PROJECT_ID, NEXT_PUBLIC_SANITY_DATASET
- *   and SANITY_API_WRITE_TOKEN (Editor role).
+ *   .env.local with NEXT_PUBLIC_SANITY_PROJECT_ID and NEXT_PUBLIC_SANITY_DATASET,
+ *   plus either a `sanity login` session or SANITY_API_WRITE_TOKEN (Editor role).
  *
  *   node scripts/extract-seed-data.mjs      # writes sanity/seed-data.json
  *   node scripts/migrate-to-sanity.mjs --dry-run
@@ -49,6 +49,28 @@ function requireEnv(name, hint) {
   return value;
 }
 
+/**
+ * Fall back to the token the Sanity CLI already stored for `sanity login`, so a
+ * one-off local migration does not need a separate personal access token.
+ * Never printed. Prefers an explicit SANITY_API_WRITE_TOKEN when one is set —
+ * CI, or anyone wanting a narrower scope, should use that.
+ */
+async function cliToken() {
+  const home = process.env.HOME || process.env.USERPROFILE;
+  if (!home) return undefined;
+  for (const rel of ['.config/sanity/config.json', '.sanity/config.json']) {
+    try {
+      const raw = await readFile(join(home, rel), 'utf8');
+      const parsed = JSON.parse(raw);
+      const token = parsed?.authToken ?? parsed?.auth?.token;
+      if (token) return token;
+    } catch {
+      // try the next location
+    }
+  }
+  return undefined;
+}
+
 // --- helpers ----------------------------------------------------------------
 
 /** Stable, readable document id so re-runs update rather than duplicate. */
@@ -74,13 +96,25 @@ async function main() {
     'Run `npx sanity init` first, then copy .env.example to .env.local and fill it in.',
   );
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
-  const token = DRY_RUN
-    ? undefined
-    : requireEnv(
-        'SANITY_API_WRITE_TOKEN',
-        'Create one at https://sanity.io/manage → your project → API → Tokens (Editor role),\n' +
-          'then add it to .env.local. Do not commit it.',
+  let token;
+  let tokenSource = 'none';
+  if (!DRY_RUN) {
+    if (process.env.SANITY_API_WRITE_TOKEN) {
+      token = process.env.SANITY_API_WRITE_TOKEN;
+      tokenSource = 'SANITY_API_WRITE_TOKEN';
+    } else {
+      token = await cliToken();
+      tokenSource = 'sanity CLI login';
+    }
+    if (!token) {
+      console.error(
+        '\nNo write token.\nEither run `npx sanity login`, or create an Editor token at\n' +
+          'https://sanity.io/manage → your project → API → Tokens and set\n' +
+          'SANITY_API_WRITE_TOKEN in .env.local. Do not commit it.\n',
       );
+      process.exit(1);
+    }
+  }
 
   const seed = JSON.parse(await readFile(join(ROOT, 'sanity/seed-data.json'), 'utf8'));
 
@@ -92,7 +126,11 @@ async function main() {
     useCdn: false,
   });
 
-  console.log(`project ${projectId} · dataset ${dataset}${DRY_RUN ? ' · DRY RUN' : ''}\n`);
+  console.log(
+    `project ${projectId} · dataset ${dataset}` +
+      (DRY_RUN ? ' · DRY RUN' : ` · auth via ${tokenSource}`) +
+      '\n',
+  );
 
   // --- images -------------------------------------------------------------
   // Upload each distinct file once; several documents share the same image.

@@ -102,17 +102,19 @@ keeps CI green and means a fresh clone works with no setup.
 
 ### One-time setup
 
+**This is already done for the shared project** — the dataset holds all 99 documents. You only
+need `.env.local`:
+
 ```bash
-npx sanity login          # opens a browser
-npx sanity init           # create a project; choose "production" as the dataset
 cp .env.example .env.local
 ```
 
-Put the project id from `sanity init` into `.env.local`. Then create an **Editor** token at
-[sanity.io/manage](https://sanity.io/manage) → your project → API → Tokens, and add it as
-`SANITY_API_WRITE_TOKEN`. `.env.local` is gitignored — never commit the token.
+Fill in `NEXT_PUBLIC_SANITY_PROJECT_ID` and `NEXT_PUBLIC_SANITY_DATASET` (ask a teammate, or read
+them off [sanity.io/manage](https://sanity.io/manage)). Reading is public, so no token is needed to
+run the site. To edit in the Studio, run `npx sanity login` once with an account that has been
+invited to the project.
 
-Import the existing content:
+The steps below were the one-time import, kept for reference:
 
 ```bash
 node scripts/extract-seed-data.mjs        # refresh the seed from the components
@@ -121,7 +123,10 @@ node scripts/migrate-to-sanity.mjs        # uploads 94 images, creates 99 docume
 ```
 
 The migration is idempotent — document ids are deterministic, so re-running updates rather than
-duplicates, and images already uploaded are reused.
+duplicates, and images already uploaded are reused. It authenticates with your `sanity login`
+session; set `SANITY_API_WRITE_TOKEN` (an Editor token from
+[sanity.io/manage](https://sanity.io/manage) → API → Tokens) to use a scoped token instead.
+`.env.local` is gitignored — never commit a token.
 
 ### Editing
 
