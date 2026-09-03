@@ -93,7 +93,11 @@ export function SiteHeader({ className, activeNav, overlay = false }: SiteHeader
         className,
       )}
     >
-      <div className="dsg-container flex flex-row py-0 tab:py-[24px] desk:py-[40px]">
+      {/*
+        The mobile padding is the header's own: the live bar is 70px tall with
+        the wordmark at y=28, where the 51px logo row alone would make 51.
+      */}
+      <div className="dsg-container flex flex-row pt-[12px] pb-[7px] tab:py-[24px] desk:py-[40px]">
         {/* Logo — 25% column, content flush left, vertically centred. */}
         <div className="flex h-[51.203px] w-auto shrink-0 flex-col items-start justify-center desk:w-1/4">
           <Link

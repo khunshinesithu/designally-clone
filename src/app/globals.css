@@ -169,7 +169,12 @@
   margin-inline: auto;
 }
 
-/* Measured on the live site: 87.6% at a 768px viewport, 83.8% at 390px. */
+/*
+ * Measured on the live site: 87.6% at a 768px viewport, and flat 24px gutters
+ * below that — 342px of content in a 390px viewport, which is the width 28 of
+ * the 53 containers on the live homepage use there. An earlier reading of 83.8%
+ * (327px) was wrong and left every mobile section inset by an extra 7px a side.
+ */
 @media (max-width: 1024px) {
   .dsg-container {
     max-width: 87.6%;
@@ -178,7 +183,7 @@
 
 @media (max-width: 767px) {
   .dsg-container {
-    max-width: 83.8%;
+    max-width: calc(100% - 48px);
   }
 }
 
