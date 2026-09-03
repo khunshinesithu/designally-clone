@@ -135,6 +135,8 @@ const WORK_FILTERS: readonly DsgWorkFilter[] = [
 const BATCH_SIZE = 12;
 
 interface WorksPageContentProps {
+  /** Tiles to render — see the note on WorksGallery. */
+  items?: readonly DsgWorkItem[];
   className?: string;
   /**
    * The page container utility. Required rather than defaulted so `/works/` has a
@@ -149,18 +151,19 @@ interface WorksPageContentProps {
 export function WorksPageContent({
   className,
   containerClassName,
+  items = WORK_ITEMS,
 }: WorksPageContentProps) {
   const [activeCategory, setActiveCategory] = useState<DsgWorkCategory | null>(
     null,
   );
   const [visibleCount, setVisibleCount] = useState<number>(BATCH_SIZE);
 
-  const filteredItems = useMemo<DsgWorkItem[]>(
+  const filteredItems = useMemo<readonly DsgWorkItem[]>(
     () =>
       activeCategory === null
-        ? WORK_ITEMS
-        : WORK_ITEMS.filter((item) => item.categories.includes(activeCategory)),
-    [activeCategory],
+        ? items
+        : items.filter((item) => item.categories.includes(activeCategory)),
+    [activeCategory, items],
   );
 
   const visibleItems = filteredItems.slice(0, visibleCount);

@@ -344,13 +344,13 @@ function ThoughtCard({ post }: { post: ThoughtPost }) {
  * Listing `5d0e1c1` — the nine cards stacked with an 80px gap (measured between
  * every consecutive pair) and 190px of trailing padding before the orange CTA.
  */
-function ThoughtsListing() {
+function ThoughtsListing({ posts }: { posts: readonly ThoughtPost[] }) {
   return (
     <section className="w-full pb-[96px] desk:pb-[190px]">
       <div
         className={cn(CONTAINER, "flex flex-col gap-[48px] desk:gap-[80px]")}
       >
-        {THOUGHT_POSTS.map((post) => (
+        {posts.map((post) => (
           <ThoughtCard key={post.href} post={post} />
         ))}
       </div>
@@ -359,11 +359,20 @@ function ThoughtsListing() {
 }
 
 /** Masthead + listing. The header, CTA and footer are added by the route. */
-export function ThoughtsPage() {
+export interface ThoughtsPageProps {
+  /**
+   * Listing entries. Supplied by the route, which reads them from Sanity and
+   * falls back to the seed when the CMS is not configured. Defaults to the
+   * original hardcoded set so the component still renders standalone.
+   */
+  posts?: readonly ThoughtPost[];
+}
+
+export function ThoughtsPage({ posts = THOUGHT_POSTS }: ThoughtsPageProps) {
   return (
     <>
       <ThoughtsMasthead />
-      <ThoughtsListing />
+      <ThoughtsListing posts={posts} />
     </>
   );
 }

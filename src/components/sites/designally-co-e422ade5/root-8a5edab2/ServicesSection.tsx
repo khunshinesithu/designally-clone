@@ -19,7 +19,7 @@
  */
 
 import { cn } from "@/lib/utils";
-import type { DsgServiceNavRow } from "@/types/designally";
+import type { DsgServiceCard, DsgServiceNavRow } from "@/types/designally";
 
 import { ArrowUpRightIcon } from "../shared/icons";
 import { ServiceCard, SERVICE_CARDS } from "./ServiceCard";
@@ -44,10 +44,15 @@ const NAV_ROWS: readonly DsgServiceNavRow[] = [
 ];
 
 interface ServicesSectionProps {
+  /**
+   * The five cards. Supplied by the route from Sanity, falling back to the seed.
+   * Defaults to the original hardcoded set so the section renders standalone.
+   */
+  cards?: readonly DsgServiceCard[];
   className?: string;
 }
 
-export function ServicesSection({ className }: ServicesSectionProps) {
+export function ServicesSection({ className, cards = SERVICE_CARDS }: ServicesSectionProps) {
   return (
     <section
       className={cn(
@@ -117,7 +122,7 @@ export function ServicesSection({ className }: ServicesSectionProps) {
       */}
       <div className="mt-[80px] flex w-full justify-end px-[8.1%] pb-[80px] tab:px-[6.2%] tab:pb-[100px] desk:mt-0 desk:w-1/2 desk:px-0 desk:pt-[99px] desk:pr-[12.5%] desk:pb-[114px]">
         <div className="flex w-full flex-col gap-[160px] desk:w-[356.25px]">
-          {SERVICE_CARDS.map((card) => (
+          {cards.map((card) => (
             <ServiceCard key={card.title} card={card} />
           ))}
         </div>
