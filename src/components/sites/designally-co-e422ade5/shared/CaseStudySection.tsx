@@ -19,6 +19,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+
+import { DoubleChevronIcon } from "./icons";
 import type { DsgCaseStudy } from "@/types/designally";
 
 const IMAGE_BASE = "/sites/designally-co-e422ade5/root-8a5edab2/images";
@@ -184,9 +186,22 @@ export function CaseStudySection({
           its own line, left-aligned under the title.
         */}
         <div className="flex flex-col gap-[16px] desk:flex-row desk:items-baseline desk:justify-between desk:gap-[24px]">
-          <div className="flex flex-row items-baseline gap-[11.9px] text-[32px] font-medium leading-[42px] desk:text-[40px] desk:leading-[52px]">
-            <h1 className="text-dsg-ink-strong">Case</h1>
-            <h1 className="text-dsg-orange">Study</h1>
+          {/*
+            The double-chevron mark before "Case" — the same icon the service
+            cards use for their eyebrows, but at its full 18 x 40 rather than
+            their 11 x 24, and in #F78267. Measured on the live homepage: the
+            mark at x=178 against the heading at x=220, so 24px of clearance.
+          */}
+          <div className="flex flex-row items-center gap-[24px]">
+            <DoubleChevronIcon
+              width={18}
+              height={40}
+              className="h-[28px] w-[13px] shrink-0 desk:h-[40px] desk:w-[18px]"
+            />
+            <div className="flex flex-row items-baseline gap-[11.9px] text-[32px] font-medium leading-[42px] desk:text-[40px] desk:leading-[52px]">
+              <h1 className="text-dsg-ink-strong">Case</h1>
+              <h1 className="text-dsg-orange">Study</h1>
+            </div>
           </div>
 
           <div className="flex flex-row flex-wrap items-baseline gap-x-[5px] text-[20px] font-medium leading-[26px] desk:justify-end desk:text-end">
