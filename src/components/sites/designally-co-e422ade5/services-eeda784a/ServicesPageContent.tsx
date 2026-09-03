@@ -2,6 +2,20 @@ import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
+import { ArrowUpRightIcon } from "../shared/icons";
+
+/** The panel's four numbered rows, as measured on the live /services/ panel. */
+const PANEL_ROWS: readonly { number: string; label: string; href: string }[] = [
+  { number: "01", label: "Branding", href: "#Branding" },
+  { number: "02", label: "Website Design", href: "#Website" },
+  { number: "03", label: "Design Support", href: "#DesignAlly" },
+  {
+    number: "04",
+    label: "Digital Brand Book",
+    href: "https://designally.co/online-brand-guide/designally/",
+  },
+];
+
 /**
  * designally.co /services/ — the three page-body sections, in live order:
  *
@@ -182,10 +196,11 @@ function ServicesOverview() {
         )}
       >
         {/*
-          725px tall on the live site with the button pinned to the bottom edge
-          (heading 76 + gap 40 + paragraph 72 + free space + button 53 = 725).
+          Heading 76 + paragraph 72 + the 380px row block + the button, on 40px
+          gaps. The rows were missing from this panel until they were measured
+          at both widths; the live block is 380px (4 x 77 + 3 x 24).
         */}
-        <div className="mx-auto flex w-full max-w-[540px] flex-col gap-[40px] desk:h-[725px]">
+        <div className="mx-auto flex w-full max-w-[540px] flex-col gap-[40px]">
           <h1 className="font-serif text-[56px] font-medium leading-[56px] text-white tab:text-[56px] tab:leading-[56px] desk:text-[76px] desk:leading-[76px]">
             Our Serv<i>i</i>ces
           </h1>
@@ -195,6 +210,35 @@ function ServicesOverview() {
             captivating websites through design and development, and providing
             reliable design support to meet all your requirements.
           </p>
+
+          {/*
+            The four numbered rows. Measured on the live panel: each row is 77px
+            tall with a 1px white rule, 24px apart, the number 20px/500 at 48%
+            white and the label 40px/500. Rows 01-03 are in-page anchors matching
+            the card ids; row 04 leaves the site.
+
+            Note the fourth label is "Digital Brand Book" here, not the
+            homepage's "Online Brand Guide" for the same destination.
+          */}
+          <nav className="flex w-full flex-col gap-[24px]">
+            {PANEL_ROWS.map((row) => (
+              <a
+                key={row.number}
+                href={row.href}
+                className="group flex h-[62px] w-full items-center border-b border-white transition-colors duration-300 tab:h-[77px]"
+              >
+                <h3 className="text-[20px] font-medium leading-[26px] text-white/48">
+                  {row.number}
+                </h3>
+                <h2 className="ml-[16px] text-[28px] font-medium leading-[36px] text-white transition-colors duration-300 group-hover:text-dsg-ink-strong tab:text-[40px] tab:leading-[48px]">
+                  {row.label}
+                </h2>
+                <span className="ml-auto flex items-center justify-center text-white">
+                  <ArrowUpRightIcon width={40} height={40} />
+                </span>
+              </a>
+            ))}
+          </nav>
 
           <a
             href="/contact-us/"
@@ -229,10 +273,10 @@ function ServicesOverview() {
               </p>
 
               {/*
-                800 x 501 natural, rendered 540 x 339 at desktop. The live site
-                crops these to a square below the tablet breakpoint — measured
-                342 x 342 at a 390px viewport — so the mobile card is taller
-                than the natural aspect would make it.
+                800 x 501 natural, rendered 540 x 339 at desktop and 342 x 214
+                at 390 — natural aspect at every width, no crop. (An earlier
+                reading of 342 x 342 here was measuring images that had not
+                loaded; the placeholder box is square.)
               */}
               <Image
                 src={card.image}
@@ -240,15 +284,7 @@ function ServicesOverview() {
                 width={800}
                 height={501}
                 sizes="(min-width: 1025px) 540px, 100vw"
-                className={cn(
-                  // Natural aspect is the base so desktop keeps its measured
-                  // 540 x 339; the square crop is scoped to below the tablet
-                  // breakpoint rather than reset above it, because resetting
-                  // aspect-ratio on a next/image collapses its height to 0.
-                  "h-auto w-full rounded-[8px]",
-                  "max-tab:aspect-square max-tab:object-cover",
-                  card.imageGapClass,
-                )}
+                className={cn("h-auto w-full rounded-[8px]", card.imageGapClass)}
               />
             </article>
           ))}
@@ -318,7 +354,7 @@ const PROCESS_STEPS: readonly ProcessStep[] = [
 function ServicesProcess() {
   return (
     <section className="w-full font-sans">
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[24px] py-[80px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[24px] pt-[40px] pb-[64px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
         {PROCESS_STEPS.map((step) => (
           <div
             key={step.title}
@@ -337,7 +373,12 @@ function ServicesProcess() {
               width={512}
               height={512}
               sizes="(min-width: 1025px) 240px, 160px"
-              className="h-[160px] w-[160px] shrink-0 desk:h-[240px] desk:w-[240px]"
+              className={cn(
+                // Hidden below the tablet breakpoint: the live section drops
+                // the icons entirely at 390 and shows them again at 768.
+                "max-tab:hidden",
+                "h-[160px] w-[160px] shrink-0 desk:h-[240px] desk:w-[240px]",
+              )}
             />
 
             <div
@@ -346,7 +387,7 @@ function ServicesProcess() {
                 step.iconSide === "left" ? "desk:text-left" : "desk:text-right",
               )}
             >
-              <h1 className="text-[44px] font-semibold leading-[44px] whitespace-nowrap text-dsg-orange tab:text-[60px] tab:leading-[60px] desk:text-[76px] desk:leading-[76px]">
+              <h1 className="text-[54px] font-semibold leading-[54px] whitespace-nowrap text-dsg-orange tab:text-[76px] tab:leading-[76px] desk:text-[76px] desk:leading-[76px]">
                 {step.title}
               </h1>
 
