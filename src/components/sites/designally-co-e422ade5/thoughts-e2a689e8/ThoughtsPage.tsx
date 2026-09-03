@@ -180,14 +180,17 @@ const CONTAINER = "mx-auto w-[min(1200px,calc(100%-48px))]";
  * absolute to the live site (the live DOM has them as `/thoughts/knowledge/`
  * and `/thoughts/tips/`, which would 404 here).
  */
-const TABS: readonly { label: string; href: string; active: boolean }[] = [
-  { label: "All", href: "/thoughts/", active: true },
-  {
-    label: "Knowledge",
-    href: "https://designally.co/thoughts/knowledge/",
-    active: false,
-  },
-  { label: "Tips", href: "https://designally.co/thoughts/tips/", active: false },
+/**
+ * The category tabs. `/thoughts/knowledge/` and `/thoughts/tips/` are the same
+ * listing filtered, with the matching tab in orange — the active state is the
+ * only difference between the three pages.
+ */
+export type ThoughtsCategory = "all" | "knowledge" | "tips";
+
+const TABS: readonly { label: string; href: string; key: ThoughtsCategory }[] = [
+  { label: "All", href: "/thoughts/", key: "all" },
+  { label: "Knowledge", href: "/thoughts/knowledge/", key: "knowledge" },
+  { label: "Tips", href: "/thoughts/tips/", key: "tips" },
 ];
 
 /** EB Garamond 500 for both the wordmark and the tabs. */
@@ -207,7 +210,7 @@ const DISPLAY_TYPE = "font-serif font-medium";
  * the tabs 64 -> 40 -> 32px, and below 768px the tabs wrap under the wordmark —
  * those three steps are scaling choices, not measurements.
  */
-function ThoughtsMasthead() {
+function ThoughtsMasthead({ activeCategory }: { activeCategory: ThoughtsCategory }) {
   return (
     <section className="w-full pt-[48px] pb-[64px] tab:pt-[64px] tab:pb-[120px] desk:pt-[80px] desk:pb-[186px]">
       <div
@@ -245,26 +248,27 @@ function ThoughtsMasthead() {
           )}
         >
           {TABS.map((tab) => {
-            const className = cn(
-              "transition-colors duration-300",
-              tab.active
-                ? "text-dsg-orange"
-                : "text-dsg-ink-strong hover:text-dsg-orange",
-            );
-
-            return tab.active ? (
+            const active = tab.key === activeCategory;
+            // The live site renders the current category as plain text, not a
+            // link — measured on /thoughts/tips/, where only "All" and
+            // "Knowledge" are anchors. A link to the page you are already on
+            // is a no-op anyway.
+            return active ? (
+              <span
+                key={tab.label}
+                aria-current="page"
+                className="text-dsg-orange"
+              >
+                {tab.label}
+              </span>
+            ) : (
               <Link
                 key={tab.label}
                 href={tab.href}
-                aria-current="page"
-                className={className}
+                className="text-dsg-ink-strong transition-colors duration-300 hover:text-dsg-orange"
               >
                 {tab.label}
               </Link>
-            ) : (
-              <a key={tab.label} href={tab.href} className={className}>
-                {tab.label}
-              </a>
             );
           })}
         </nav>
@@ -366,12 +370,17 @@ export interface ThoughtsPageProps {
    * original hardcoded set so the component still renders standalone.
    */
   posts?: readonly ThoughtPost[];
+  /** Which category tab is highlighted. */
+  activeCategory?: ThoughtsCategory;
 }
 
-export function ThoughtsPage({ posts = THOUGHT_POSTS }: ThoughtsPageProps) {
+export function ThoughtsPage({
+  posts = THOUGHT_POSTS,
+  activeCategory = "all",
+}: ThoughtsPageProps) {
   return (
     <>
-      <ThoughtsMasthead />
+      <ThoughtsMasthead activeCategory={activeCategory} />
       <ThoughtsListing posts={posts} />
     </>
   );

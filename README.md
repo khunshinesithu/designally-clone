@@ -32,10 +32,11 @@ Then open http://localhost:3000.
 | `/works/<slug>/` | Six project case studies — one dynamic route, video hero, full-bleed gallery |
 | `/about/` | **Scrolls horizontally** — ten panels, 12 000px wide, desktop only |
 | `/thoughts/` | Blog listing, nine posts |
+| `/thoughts/knowledge/`, `/thoughts/tips/` | The listing filtered by category, five posts each |
 | `/thoughts/<slug>/` | Nine articles — one dynamic route, Portable Text body |
 | `/contact-us/` | Enquiry form, Google Map embed |
 
-All twenty prerender as static pages.
+All twenty-two prerender as static pages.
 
 ## Tech stack
 
