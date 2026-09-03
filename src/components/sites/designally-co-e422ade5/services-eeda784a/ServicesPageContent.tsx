@@ -339,13 +339,25 @@ function ServicesProcess() {
   return (
     <section className="relative w-full font-sans">
       {/*
-        The drawn line running down the section. Measured on the live page: 392 x
-        1700 at `z-index: 99`, its left edge at x=327 of the 1425px viewport
-        (22.95%) and its top 152px above this section. Desktop only — the
-        section stacks to one column below 1025px and the line has nowhere to
-        run.
+        The boat and the line it trails down the section: 392 x 1700 at
+        `z-index: 99`.
+
+        Offset 215px above this section so the boat sits on the orange. The boat
+        occupies the top 195px of the asset (its rect is 240 of the 2092
+        viewBox), and the panel's orange ends exactly where this section starts,
+        so a 152px offset left it hanging 43px below the edge.
+        
+        Anchored to the centre, not a viewport percentage. The stroke sits at
+        97.5% across the asset (viewBox x~471 of 483), so pulling the box back
+        382px from the halfway line puts the stroke on the centre of the
+        1200px content column — which is where it belongs, between the icon and
+        text columns. A percentage only lined up at exactly 1425px wide and
+        drifted left of centre on anything wider.
+
+        Desktop only: below 1025px the section stacks to one column and the line
+        has nowhere to run.
       */}
-      <ProcessLine className="pointer-events-none absolute -top-[152px] left-[22.95%] z-[99] hidden h-[1700px] w-[392px] desk:block" />
+      <ProcessLine className="pointer-events-none absolute -top-[215px] left-1/2 z-[99] hidden h-[1700px] w-[392px] -translate-x-[382px] desk:block" />
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-[64px] px-[24px] pt-[40px] pb-[64px] tab:px-[6.2%] tab:py-[110px] desk:gap-[80px] desk:px-0 desk:pt-[160px] desk:pb-[154px]">
         {PROCESS_STEPS.map((step) => (
           <div
